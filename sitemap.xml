@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yhxjs.github.io/2024/03/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
+    
+    <lastmod>2024-03-01</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yhxjs.github.io/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</loc>
     
     <lastmod>2024-02-29</lastmod>
@@ -40,7 +49,7 @@
 
   <url>
     <loc>https://yhxjs.github.io/</loc>
-    <lastmod>2024-02-29</lastmod>
+    <lastmod>2024-03-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -48,14 +57,21 @@
   
   <url>
     <loc>https://yhxjs.github.io/tags/Hexo/</loc>
-    <lastmod>2024-02-29</lastmod>
+    <lastmod>2024-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yhxjs.github.io/tags/%E9%85%8D%E7%BD%AE/</loc>
-    <lastmod>2024-02-29</lastmod>
+    <lastmod>2024-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yhxjs.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2024-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -64,7 +80,7 @@
   
   <url>
     <loc>https://yhxjs.github.io/categories/%E6%9D%82%E9%A1%B9/</loc>
-    <lastmod>2024-02-29</lastmod>
+    <lastmod>2024-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
