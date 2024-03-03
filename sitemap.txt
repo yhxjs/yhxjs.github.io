@@ -1,3 +1,4 @@
+https://yhxjs.github.io/2024/03/03/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/
 https://yhxjs.github.io/2024/03/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/
 https://yhxjs.github.io/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/
 https://yhxjs.github.io/categories/index.html
@@ -6,5 +7,6 @@ https://yhxjs.github.io/about/index.html
 https://yhxjs.github.io/
 https://yhxjs.github.io/tags/Hexo/
 https://yhxjs.github.io/tags/%E9%85%8D%E7%BD%AE/
+https://yhxjs.github.io/tags/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/
 https://yhxjs.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/
 https://yhxjs.github.io/categories/%E6%9D%82%E9%A1%B9/
