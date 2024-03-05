@@ -9,8 +9,36 @@
     <atom:link href="https://yhxjs.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>yhxjs的博客</description>
-    <pubDate>Sun, 03 Mar 2024 11:04:46 GMT</pubDate>
+    <pubDate>Tue, 05 Mar 2024 14:14:00 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>ARP协议</title>
+      <link>https://yhxjs.github.io/2024/03/05/ARP%E5%8D%8F%E8%AE%AE/</link>
+      <guid>https://yhxjs.github.io/2024/03/05/ARP%E5%8D%8F%E8%AE%AE/</guid>
+      <pubDate>Tue, 05 Mar 2024 13:11:28 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;ARP即地址解析协议，将IP地址解析为MAC地址。数据要在以太网中传输，需要完成以太网封装，这项工作由网络层负责。要完成以太网的数据封装，需</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ARP即地址解析协议，将IP地址解析为MAC地址。数据要在以太网中传输，需要完成以太网封装，这项工作由网络层负责。要完成以太网的数据封装，需要知道目的设备的MAC地址。</p><p>注意：ARP报文不能穿越路由器，不能被转发到其他广播域</p><h3 id="报文格式"><a href="#报文格式" class="headerlink" title="报文格式"></a>报文格式</h3><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./arp_packet_format.png"                      width="400px" height="auto" alt="ARP报文格式"                ><figcaption>ARP报文格式</figcaption></figure><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./arp_packet_format_wireshark.png"                      width="450px" height="auto" alt="ARP报文格式(Wireshark)"                ><figcaption>ARP报文格式(Wireshark)</figcaption></figure><p>硬件类型：表示硬件地址的类型（其中，值为1表示以太网地址，其他还可能表示令牌环地址）。</p><p>协议类型：表示要映射的协议地址类型（其中，0x0800表示IP地址，其他还可能是ICMP&#x2F;IGMP）。</p><p>硬件地址长度：指出该报文中硬件地址的长度（ARP报文中，它的值为6）。</p><p>协议地址长度：指出该报文中协议地址的长度（ARP报文中，它的值为4）。</p><p>op：操作字段，共有4种类型（1.ARP请求，2.ARP应答，3.RARP请求，4.RARP应答）。</p><p>源MAC地址：发送方设备的硬件地址。</p><p>源IP地址：发送方设备的IP地址。</p><p>目的MAC地址：接收方设备的硬件地址。</p><p>目的IP地址：接收方设备的IP地址。</p><p>ARP报文解析主要关心的是后五个字段。</p><h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./arp_workflow.png"                      width="450px" height="auto" alt="ARP工作流程"                ><figcaption>ARP工作流程</figcaption></figure><ol><li>先查看ARP表，如果ARP表中没有目的IP地址对应的MAC表项，则发送ARP请求包</li><li>源主机广播发送ARP request 数据包，请求目的主机的MAC地址</li><li>同网段内的所有主机都能收到ARP request请求包，但只有目的主机才会回复ARP reply数据包</li><li>源主机收到ARP reply后，将目的主句的IP-MAC对应关系添加进ARP表中，完成数据的以太网封装，进行数据交互</li></ol><p>通过Wireshark抓包可以看到整个过程。</p><p>IP为192.168.56.105的主机A广播目的IP为192.168.56.1的ARP请求，当IP为192.168.56.1的主机B收到该请求后，应答自己的MAC地址给主机A：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./arp_request_wireshark.png"                      width="450px" height="auto" alt="ARP请求(Wireshark)"                ><figcaption>ARP请求(Wireshark)</figcaption></figure><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./arp_reply_wireshark.png"                      width="450px" height="auto" alt="ARP应答(Wireshark)"                ><figcaption>ARP应答(Wireshark)</figcaption></figure><p>而一整个ping的过程相当于两个来回：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./arp_ping_wireshark.png"                      width="800px" height="auto" alt="ping(Wireshark)"                ><figcaption>ping(Wireshark)</figcaption></figure><p>通过我开发的show arp packet history命令也可以看到整个过程：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./show_arp_packet_history.png"                      width="100%" height="auto" alt="show arp packet history"                ><figcaption>show arp packet history</figcaption></figure><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><table><thead><tr><th>类别</th><th>含义</th><th>作用</th><th>属性</th></tr></thead><tbody><tr><td>静态</td><td>手动配置（优先级高）、认证下发</td><td></td><td>永久、表项不更新</td></tr><tr><td>动态</td><td>通过报文学得</td><td></td><td>老化、表项更新</td></tr><tr><td>可信任</td><td>客户端认证时候，会在网关交换机上添加arp，该arp是真实有效的</td><td>位于交换机端ARP表项中，防止ARP欺骗</td><td>具有静、动态属性</td></tr><tr><td>免费</td><td>源、目的IP都是自己的广播arp报文</td><td>IP地址冲突检测、MAC地址变化通知其他设备</td><td>可以定时发送免费ARP，若无IP冲突不能应答</td></tr><tr><td>代理</td><td>源目的不属于同一网段，设备知道目的ip的路由信息时，则进行代替arp响应</td><td></td><td></td></tr><tr><td>本地代理</td><td>以网关自身的MAC回应本网段的IP地址的ARP请求</td><td>用于二层端口隔离时，主机先获取网关的mac，之后在网关设备上报文会被上送三层，通过三层路由实现同一网段内主机通讯</td><td></td></tr><tr><td>any ip</td><td>任意IP地址都可以上网，ARP请求的源IP和设备不在同网段，且目的IP可能不是自己，但网关仍然发送ARP应答，并且为主机的IP地址生成直连路由</td><td>场景：无需修改IP与网关即可正常上网，例如网吧、酒店等地方</td><td></td></tr><tr><td>探测</td><td>源IP为0，目的IP为待探测地址</td><td>收到应答则说明该IP被使用</td><td></td></tr></tbody></table><h2 id="处理逻辑"><a href="#处理逻辑" class="headerlink" title="处理逻辑"></a>处理逻辑</h2><p>首先底层对报文进行处理，将二进制报文转化为可处理的格式，然后交由控制层进行处理。</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./arp_packet_processing.png"                      width="300px" height="auto" alt="ARP报文处理逻辑"                ><figcaption>ARP报文处理逻辑</figcaption></figure><ol><li><p>操作码op，源接口和二层接口协议状态，格式检查，MAC合法性，IP合法性，免费ARP检查，ACL检查等，经过上述一系列检查后，源IP和目的IP都不为0，且都是合法的。</p></li><li><p>判断源IP和源接口是否处于同一网段，主要区分就是VRRP的虚IP和开启了any-ip-arp要进行特殊处理，经过判断后，如果是同一网段就进行处理，否则就丢弃即忽略。只要源IP和本机IP是一致的，都认为IP地址冲突，查看源MAC和源接口的MAC是否相同，如若相同，则说明是自己发的，不进行处理，否则进行冲突应答。如果目的IP为本机IP，判断是否是发给自己的，如果是则继续进行处理，否则进行相关的代理。</p></li><li><p>普通处理</p><p>处理request报文：</p><ol><li><p>目的地址是我们的IP，则不更新表项，只应答。</p></li><li><p>目的地址不是我们的IP，则不应答。</p></li><li><p>如果MAC地址不一样，需要代理冲突应答，并走老化逻辑。</p></li></ol><p>处理reply报文：如果源IP匹配到了表项或者开启了某种学习才进行表项的学习更新。</p></li></ol>]]></content:encoded>
+      
+      
+      <category domain="https://yhxjs.github.io/categories/%E9%80%9A%E4%BF%A1/">通信</category>
+      
+      
+      <category domain="https://yhxjs.github.io/tags/ARP/">ARP</category>
+      
+      <category domain="https://yhxjs.github.io/tags/%E9%80%9A%E4%BF%A1/">通信</category>
+      
+      
+      <comments>https://yhxjs.github.io/2024/03/05/ARP%E5%8D%8F%E8%AE%AE/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>学习路线</title>
