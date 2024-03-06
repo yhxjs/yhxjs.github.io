@@ -103,15 +103,15 @@
                       width="450px" height="auto" alt="ARP报文格式(Wireshark)"
                 ><figcaption>ARP报文格式(Wireshark)</figcaption></figure>
 
-<p>硬件类型：表示硬件地址的类型（其中，值为1表示以太网地址，其他还可能表示令牌环地址）。</p>
-<p>协议类型：表示要映射的协议地址类型（其中，0x0800表示IP地址，其他还可能是ICMP&#x2F;IGMP）。</p>
-<p>硬件地址长度：指出该报文中硬件地址的长度（ARP报文中，它的值为6）。</p>
-<p>协议地址长度：指出该报文中协议地址的长度（ARP报文中，它的值为4）。</p>
-<p>op：操作字段，共有4种类型（1.ARP请求，2.ARP应答，3.RARP请求，4.RARP应答）。</p>
-<p>源MAC地址：发送方设备的硬件地址。</p>
-<p>源IP地址：发送方设备的IP地址。</p>
-<p>目的MAC地址：接收方设备的硬件地址。</p>
-<p>目的IP地址：接收方设备的IP地址。</p>
+<p><strong>硬件类型</strong>：表示硬件地址的类型（其中，值为1表示以太网地址，其他还可能表示令牌环地址）。</p>
+<p><strong>协议类型</strong>：表示要映射的协议地址类型（其中，0x0800表示IP地址，其他还可能是ICMP&#x2F;IGMP）。</p>
+<p><strong>硬件地址长度</strong>：指出该报文中硬件地址的长度（ARP报文中，它的值为6）。</p>
+<p><strong>协议地址长度</strong>：指出该报文中协议地址的长度（ARP报文中，它的值为4）。</p>
+<p><strong>op</strong>：操作字段，共有4种类型（1.ARP请求，2.ARP应答，3.RARP请求，4.RARP应答）。</p>
+<p><strong>源MAC地址</strong>：发送方设备的硬件地址。</p>
+<p><strong>源IP地址</strong>：发送方设备的IP地址。</p>
+<p><strong>目的MAC地址</strong>：接收方设备的硬件地址。</p>
+<p><strong>目的IP地址</strong>：接收方设备的IP地址。</p>
 <p>ARP报文解析主要关心的是后五个字段。</p>
 <h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><figure class="image-caption"><img  
                      lazyload
@@ -252,6 +252,222 @@
       </tags>
   </entry>
   <entry>
+    <title>ND协议</title>
+    <url>/2024/03/06/ND%E5%8D%8F%E8%AE%AE/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>邻居发现协议，相当于IPv4中ARP、ICMP路由器发现和ICMP重定向这三种协议的组合。</p>
+<p>什么是邻居？即一个链路上的相邻主机或者路由器，主机与主机，主机和路由器，路由器和路由器可以互为邻居。</p>
+<p>地址解析放在ICMP层，通过使用ICMPv6报文实现功能。</p>
+<h3 id="报文格式"><a href="#报文格式" class="headerlink" title="报文格式"></a>报文格式</h3><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ipv6_packet_head_format.png"
+                      width="400px" height="auto" alt="IPv6报头格式"
+                ><figcaption>IPv6报头格式</figcaption></figure>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ipv6_packet_head_format_wireshark.png"
+                      width="550px" height="auto" alt="IPv6报头(Wireshark)"
+                ><figcaption>IPv6报头(Wireshark)</figcaption></figure>
+
+<p><strong>版本号</strong>(version)：同IPv4，指示IP版本</p>
+<p><strong>流量等级</strong>(Traffic Class)：类似IPv4中的TOS字段，指示IPv6数据流通信类别或优先级</p>
+<p><strong>流标签</strong>（FlowLabel)：标记需要特殊处理的数据流，用于某些对连接的服务质量有特殊要求的通信，诸如音频或视频等实时数据</p>
+<p><strong>传输数据长度</strong>(Payload Length)：包含有效载荷数据的IPv6报文总长度</p>
+<p><strong>下一个报头</strong>(Next Header)：该字段定义了紧跟在IPv6报头后面的第一个扩展报头(如果存在)的类型，或者上层协议数据单元中的协议类型</p>
+<p><strong>跳限制</strong>(Hop Limit)：类似于IPv4中的TTL字段，它定义了IP数据包所能经过路由器的最大跳数</p>
+<p><strong>源地址</strong>(Source Address)：128bit的IPv6地址</p>
+<p><strong>目的地址</strong>(Destination Address)：128bit的IPv6地址</p>
+<h4 id="与IPv4对比"><a href="#与IPv4对比" class="headerlink" title="与IPv4对比"></a>与IPv4对比</h4><p><strong>IPv6报头结构的改善</strong>：基本的IPv4报头长度为20个字节，基本的IPv6报头长度为40个字节</p>
+<p><strong>取消了IP的校验</strong>：由于2层与4层的校验已经足够健壮，取消了IP的三层校验</p>
+<p><strong>取消中间节点的分片功能</strong>：分片重组功能由源端实现，通过Path MTU机制来发现路径MTU</p>
+<p><strong>定义最长的IPv6报头</strong>：有利于硬件的快速处理，中间节点节约大量资源</p>
+<p><strong>安全选项的支持</strong>：IPv6提供了对IPsec的完美支持，上层协议省去大量安全选项，例如OSPFv3取消了认证</p>
+<p><strong>增加流标签</strong>：提高QoS效率</p>
+<h3 id="报文分类"><a href="#报文分类" class="headerlink" title="报文分类"></a>报文分类</h3><p>邻居发现协议定义了五种不同的ICMP包类型：路由请求RS（Router Solicitation）和路由告知RA（ Router Advertisement）消息，邻居请求NS（Neighbor Solicitation）和邻居告知NA（Neighbor Advertisements）消息，以及重定向（Redirect message）消息。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./nd_packet_type.png"
+                      width="450px" height="auto" alt="ND协议报文类型"
+                ><figcaption>ND协议报文类型</figcaption></figure>
+
+<h4 id="路由请求"><a href="#路由请求" class="headerlink" title="路由请求"></a>路由请求</h4><p>当一个接口变为可用时，主机可以发出路由请求消息来要求路由器马上生成路由告知（ Router Advertisement）消息，而不是等它的下一个固定生成时间。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./rs_packet_format.png"
+                      width="500px" height="auto" alt="RS报文格式"
+                ><figcaption>RS报文格式</figcaption></figure>
+
+<p>源地址：接口的地址或者全0</p>
+<p>目的地址：全部路由器组播地址</p>
+<p>跳数：255</p>
+<p>ICMP6 TYPE：133</p>
+<p>ICMP6 CODE：0</p>
+<h4 id="路由告知"><a href="#路由告知" class="headerlink" title="路由告知"></a>路由告知</h4><p>路由器周期地用此消息通告它们的存在及各种链路参数和互联网参数，或响应Router Solicitation消息。Router Advertisements包括前缀，这些前缀用于确定是否另一个地址共享相同链路(on-link确认)和&#x2F;或地址配置，建议的跳数限制值，等等。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ra_packet_format.png"
+                      width="500px" height="auto" alt="RA报文格式"
+                ><figcaption>RA报文格式</figcaption></figure>
+
+<p><strong>当前跳数值</strong>（Current Hop Limit）字段，用法如下：链路上的结点发送IPv6报文时，会用该字段的值来填充IPv6报文头的跳数限制字段。如果该字段值为0，说明路由器并不确定该值为多少。</p>
+<p><strong>M位</strong>被称为管理地址配置（Managed Address Configuration）标志位，当该位被置1时，说明DHCPv6可用于结点地址配置。</p>
+<p><strong>O位</strong>被称为其它有状态配置（Other Stateful Configuration）标志位，当该位被置1时，说明DHCPv6可用于获得非地址相关的配置信息，如DNS名称服务器的IPv6地址。</p>
+<p><strong>路由器生命期</strong>字段是一个16位无符号数，计量单位为秒，它指示链路上的结点把该路由器做为默认路由器的时间为多长，最大值为18.2小时。该字段为0表示发送该报文的路由器不做为默认路由器，这时，结点在发送报文时，不会选择该路由器做为下一跳路由器。</p>
+<p><strong>可达时间</strong>字段是一个32位无符号数，计量单位为毫秒，它指示链路上的结点在收到一个邻居可达的确认报文后，认为该邻居仍然可达的时间。在这段时间内，如果结点没有再收到邻居可达的确认报文，结点会执行邻居不可达检测以确认邻居是否可达。该字段为0表示路由器不指定该参数。</p>
+<p><strong>重传时间</strong>字段是一个32位无符号数，计量单位为毫秒，它指示链路上的结点在执行邻居不可达检测或者地址解析时，连续发送邻居请求报文中间的时间间隔。该字段为0表示路由器不指定该参数。</p>
+<p><strong>前缀</strong>选项，通过该选项，路由器向链路上通告本链路所有可达的前缀，并且通过标志位指出哪些前缀可用于结点的地址自动配置。</p>
+<p>源地址：接口的本地链路地址</p>
+<p>目的地址：发送路由器请求的主机的源地址或者全部节点组播地址</p>
+<p>跳数：255</p>
+<p>ICMP6 TYPE：134</p>
+<p>ICMP6 CODE：0</p>
+<h4 id="邻居请求"><a href="#邻居请求" class="headerlink" title="邻居请求"></a>邻居请求</h4><p>节点发送该消息以确定某个邻居的链路层地址，或者用来验证通过缓存里的链路层地址是否依然能够到达该邻居。也经常用来做地址重复检测。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ns_packet_format.png"
+                      width="500px" height="auto" alt="NS报文格式"
+                ><figcaption>NS报文格式</figcaption></figure>
+
+<p><strong>目标地址</strong>字段是一个IPv6地址，一般与目的地址相同，填的是请求的地址，该字段不能是多播地址。</p>
+<p><strong>源链路层地址</strong>选项，协议建议携带，一般为源MAC</p>
+<p>源地址：接口的地址或者未指定地址</p>
+<p>目的地址：目标地址或者目标地址对应的请求节点组播地址</p>
+<p>跳数：255</p>
+<p>ICMP6 TYPE：135</p>
+<p>ICMP6 CODE：0</p>
+<h4 id="邻居告知"><a href="#邻居告知" class="headerlink" title="邻居告知"></a>邻居告知</h4><p>邻居请求消息的回应。节点也可以发送非请求的Neighbor Advertisements，通知链路层地址改变。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./na_packet_format.png"
+                      width="500px" height="auto" alt="NA报文格式"
+                ><figcaption>NA报文格式</figcaption></figure>
+
+<p><strong>R位</strong>是路由器（IsRouter）标志位，当这个标志位置1时，说明发送者是路由器。</p>
+<p><strong>S位</strong>是被请求（Solicited）标志位，当这个标志位置1时，说明发送者发送邻居通告报文是因为接收到一个邻居请求报文，这个邻居通告报文的目的地址是单播地址；如果邻居通告报文目的地址是多播地址，则该位置0。</p>
+<p><strong>O位</strong>是覆盖（Override）标志位，当这个标志位置1时，接收到该报文的结点查看邻居缓存，如果缓存中有发送该邻居通告报文结点的链路层地址，则更新之。否则忽略该邻居通告报文。</p>
+<p><strong>目标地址</strong>字段是一个IPv6地址，如果邻居通告报文是由邻居请求报文触发的，则该地址是邻居请求报文中的目标地址。如果邻居通告报文是因为链路层地址变化触发的，则该地址是和变化的链路层地址相关的IPv6地址。该字段不能包含一个多播地址。</p>
+<p><strong>目标链路层地址</strong>选项。如果邻居通告报文目的地址是多播地址，必须包含目标链路层地址选项。</p>
+<p>源地址：接口的地址</p>
+<p>目的地址：发送邻居请求节点的源地址或者全部节点组播地址</p>
+<p>跳数：255</p>
+<p>ICMP6 TYPE：136</p>
+<p>ICMP6 CODE：0</p>
+<h4 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h4><p>由路由器使用，用于通知主机有到目的地的较好的第一跳。路由器收到一个报文后，如果发现报文的目的地址和源地址是同一个链路的，或者到目的地址有一个更优的路由器，都会发送重定向报文。重定向报文的源地址必须使用链路本地地址。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./redirect_packet_format.png"
+                      width="500px" height="auto" alt="重定向报文格式"
+                ><figcaption>重定向报文格式</figcaption></figure>
+
+<p><strong>重定向报文头</strong>选项包含了引发重定向报文的原始报文的内容。</p>
+<p>源地址：接口的链路本地地址</p>
+<p>目的地址：触发重定向的数据包的源地址</p>
+<p>跳数：255</p>
+<p>ICMP6 TYPE：137</p>
+<p>ICMP6 CODE：0</p>
+<blockquote>
+<p>主机不能发送路由器通告，路由器不能发送路由器请求。</p>
+<p>主机不能发送重定向报文，路由器不能处理重定向报文。</p>
+</blockquote>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ul>
+<li><a href="#%E8%A7%A3%E6%9E%90%E9%82%BB%E5%B1%85%E7%9A%84%E9%93%BE%E8%B7%AF%E5%B1%82%E5%9C%B0%E5%9D%80">解析邻居的链路层地址</a></li>
+<li><a href="#%E5%9C%B0%E5%9D%80%E5%86%B2%E7%AA%81%E6%A3%80%E6%B5%8B%EF%BC%88DAD%EF%BC%89">地址冲突检测（DAD）</a></li>
+<li><a href="#%E9%82%BB%E5%B1%85%E4%B8%8D%E5%8F%AF%E8%BE%BE%E6%A3%80%E6%B5%8B%EF%BC%88NUD%EF%BC%89">邻居不可达检测（NUD）</a></li>
+<li><a href="#%E8%B7%AF%E7%94%B1%E5%99%A8%E5%92%8C%E5%89%8D%E7%BC%80%E5%8F%91%E7%8E%B0">路由器和前缀发现</a></li>
+<li><a href="#%E8%B7%AF%E7%94%B1%E9%87%8D%E5%AE%9A%E5%90%91">路由重定向</a></li>
+</ul>
+<h3 id="解析邻居的链路层地址"><a href="#解析邻居的链路层地址" class="headerlink" title="解析邻居的链路层地址"></a>解析邻居的链路层地址</h3><p>IPv6取消ARP协议，通过邻居请求（NS）和邻居通告（NA）报文来解析三层地址对应的链路层地址。</p>
+<p>邻居请求NS使用组播，比ARP效率高，邻居公告NA返回则直接使用单播。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ipv6_address_resolution.png"
+                      width="650px" height="auto" alt="IPv6地址解析"
+                ><figcaption>IPv6地址解析</figcaption></figure>
+
+<p>一整个ping的过程跟ARP一样相当于两个来回：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ipv6_ping_wireshark.png"
+                      width="800px" height="auto" alt="ping(Wireshark)"
+                ><figcaption>ping(Wireshark)</figcaption></figure>
+
+<p>通过我开发的show ipv6 nd-packet history命令也可以看到整个过程：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./show_ipv6_nd_packet_history.png"
+                      width="100%" height="auto" alt="show ipv6 nd-packet history"
+                ><figcaption>show ipv6 nd-packet history</figcaption></figure>
+
+<h3 id="地址冲突检测（DAD）"><a href="#地址冲突检测（DAD）" class="headerlink" title="地址冲突检测（DAD）"></a>地址冲突检测（DAD）</h3><p>DAD首先发送源地址为未分配地址，目的地址为要进行DAD检测的地址所对应被请求节点的组播地址，然后目标IP携带要进行DAD检测的地址的NS报文，若有冲突，则被请求节点发送源地址为DAD检测的地址，目的地址为全局组播地址，并目标IP携带DAD检测的地址，以及源链路层选项附上自己的链路层地址的NA报文。</p>
+<h3 id="邻居不可达检测（NUD）"><a href="#邻居不可达检测（NUD）" class="headerlink" title="邻居不可达检测（NUD）"></a>邻居不可达检测（NUD）</h3><p>NUD首先发送源地址为接口的链路本地地址，目的地址为要进行NUD检测的单播地址，然后目标IP携带要进行NUD检测的单播地址的NS报文，若可达，则被请求节点发送源地址为NUD检测的地址，目的地址为NS的源地址，并目标IP携带NUD检测的地址，并将S位置为1的NA报文。</p>
+<h3 id="路由器和前缀发现"><a href="#路由器和前缀发现" class="headerlink" title="路由器和前缀发现"></a>路由器和前缀发现</h3><p>当主机未配置单播地址时，就会发送RS，路由器和本地链路节点会发送RA，以使主机进行自动地址配置。</p>
+<p>当主机接收到RA后，使用其中的前缀信息和本地接口ID自动形成IPV6地址，还可根据其中的路由器信息设置默认路由器。</p>
+<p>RS可定位邻居路由器，同时学习和自动配置有关的前缀和配置参数。</p>
+<h3 id="路由重定向"><a href="#路由重定向" class="headerlink" title="路由重定向"></a>路由重定向</h3><p>假设链路上一个结点发送一个报文，源地址是A，目的地址是B，路由器收到该报文后，发送一个重定向报文，重定向报文中目标地址字段是C，该地址是告诉结点更好的下一跳地址，目的地址字段是B，该地址是结点发出去报文的目的地址，和上面的B是同一个地址。如果C和B不同，说明C地址是一个更优的路由器地址，如果C和B相同，说明B地址是同一个链路上结点的地址。</p>
+<h2 id="表项状态"><a href="#表项状态" class="headerlink" title="表项状态"></a>表项状态</h2><p>ND表项有五种状态：</p>
+<p><strong>INCOMPLETE</strong>（未完成的）地址解析在进行中，邻居的链路层地址还没有被确定。</p>
+<p><strong>REACHABLE</strong>（可到达的）粗略讲，已知邻居最近(几十秒前)是可达的。</p>
+<p><strong>STALE</strong>（陈旧的）邻居不再被认为是可达的，但是直到流量发送给该邻居时，不应当尝试改变它的可达性。</p>
+<p><strong>DELAY</strong>（延时）邻居不再被认为是可达的，最近流量已经发送到该邻居。然而，不立即探测该邻居的可达性，延时一段时间发送探测消息，以便给上层协议一个机会提供可达性确认。</p>
+<p><strong>PROBE</strong>（探测）邻居不再被认为是可达的，并且发送了单播NS探测消息以便验证可达性。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./nd_entry_state.png"
+                      width="700px" height="auto" alt="ND表项状态机"
+                ><figcaption>ND表项状态机</figcaption></figure>
+
+<p><strong>EMPTY</strong>状态代表邻居表项不存在或者被删除。发送IPv6报文时，如果下一跳不在邻居表中，那么创建一条状态为INCOMPLETE的邻居表项，发送多播邻居请求报文，每隔1秒钟发一次，连发3次，直到收到应答为止。如果连发3次邻居请求报文都没有收到应答，那么删除邻居表项。如果收到应答，邻居表项的状态迁移到REACHABLE。</p>
+<p><strong>REACHABLE</strong>状态的持续时间缺省值是30秒，即在30秒钟内认为邻居可到达，30秒以后，迁移到STALE状态。如果在REACHABLE状态，收到邻居请求或者公告，发现MAC地址变化了，表项迁移到STALE状态。</p>
+<p>处于<strong>STALE</strong>状态，如果发送报文时命中这条邻居表项，那么迁移到DELAY状态，准备进行邻居不可达检测。对于STALE状态的持续时间，RFC没有规定。</p>
+<p>处于<strong>DELAY</strong>状态，5秒钟以后进入PROBE状态。</p>
+<p>处于<strong>PROBE</strong>状态，开始进行邻居不可达检测，发单播邻居请求，每秒发一次，连发3次，直到收到应答为止。如果收到应答，迁移到REACHABLE状态。如果连发3次仍然没有收到应答，就认为邻居不可达，删除邻居表项。</p>
+<p>收到邻居请求，创建新的邻居表项，状态必须是STALE，因为收到邻居请求只能证明对方发送的报文可到达自己，而不能确定自己发送的报文能到达对方。</p>
+<p>在进行邻居不可达检测时，结点发送的邻居请求报文可以包含源链路层地址选项，也可以不包含。如果邻居请求报文中没有包含源链路层地址选项。接收结点在发送邻居通告报文时，可能还需要执行地址解析操作。所以RFC2461建议邻居请求报文发送者包含源链路层地址选项。</p>
+]]></content>
+      <categories>
+        <category>通信</category>
+      </categories>
+      <tags>
+        <tag>通信</tag>
+        <tag>ND</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>学习路线</title>
+    <url>/2024/03/03/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/</url>
+    <content><![CDATA[
+<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码错误，请重新输入。" data-whm="Oh, these decrypted content cannot be verified, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="88247cd0df9052ab461d05c4cab63bb2dc7bbf598349d201fd03300c4f8fef9c">7e302a64c19ca2d3ce010e4131597270786b1bb1aaf244198f42d692eb66feb4bc070be16da0a052557145b88b06a7387e3029ffbbbb6130fe0a097cb8511ca043a3a1ac49a1c8d6e3209fbd33f4b5ec808511bbbcbf9eed5db3d988448945fdaf4926c793654b80518ba075a6b012b2b528ba26ffb32b6aa542d403457d3f99e138490ec2452377bb9d0aa0876d21a39ad74194eaaae82bac2f29811278064ba1ad8d323242753fcec2d647caf57e8c68a1631c6ea4b6795455aa5bddb4a7a5a6984c24e714e3a1d4b6a1f5b40d103dff22152cb5767dc0a07e63d419d50e66a3bacd98da6b63001b6dca188b97684ded665fa39e575da0bb50467826e5ab6c4e9bc7c13e5ffd851a763e80e8888f1eb158ace8a3adae10e4952a59972ded7b629425a5ba52a89aa1eb7f33f9f7a05e2282c8dd2eebdff6cbc5ff68888ad769e483801c95580f6dd44181059e723b45f1fad1441331cea7c03cf97f53e7bbceb448a73794b615a27670c7f537a9c0a360483360caa5392103a0a8887c3638cb9e49ef68db8040d2bfba1151e13c678a03996de7eb7942afe332a110eac08fa47e6c6e0ac1170d4ede7d0cc4e3cfc361c8e7e46aa9772c81e54cc1b1860fd6d08f2eb449ec0070f9f3a8162522a544bab118fb9a3234c10d03c9fdef4589ca16f812d81e033618be3866d1dc6668f8a08cb1cd9cefc5c7f6dcfe027c736e704176c9c3f75175d7c8c0852104d043665cbe3e2aca512baaf852962b738a979e4a0c0aae312650f44bc3239b826102c17e1e9d7f63fe28418a2487b913515c15782cd7a799666617bb8c49f1f6b6f4e4c758a8ba1f52b017517a27f5824b06817b4c24374441f553427fc8caf213d20e780d69ca47bc27a799bff3d895b50b5dc1a9773881963fa87203c2d78abed04f544dd4302843677e7e3fefac05e85f4879404a1fae894d13a6ca799b0b6e2c9f6222c7973239865cf5f59d645d62349f8645c2e852d24366c5149903c8042effb49e3b513f7138905e63070c65e09036604217472a4e1b29e6f6fe3e4b5c6ec873275af907d941e05fea1c9a009519b4b22d60c43f7661efea590b5a85170908fde78956f72a07c619eab9211dc2b2c7deb69fb6924b659d0e9e620f264c67af600828e4f3271a017f36249688ef1c45fcb2e0ad046ea84df8b3453e599365a3ed4a2d3123e88c84d23fb5d252bffb78ce4f7743912face06c5f0509b96c59f7ab815c00c5c7ff19d4edf909f0797610aacd54e12819bd04e9322ab69c9c0a969191ada2d3926f588e7ad54cd323632033cbec7c345891d53cf2c7dd566a888fbff271258b42f01cfaef3b87d6b660a928889bddbcede75e86cc0b28e8a7e5f8cfbfb75743436c86a48116ca0a24126bcd4790114ad22f2254d4f54ae663437574bcbd53a3a7a81dc066e2b37601836679b9eb5bf061368d82d99fd3ec79037eb24bcaf6130d7eedb69eef6fc0d3a3bcf197f4d243a61f272407c7399a446da734325a3d057459ae9b486045bd55d2d5e3c50c2aca45f13257a3d916dec48ce80382f53e5295a691c4842c74b02407228849e96782179788918da40ef252656db9e7c524ba793e5965dbcfb4a8e8e0d5d3a3fc0e155f5ff2b3debbf4f0d261bf6c61e251e28f068d212722aca95a476410f12aa2580dfbb0ef0163532a61925506e645da8dc4cd5ae960ccbd8bd05094ba81016a3ee4181bd7c383e0b5bd573e5eef0ef546b1a0846af0c6b3b583a2cbad7dcf7aabc61a27bd36aa997a1c4508ebcfec0459960cfc35bc55477158a0923d1e79fd04e5414b6e219df9727d7030a2b05c37243264470b9c491b71b840c499d06d4ff19232b800579722d0fb8c281df6b5a54e4b0fe252fecc5c3dd081da3fcdb629c8d4f274d003155890883791c1b6e731ea0bd2f297cde53a49d1aea1233a39103cab73d3454e3a6ae70a310d6be786d4d9dc40d2b7d74bffec2a76d3444fabf4309ea25fe6113f2b771125804c24394966bfc50ab206519ba84bbccefcb715d69a020651fe01f797486c12c54405bb0ca40a50a7b193e5e3617178d982d35370517af59205004ae784934c108fba3568433b7eaaf184fef2a88342af90a2cf1f92d5f78b293e5044b47d4e064ff496a05714e531619477eb38953faed1ea67380fa73df0afec0e415978d1afa6b9a2fb952575a197bb86351946df3965dd858bdbc55ff067b26c252dc7cc13fcd3f3206f82ce231f5970e43aa65dc9c53cefd494b30776d9128fdbdc9eec0f969d53b2905a47a92e4e19ad224b7ab950344043c6d53cdaec9e739a4968d6d86f2c833d283d9fb88ce043fb203fbb7bbea6c9db3683efaf2426a8847df5730c920a637f4f324bf7dfefa70f7096fd9fbc0481ca5fc0b5b89d0b605c428ebe71d1c59c06620670f316d0c9e90fa6e29006446d2b3af79fc84ff604c4192db8548f1c2373bbd401ea9b3153195a0bf7a6e2858ecbacbec605fe763840d8eb1b899750e6064b890a362398871604d7b8bad7065e5cc6dc6c19d9ee8723161c7989723b315608bd4e2b37f9c7c44776d925f120c4cd1408a62dc8e57fce927789a09aa54e46875cd78f5af37720d890113b24e68a12d97da5f4a395a383b242e1570c31160f0a4c948c810dc59979d51971f90a6c5be91e7ef1abe178e25978a2a187872b6d0fb6086ec078a83111cb223f9f2843ecf636ef594c44c48409f8a9cc71d55d1c40266356c1b32f7e3753cfaa4670976b6f5245de0eaac54f9d8b4d36c166673749114159c186212d59f6f486141a314a43fd0153939a861ac8d09fcd911f0e6f006d019861f2e22f8a53ddbd7706982727fb759e7989250580a723d714e81c1772ebb0d74c5795d2a5d881724ae5a574e22402ad02097c64fad3d2f921c08ea52a4e4ba5d0db166b3a54e8e785b09366b8dd1819e312aaeb2b93c8edba305f9abda30016a49b2727df106fa7ead96e9dafc3fcfb2b0952f0020cdb48f3db9b001a8588fa411fda26161e528481aed14dc667175a8d8f262642e8313dd0c15e924fba32c70d594b8325d3529f602666138ad95c77c5f24379f7ddcdb2bac1386c13397ef6bdd3b742234595a2950a56c39c2e409cce12a73fbb76fb9597d071bcd7048592e48a025ca73e38a0ede3a5788fd95ce0edca230392c188d84572e533a6df9c43012e660173d7b567ffe0e383384263824a010b90ba963639d6b2877fd14a1d6d85e3eb8635e5aca1cdadb156547adb622e5ad693f96347201407b27e8a487bf420fbe0fa7df5312e792ac641c9a252df3534060e77cbeec8d0d3a36c196e31140c48668c1cbc6175d37775779f93d3bfa90c9f953fc53a0c0b511a4822a3b993724793e677aa2b591c2f941d1fbb3adf89b41bd9411fd05a2036a3ddd212dfd3b8858c4deb7da95f50353f857841c159a1ad22c4bf38ab942cfa7f9be5d3d62e1d0294081808192d13f59f9d4ed35ac9322f79a554d5bcb1a4a616440f828eee1eb6b46a8ca611cb812bd411349875fe447ecf997c67917c2ec13e6939621eb6512658e4cd7fd27fa57c652c60badbfbd967a50682960184a0ed6ce79154ad446127f6f2661be06c34cdc77fedd342f8ce537c70b50116e690c04ad0cf57316bbc06330c3a0d808f2aea51a07cf74ae917d12276c44ccd9f9d66226e4cb75507c055deb58a10678336426035570469ac0df06c9e89b04451fc82776f2f3fe88ccf09869c850cb707303e6de6ad3af76fc51083d10d19c3ef39465519fd52516b2dc8e8a978acdbee3ac4516086ffc8de4be936c1428ef0934224054d365cba6b9f1d1f72af500c14932a3835ed90889b2721f8cc56f6ede85104f289bd51e693560119b98f4c704e76894fc2ab41554be217aa3eeeb691d274a066cdaaa8513a492f31bbd1a1aff277c2aefef0c6cdfde0eef90ff9e62803dde4ce1d69a19fcb4db96ed9f2f24a428380ba6fbefd18e2cd498f115c01f6cdc8b6c02d2baee224f125865353710d652307a0e6f53e12f684b832379bfdcc882c8b531ec865a4074866d5f3dd2d47beff3c611b48fb4370fb3655c532dcbab847f254d8431bee78a5e5659f8c201d44a97f2bce59847ec16818d540c0fb1b1a60788d448a04c8accbdb62cd06c61746d6cf8ac8abba73a44828503cddf411e5e8e1076a19925db73d71c14fea1ad6988310372dcba27506c75ccf00a80ae55dd6860a56da75bdbb9ed255062bd0a5a873dacbee19ce8ce678f0048aa1671bf1e8b7ceb2acf1929fc28de94e97066b1e2a6921b0092eca5418f13e3c49457fee5d50bdc27f9c4cbdfced4349d98ac9da99d1d00fa2d4c6dfa26e5548c2e5a7ddef8c6591fd0369b3188b905302e8ec3cf1b86d2b40d055dd272fe55181fa0a7f7bf0060524e2a985e739114be8fa6047e78db07d48cc6495fa32907e0a1087d17a5674324c14e7daafaed9efe8c2ad2581ad80d6ed20132d80243e66853554d2f25ef590b972c69c78b573a9d3410bb3453b0dcce4eb3f0d1319371bee24283b97e9768bee086b8cabf669a59e74da8650837ae4ead92d18f838c77ebfa10808694669b6029509b251e7dd88dca9ec4ab1a02113fdf450f5d2cdab18fd21c0685c8bc09c9e33205ea66c796940ce9f61f68bbb10a42b76ddfb5b06fb19e7b5c319a23f5d5af440599e2f5141eb7ae62e24c71d36e91adf2a14b75757761232fab6cd532dbe84116966a5ecd11f3e290023b7e02de687b6aabe6124fc04092b4eae5d670d0dba90680ae0cc99c440b090ca8d5480839e1c991178722d6aa9c7efc44c6c91baf3349a837fe254110c40e055fc3a37e1259248cc8748696920ee5669969c917d2b638ebf28dc737445b6240e4d370782ba3a545b09f476448ba9de1b94d3d498a1f38b5e6e0710e6fb40bb371b3ab9afbf3f7c2330eec651b2fecf159c2db58b0d1dc95c3b1cebb98450b56ef4efcacc4b7b62cea2a9f9c82a084e3d276bbef248638b07d55b53748f1cb33c92f5953ad211d34fc565b4c19e4ad1d0d673a2fb0ef0b1fa65415889ee0e1316dfb2bbc71c151c22526dd2c63d939ea5f25e15c009538ae2d3a58fe2e0b01012f7544526243fa61b9349d43c49031794db858b5d6d7e0a5770c141b443dca73409669e64885b113a17a791832f03aa9bed8919c98c50f5799bf6bf3759e66b9e566654af0acaa9ebb979e8ee7407fde231a0433abd96290fe9e2b04ec95322907a654dd61b743977c1224fbfbbf10e43850e8a62ea0ef4b19a18a0fc36f48b32886df16e6e207fb7c3fb09de8e78597d95633fc358401bcd52f6c5294a331b27f01ab7c85e6dd5d698ae6938101f924b97576a7d486682c6e0af17dd8ff5015140899632e3276eeac3680581412b3359d9cba9701323e6e14f467127c998a37ad4ed14bffc3f4fe11637062dd4055c6bf787e06a10681c8882798f164f6fbeacecdb804159684c99381cb44cbf8fd03594febefbd425debfa6a9df2b13aad32bedb41fc9de5aca41914fb271e74856ddba4aa74e700325f844811ce63e2e6eefc3fbc9cb4aabf3e456addf907121f7f648689834c6eb4d14edd06e26ee2d50d58520388979f27ac709cc77c7bb52140350f8ecc27a0a57004d104c49fb22eee96800ab5fe3d14846f629c6b38eb460cb17479401505c117c950c39d2fa88244fc3882897e9216ee59264e5b8167b061406c932ffaab9ddb2c094859c78f071bdff2c7a9f6ea5fdea53e57d8abf1348f85c145fe5ee3e619cc7bafdd454c647bb7b24b355adc4eb6eb3891d212b15f985c511b3db83617227570fdfa40386e007062ce33bedc9af112b50a2b39418704c8b838ce102476f7d2c857e291094d337ed86c42f6fb7713530bfb7a24a7a7c1684b8e905db5435a08e4716c342e537d3fcac6e967bfe93824fd21cfad50a383c6c9f836b077ad8d799c0fff7ec42477bc4f78ffd970ef661fa5d291ddc9683199da6d5ec05658d595f6adcff7393bd2f5a0445e6c94aa439f2273b7c29c0030f05728d8117658ac3c4c1600f37403ac6961792644d7c6f012625d4f9bc529a1ba2abf1de74a0bc0fb3fc5bde2261e41d65a51e55647f7b26b0c60e3cb3b3c48c67e4edc7ceb0fb180245d8d26084d5e19278d5c327c9f02d53810370a8faab48012a2bc5c9feb93fd84a16b9f8804a496ac10e6ea4692352ab5d5ed85819992f2f7ed9597e9979e42bdf15fe64ab25694a481f50e7ac9a988cff6a74860a9881ea267cbca0e84a568d6d6044e2c7df497fa5c7eed4ae5c4955e97b9f07ca544ec7e2c41a027fbe7f3895449a121068d00e3059724f1d4c2f534e69226d00abda308ca9500aa647be9a9491e6ac92d72033edbb92b921c0999ed2da3f893f18921ae78047bfafff7bc60d699a62290df0305f902dd40c0c11437fa4c988aee00580a73dd3d5e439561d72c9ff58e8d1c14585082a1850760672655e7f53202dcaf5defe75a03f51dc44275eca83a4a9868eb8912cb41055c8856ad15b0b93e7d24c060ce948a7cc164c85e514f0f0cd0cf2e3dfc272bddebb78f137ab8b01fea6a24e8b1fbefb1f0622e5894b70bf9f50744efc1cbd3da165389c0f555c20e90a6dd8857c7a6366641613a20c7f9ba74cd4b948637cb34f5afb0fd130a8aee81e9e9fd45d6a49c8e452411bf737f34c899e2f2b41a0369099d50195baf41041ee4fb7a2a522fb90a5c3ee64cd99a0c8bd60ff476bc2a30b9bacce0eea51a2a3ac917277b291f5152d6eb043082d0540cab5ee18710aa4e5219aa00beddbe312df0cc224257accde12d91c5369280d4114b2d4d69fca409d6b7cc3219396baf9a8dff39bdf18ddac87a3eedbf06c8a3545a7194e428e8bf96f57d530eda0c333dfb12e0328efbb2a80616889521f6b763d13ffa1bfb3870dd21e3dcdf7227dc629917695edf1fd8e903ba78d511b45c50162b3551a0f1f3bed522ba68fe0b22440cc0d811a9f2bb4cb2ea76b95ed6daa901812cc57cd4adb1d9701bbe97ffd23d0d13c2df5f50f9d279b3c4f130fd4849e15e374cc47806dc08ebd3fccfd198b86b8dfc2ff96b29fab88bfc5b0a44f59675368b8e8bbbf57419fd9e5a3ceec9a1b5bc8cd92be6bd9712a7fe386dc18a310844ab1bbc16bf8652eb8c9aba0aa9d72ec1778a877309f44c88c553a63bf6398ef04c1ea35f1fb42d5cacf4cce2deb6178072818760a886df6a8a783d18eb10a66986724f1676eb2e6d18581dcde978a319bb3b6ea205739385cb555ff4c1b0bd58d5fb1b9c8e78fbe29e1ba7430e4706a3c7989efc351f67a130223fe0e0f14d4ac8626260102bdd85e5a9382847a19d452384adc9064ef59de521cb0d783387af35126817bcf32d4bc6152095ad8eab77bc88cb105a2150f0ebb32592950424b4e63d2490a05ecd7c9cc6272569920de20ec0ca152bf43126e5a150599bce6138a29514de560b5001cc28323f65cb0a49e1df310f275c8040c6dc66d8611c5cebb0f94811f8b91d7e813d30c7cda8438be8752e64d6d146610d7ae58deacc514559ec2eae004c1c625576ec1fb8c2d6ee0a1f9ed4a63e2d9ee6ccae938f2f66ae50c7928ce2f65de0230c7ff9c80bb382e4bd89df604e12f23633049f37b5ccf233386e0b00b1bcd40bff8a000a4c21d7e3d26b385534a8c3910c6cb2ef7b6b4480eeffe1405ac7ad94b0551f52d40d827ee13df7afd5821ca1d3ab7e0263215e9544e43bc23eca3e9f30cf83ecfff37f166489ba148fa7c6349d5f5cd0feb9948f60b950bfae5262fa53e6e144106b3a493be98b82c01ecd76e2f21b0b47418883afbd164094a4ce14fef085b99f3a1bbe2e325e131a97455924d28c2c09aee21ab816068935fdb298f0a8672782abb38a960356f3a5ee25e8728fb85cbc9c39f3edfb01a5056d8c9aa5f7324fd061ccb37464deb21840be8187ed3caea3aae3689c89be306cd5e9345553fe05b14ff749d9df22f328065b4a8bb1deb307209617922c31afb219eb737d3acf30d3978f3becbdd2a66870918105479f738675b493e8eaa4fbd4047d4cd720f1fbc059ff2435dca273f53af79c59e97eb69887240df5efc3e5e1daa9eebf804d494bd1d13a1aaee57ac8cab631c35ae186bdbe24d1f1157c6dd81bc462d73f94c7e3cbc625ef43e25dbda724fce34aaa75e061d53051a640b367519a27f3cbbbafc29cf97989ed1cb6155276848fd7e31cef24ba9dee5ceb7423ba29d7fc9a9b1685fa7003b765b9eeefcca3e992ebb1f59dc86b356a3f8b5fcb174c7b55bfef61a267e42e70562006ac0096e5759ec82df2d4e10ff1f7206dcbbf4560551c3014ae482275939ca4a278f37e8c7898977557ddcbbd342728d4e6117b3a796417b725ab4a97c090a61691ac069e6464fc86368</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">请输入密码以查看此内容</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-swup-reload-script src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>学习路线</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>设计模式</title>
     <url>/2024/03/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>设计模式提供了一套在特定问题场景下解决软件设计问题的标准化解决方案，能够帮助开发者避免重复造轮子，提高代码的可复用性、可维护性和可扩展性，并且能够使开发过程更加高效、有条理。</p>
@@ -326,29 +542,6 @@
       </categories>
       <tags>
         <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>学习路线</title>
-    <url>/2024/03/03/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/</url>
-    <content><![CDATA[
-<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码错误，请重新输入。" data-whm="Oh, these decrypted content cannot be verified, but you can still have a look.">
-  <script id="hbeData" type="hbeData" data-hmacdigest="88247cd0df9052ab461d05c4cab63bb2dc7bbf598349d201fd03300c4f8fef9c">7e302a64c19ca2d3ce010e4131597270786b1bb1aaf244198f42d692eb66feb4bc070be16da0a052557145b88b06a7387e3029ffbbbb6130fe0a097cb8511ca043a3a1ac49a1c8d6e3209fbd33f4b5ec808511bbbcbf9eed5db3d988448945fdaf4926c793654b80518ba075a6b012b2b528ba26ffb32b6aa542d403457d3f99e138490ec2452377bb9d0aa0876d21a39ad74194eaaae82bac2f29811278064ba1ad8d323242753fcec2d647caf57e8c68a1631c6ea4b6795455aa5bddb4a7a5a6984c24e714e3a1d4b6a1f5b40d103dff22152cb5767dc0a07e63d419d50e66a3bacd98da6b63001b6dca188b97684ded665fa39e575da0bb50467826e5ab6c4e9bc7c13e5ffd851a763e80e8888f1eb158ace8a3adae10e4952a59972ded7b629425a5ba52a89aa1eb7f33f9f7a05e2282c8dd2eebdff6cbc5ff68888ad769e483801c95580f6dd44181059e723b45f1fad1441331cea7c03cf97f53e7bbceb448a73794b615a27670c7f537a9c0a360483360caa5392103a0a8887c3638cb9e49ef68db8040d2bfba1151e13c678a03996de7eb7942afe332a110eac08fa47e6c6e0ac1170d4ede7d0cc4e3cfc361c8e7e46aa9772c81e54cc1b1860fd6d08f2eb449ec0070f9f3a8162522a544bab118fb9a3234c10d03c9fdef4589ca16f812d81e033618be3866d1dc6668f8a08cb1cd9cefc5c7f6dcfe027c736e704176c9c3f75175d7c8c0852104d043665cbe3e2aca512baaf852962b738a979e4a0c0aae312650f44bc3239b826102c17e1e9d7f63fe28418a2487b913515c15782cd7a799666617bb8c49f1f6b6f4e4c758a8ba1f52b017517a27f5824b06817b4c24374441f553427fc8caf213d20e780d69ca47bc27a799bff3d895b50b5dc1a9773881963fa87203c2d78abed04f544dd4302843677e7e3fefac05e85f4879404a1fae894d13a6ca799b0b6e2c9f6222c7973239865cf5f59d645d62349f8645c2e852d24366c5149903c8042effb49e3b513f7138905e63070c65e09036604217472a4e1b29e6f6fe3e4b5c6ec873275af907d941e05fea1c9a009519b4b22d60c43f7661efea590b5a85170908fde78956f72a07c619eab9211dc2b2c7deb69fb6924b659d0e9e620f264c67af600828e4f3271a017f36249688ef1c45fcb2e0ad046ea84df8b3453e599365a3ed4a2d3123e88c84d23fb5d252bffb78ce4f7743912face06c5f0509b96c59f7ab815c00c5c7ff19d4edf909f0797610aacd54e12819bd04e9322ab69c9c0a969191ada2d3926f588e7ad54cd323632033cbec7c345891d53cf2c7dd566a888fbff271258b42f01cfaef3b87d6b660a928889bddbcede75e86cc0b28e8a7e5f8cfbfb75743436c86a48116ca0a24126bcd4790114ad22f2254d4f54ae663437574bcbd53a3a7a81dc066e2b37601836679b9eb5bf061368d82d99fd3ec79037eb24bcaf6130d7eedb69eef6fc0d3a3bcf197f4d243a61f272407c7399a446da734325a3d057459ae9b486045bd55d2d5e3c50c2aca45f13257a3d916dec48ce80382f53e5295a691c4842c74b02407228849e96782179788918da40ef252656db9e7c524ba793e5965dbcfb4a8e8e0d5d3a3fc0e155f5ff2b3debbf4f0d261bf6c61e251e28f068d212722aca95a476410f12aa2580dfbb0ef0163532a61925506e645da8dc4cd5ae960ccbd8bd05094ba81016a3ee4181bd7c383e0b5bd573e5eef0ef546b1a0846af0c6b3b583a2cbad7dcf7aabc61a27bd36aa997a1c4508ebcfec0459960cfc35bc55477158a0923d1e79fd04e5414b6e219df9727d7030a2b05c37243264470b9c491b71b840c499d06d4ff19232b800579722d0fb8c281df6b5a54e4b0fe252fecc5c3dd081da3fcdb629c8d4f274d003155890883791c1b6e731ea0bd2f297cde53a49d1aea1233a39103cab73d3454e3a6ae70a310d6be786d4d9dc40d2b7d74bffec2a76d3444fabf4309ea25fe6113f2b771125804c24394966bfc50ab206519ba84bbccefcb715d69a020651fe01f797486c12c54405bb0ca40a50a7b193e5e3617178d982d35370517af59205004ae784934c108fba3568433b7eaaf184fef2a88342af90a2cf1f92d5f78b293e5044b47d4e064ff496a05714e531619477eb38953faed1ea67380fa73df0afec0e415978d1afa6b9a2fb952575a197bb86351946df3965dd858bdbc55ff067b26c252dc7cc13fcd3f3206f82ce231f5970e43aa65dc9c53cefd494b30776d9128fdbdc9eec0f969d53b2905a47a92e4e19ad224b7ab950344043c6d53cdaec9e739a4968d6d86f2c833d283d9fb88ce043fb203fbb7bbea6c9db3683efaf2426a8847df5730c920a637f4f324bf7dfefa70f7096fd9fbc0481ca5fc0b5b89d0b605c428ebe71d1c59c06620670f316d0c9e90fa6e29006446d2b3af79fc84ff604c4192db8548f1c2373bbd401ea9b3153195a0bf7a6e2858ecbacbec605fe763840d8eb1b899750e6064b890a362398871604d7b8bad7065e5cc6dc6c19d9ee8723161c7989723b315608bd4e2b37f9c7c44776d925f120c4cd1408a62dc8e57fce927789a09aa54e46875cd78f5af37720d890113b24e68a12d97da5f4a395a383b242e1570c31160f0a4c948c810dc59979d51971f90a6c5be91e7ef1abe178e25978a2a187872b6d0fb6086ec078a83111cb223f9f2843ecf636ef594c44c48409f8a9cc71d55d1c40266356c1b32f7e3753cfaa4670976b6f5245de0eaac54f9d8b4d36c166673749114159c186212d59f6f486141a314a43fd0153939a861ac8d09fcd911f0e6f006d019861f2e22f8a53ddbd7706982727fb759e7989250580a723d714e81c1772ebb0d74c5795d2a5d881724ae5a574e22402ad02097c64fad3d2f921c08ea52a4e4ba5d0db166b3a54e8e785b09366b8dd1819e312aaeb2b93c8edba305f9abda30016a49b2727df106fa7ead96e9dafc3fcfb2b0952f0020cdb48f3db9b001a8588fa411fda26161e528481aed14dc667175a8d8f262642e8313dd0c15e924fba32c70d594b8325d3529f602666138ad95c77c5f24379f7ddcdb2bac1386c13397ef6bdd3b742234595a2950a56c39c2e409cce12a73fbb76fb9597d071bcd7048592e48a025ca73e38a0ede3a5788fd95ce0edca230392c188d84572e533a6df9c43012e660173d7b567ffe0e383384263824a010b90ba963639d6b2877fd14a1d6d85e3eb8635e5aca1cdadb156547adb622e5ad693f96347201407b27e8a487bf420fbe0fa7df5312e792ac641c9a252df3534060e77cbeec8d0d3a36c196e31140c48668c1cbc6175d37775779f93d3bfa90c9f953fc53a0c0b511a4822a3b993724793e677aa2b591c2f941d1fbb3adf89b41bd9411fd05a2036a3ddd212dfd3b8858c4deb7da95f50353f857841c159a1ad22c4bf38ab942cfa7f9be5d3d62e1d0294081808192d13f59f9d4ed35ac9322f79a554d5bcb1a4a616440f828eee1eb6b46a8ca611cb812bd411349875fe447ecf997c67917c2ec13e6939621eb6512658e4cd7fd27fa57c652c60badbfbd967a50682960184a0ed6ce79154ad446127f6f2661be06c34cdc77fedd342f8ce537c70b50116e690c04ad0cf57316bbc06330c3a0d808f2aea51a07cf74ae917d12276c44ccd9f9d66226e4cb75507c055deb58a10678336426035570469ac0df06c9e89b04451fc82776f2f3fe88ccf09869c850cb707303e6de6ad3af76fc51083d10d19c3ef39465519fd52516b2dc8e8a978acdbee3ac4516086ffc8de4be936c1428ef0934224054d365cba6b9f1d1f72af500c14932a3835ed90889b2721f8cc56f6ede85104f289bd51e693560119b98f4c704e76894fc2ab41554be217aa3eeeb691d274a066cdaaa8513a492f31bbd1a1aff277c2aefef0c6cdfde0eef90ff9e62803dde4ce1d69a19fcb4db96ed9f2f24a428380ba6fbefd18e2cd498f115c01f6cdc8b6c02d2baee224f125865353710d652307a0e6f53e12f684b832379bfdcc882c8b531ec865a4074866d5f3dd2d47beff3c611b48fb4370fb3655c532dcbab847f254d8431bee78a5e5659f8c201d44a97f2bce59847ec16818d540c0fb1b1a60788d448a04c8accbdb62cd06c61746d6cf8ac8abba73a44828503cddf411e5e8e1076a19925db73d71c14fea1ad6988310372dcba27506c75ccf00a80ae55dd6860a56da75bdbb9ed255062bd0a5a873dacbee19ce8ce678f0048aa1671bf1e8b7ceb2acf1929fc28de94e97066b1e2a6921b0092eca5418f13e3c49457fee5d50bdc27f9c4cbdfced4349d98ac9da99d1d00fa2d4c6dfa26e5548c2e5a7ddef8c6591fd0369b3188b905302e8ec3cf1b86d2b40d055dd272fe55181fa0a7f7bf0060524e2a985e739114be8fa6047e78db07d48cc6495fa32907e0a1087d17a5674324c14e7daafaed9efe8c2ad2581ad80d6ed20132d80243e66853554d2f25ef590b972c69c78b573a9d3410bb3453b0dcce4eb3f0d1319371bee24283b97e9768bee086b8cabf669a59e74da8650837ae4ead92d18f838c77ebfa10808694669b6029509b251e7dd88dca9ec4ab1a02113fdf450f5d2cdab18fd21c0685c8bc09c9e33205ea66c796940ce9f61f68bbb10a42b76ddfb5b06fb19e7b5c319a23f5d5af440599e2f5141eb7ae62e24c71d36e91adf2a14b75757761232fab6cd532dbe84116966a5ecd11f3e290023b7e02de687b6aabe6124fc04092b4eae5d670d0dba90680ae0cc99c440b090ca8d5480839e1c991178722d6aa9c7efc44c6c91baf3349a837fe254110c40e055fc3a37e1259248cc8748696920ee5669969c917d2b638ebf28dc737445b6240e4d370782ba3a545b09f476448ba9de1b94d3d498a1f38b5e6e0710e6fb40bb371b3ab9afbf3f7c2330eec651b2fecf159c2db58b0d1dc95c3b1cebb98450b56ef4efcacc4b7b62cea2a9f9c82a084e3d276bbef248638b07d55b53748f1cb33c92f5953ad211d34fc565b4c19e4ad1d0d673a2fb0ef0b1fa65415889ee0e1316dfb2bbc71c151c22526dd2c63d939ea5f25e15c009538ae2d3a58fe2e0b01012f7544526243fa61b9349d43c49031794db858b5d6d7e0a5770c141b443dca73409669e64885b113a17a791832f03aa9bed8919c98c50f5799bf6bf3759e66b9e566654af0acaa9ebb979e8ee7407fde231a0433abd96290fe9e2b04ec95322907a654dd61b743977c1224fbfbbf10e43850e8a62ea0ef4b19a18a0fc36f48b32886df16e6e207fb7c3fb09de8e78597d95633fc358401bcd52f6c5294a331b27f01ab7c85e6dd5d698ae6938101f924b97576a7d486682c6e0af17dd8ff5015140899632e3276eeac3680581412b3359d9cba9701323e6e14f467127c998a37ad4ed14bffc3f4fe11637062dd4055c6bf787e06a10681c8882798f164f6fbeacecdb804159684c99381cb44cbf8fd03594febefbd425debfa6a9df2b13aad32bedb41fc9de5aca41914fb271e74856ddba4aa74e700325f844811ce63e2e6eefc3fbc9cb4aabf3e456addf907121f7f648689834c6eb4d14edd06e26ee2d50d58520388979f27ac709cc77c7bb52140350f8ecc27a0a57004d104c49fb22eee96800ab5fe3d14846f629c6b38eb460cb17479401505c117c950c39d2fa88244fc3882897e9216ee59264e5b8167b061406c932ffaab9ddb2c094859c78f071bdff2c7a9f6ea5fdea53e57d8abf1348f85c145fe5ee3e619cc7bafdd454c647bb7b24b355adc4eb6eb3891d212b15f985c511b3db83617227570fdfa40386e007062ce33bedc9af112b50a2b39418704c8b838ce102476f7d2c857e291094d337ed86c42f6fb7713530bfb7a24a7a7c1684b8e905db5435a08e4716c342e537d3fcac6e967bfe93824fd21cfad50a383c6c9f836b077ad8d799c0fff7ec42477bc4f78ffd970ef661fa5d291ddc9683199da6d5ec05658d595f6adcff7393bd2f5a0445e6c94aa439f2273b7c29c0030f05728d8117658ac3c4c1600f37403ac6961792644d7c6f012625d4f9bc529a1ba2abf1de74a0bc0fb3fc5bde2261e41d65a51e55647f7b26b0c60e3cb3b3c48c67e4edc7ceb0fb180245d8d26084d5e19278d5c327c9f02d53810370a8faab48012a2bc5c9feb93fd84a16b9f8804a496ac10e6ea4692352ab5d5ed85819992f2f7ed9597e9979e42bdf15fe64ab25694a481f50e7ac9a988cff6a74860a9881ea267cbca0e84a568d6d6044e2c7df497fa5c7eed4ae5c4955e97b9f07ca544ec7e2c41a027fbe7f3895449a121068d00e3059724f1d4c2f534e69226d00abda308ca9500aa647be9a9491e6ac92d72033edbb92b921c0999ed2da3f893f18921ae78047bfafff7bc60d699a62290df0305f902dd40c0c11437fa4c988aee00580a73dd3d5e439561d72c9ff58e8d1c14585082a1850760672655e7f53202dcaf5defe75a03f51dc44275eca83a4a9868eb8912cb41055c8856ad15b0b93e7d24c060ce948a7cc164c85e514f0f0cd0cf2e3dfc272bddebb78f137ab8b01fea6a24e8b1fbefb1f0622e5894b70bf9f50744efc1cbd3da165389c0f555c20e90a6dd8857c7a6366641613a20c7f9ba74cd4b948637cb34f5afb0fd130a8aee81e9e9fd45d6a49c8e452411bf737f34c899e2f2b41a0369099d50195baf41041ee4fb7a2a522fb90a5c3ee64cd99a0c8bd60ff476bc2a30b9bacce0eea51a2a3ac917277b291f5152d6eb043082d0540cab5ee18710aa4e5219aa00beddbe312df0cc224257accde12d91c5369280d4114b2d4d69fca409d6b7cc3219396baf9a8dff39bdf18ddac87a3eedbf06c8a3545a7194e428e8bf96f57d530eda0c333dfb12e0328efbb2a80616889521f6b763d13ffa1bfb3870dd21e3dcdf7227dc629917695edf1fd8e903ba78d511b45c50162b3551a0f1f3bed522ba68fe0b22440cc0d811a9f2bb4cb2ea76b95ed6daa901812cc57cd4adb1d9701bbe97ffd23d0d13c2df5f50f9d279b3c4f130fd4849e15e374cc47806dc08ebd3fccfd198b86b8dfc2ff96b29fab88bfc5b0a44f59675368b8e8bbbf57419fd9e5a3ceec9a1b5bc8cd92be6bd9712a7fe386dc18a310844ab1bbc16bf8652eb8c9aba0aa9d72ec1778a877309f44c88c553a63bf6398ef04c1ea35f1fb42d5cacf4cce2deb6178072818760a886df6a8a783d18eb10a66986724f1676eb2e6d18581dcde978a319bb3b6ea205739385cb555ff4c1b0bd58d5fb1b9c8e78fbe29e1ba7430e4706a3c7989efc351f67a130223fe0e0f14d4ac8626260102bdd85e5a9382847a19d452384adc9064ef59de521cb0d783387af35126817bcf32d4bc6152095ad8eab77bc88cb105a2150f0ebb32592950424b4e63d2490a05ecd7c9cc6272569920de20ec0ca152bf43126e5a150599bce6138a29514de560b5001cc28323f65cb0a49e1df310f275c8040c6dc66d8611c5cebb0f94811f8b91d7e813d30c7cda8438be8752e64d6d146610d7ae58deacc514559ec2eae004c1c625576ec1fb8c2d6ee0a1f9ed4a63e2d9ee6ccae938f2f66ae50c7928ce2f65de0230c7ff9c80bb382e4bd89df604e12f23633049f37b5ccf233386e0b00b1bcd40bff8a000a4c21d7e3d26b385534a8c3910c6cb2ef7b6b4480eeffe1405ac7ad94b0551f52d40d827ee13df7afd5821ca1d3ab7e0263215e9544e43bc23eca3e9f30cf83ecfff37f166489ba148fa7c6349d5f5cd0feb9948f60b950bfae5262fa53e6e144106b3a493be98b82c01ecd76e2f21b0b47418883afbd164094a4ce14fef085b99f3a1bbe2e325e131a97455924d28c2c09aee21ab816068935fdb298f0a8672782abb38a960356f3a5ee25e8728fb85cbc9c39f3edfb01a5056d8c9aa5f7324fd061ccb37464deb21840be8187ed3caea3aae3689c89be306cd5e9345553fe05b14ff749d9df22f328065b4a8bb1deb307209617922c31afb219eb737d3acf30d3978f3becbdd2a66870918105479f738675b493e8eaa4fbd4047d4cd720f1fbc059ff2435dca273f53af79c59e97eb69887240df5efc3e5e1daa9eebf804d494bd1d13a1aaee57ac8cab631c35ae186bdbe24d1f1157c6dd81bc462d73f94c7e3cbc625ef43e25dbda724fce34aaa75e061d53051a640b367519a27f3cbbbafc29cf97989ed1cb6155276848fd7e31cef24ba9dee5ceb7423ba29d7fc9a9b1685fa7003b765b9eeefcca3e992ebb1f59dc86b356a3f8b5fcb174c7b55bfef61a267e42e70562006ac0096e5759ec82df2d4e10ff1f7206dcbbf4560551c3014ae482275939ca4a278f37e8c7898977557ddcbbd342728d4e6117b3a796417b725ab4a97c090a61691ac069e6464fc86368</script>
-  <div class="hbe hbe-content">
-    <div class="hbe hbe-input hbe-input-default">
-      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
-      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
-        <span class="hbe hbe-input-label-content hbe-input-label-content-default">请输入密码以查看此内容</span>
-      </label>
-    </div>
-  </div>
-</div>
-<script data-swup-reload-script src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>学习路线</tag>
       </tags>
   </entry>
 </search>
