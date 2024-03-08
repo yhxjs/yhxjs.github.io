@@ -1,90 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hexo配置</title>
-    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
-<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
-
-<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
-
-  <div class="note p-4 mb-4 rounded-small success">
-    <figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
-                      class="" alt="hexo -v"
-                ><figcaption>hexo -v</figcaption></figure>
-  </div>
-
-<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./creat_repository.png"
-                      width="600px" height="auto" alt="创建个人页仓库"
-                ><figcaption>创建个人页仓库</figcaption></figure>
-
-<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
-
-<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
-
-<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
-<p>Hexo 程序目录：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./directory_structure.png"
-                      width="400px" height="auto" alt="目录结构"
-                ><figcaption>目录结构</figcaption></figure>
-
-<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
-
-<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
-<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
-
-<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
-<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，挑选一个心仪的主题并进行下载。</p>
-<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，用该主题介绍如何进行安装。</p>
-<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
-
-<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
-<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
-
-<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
-<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
-<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 挑选，甚至可以自己开发一个。</p>
-<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
-<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>使用时可以直接像下面这样：</p>
-<div class="highlight-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./bilibili_url.png"
-                      width="700px" height="auto" alt="修改哔哩哔哩url"
-                ><figcaption>修改哔哩哔哩url</figcaption></figure>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>配置</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ARP协议</title>
     <url>/2024/03/05/ARP%E5%8D%8F%E8%AE%AE/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ARP即地址解析协议，将IP地址解析为MAC地址。数据要在以太网中传输，需要完成以太网封装，这项工作由网络层负责。要完成以太网的数据封装，需要知道目的设备的MAC地址。</p>
@@ -249,6 +165,90 @@
       <tags>
         <tag>ARP</tag>
         <tag>通信</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo配置</title>
+    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
+<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
+
+  <div class="note p-4 mb-4 rounded-small success">
+    <figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
+                      class="" alt="hexo -v"
+                ><figcaption>hexo -v</figcaption></figure>
+  </div>
+
+<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./creat_repository.png"
+                      width="600px" height="auto" alt="创建个人页仓库"
+                ><figcaption>创建个人页仓库</figcaption></figure>
+
+<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
+
+<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
+
+<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
+<p>Hexo 程序目录：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./directory_structure.png"
+                      width="400px" height="auto" alt="目录结构"
+                ><figcaption>目录结构</figcaption></figure>
+
+<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
+
+<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
+<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，挑选一个心仪的主题并进行下载。</p>
+<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，用该主题介绍如何进行安装。</p>
+<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
+<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
+<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 挑选，甚至可以自己开发一个。</p>
+<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
+<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>使用时可以直接像下面这样：</p>
+<div class="highlight-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./bilibili_url.png"
+                      width="700px" height="auto" alt="修改哔哩哔哩url"
+                ><figcaption>修改哔哩哔哩url</figcaption></figure>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>配置</tag>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>

@@ -9,7 +9,7 @@
     <atom:link href="https://yhxjs.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>yhxjs的博客</description>
-    <pubDate>Wed, 06 Mar 2024 09:25:54 GMT</pubDate>
+    <pubDate>Wed, 06 Mar 2024 09:40:42 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -18,11 +18,7 @@
       <guid>https://yhxjs.github.io/2024/03/06/ND%E5%8D%8F%E8%AE%AE/</guid>
       <pubDate>Wed, 06 Mar 2024 04:35:35 GMT</pubDate>
       
-        
-        
-      <description>&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;邻居发现协议，相当于IPv4中ARP、ICMP路由器发现和ICMP重定向这三种协议的组合。&lt;/p&gt;
-&lt;p&gt;什么是邻居？即一个链路上的相邻主机</description>
-        
+      <description>邻居发现协议，相当于IPv4中ARP、ICMP路由器发现和ICMP重定向这三种协议的组合。</description>
       
       
       
@@ -47,10 +43,7 @@
       <guid>https://yhxjs.github.io/2024/03/05/ARP%E5%8D%8F%E8%AE%AE/</guid>
       <pubDate>Tue, 05 Mar 2024 13:11:28 GMT</pubDate>
       
-        
-        
-      <description>&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;ARP即地址解析协议，将IP地址解析为MAC地址。数据要在以太网中传输，需要完成以太网封装，这项工作由网络层负责。要完成以太网的数据封装，需</description>
-        
+      <description>ARP即地址解析协议，将IP地址解析为MAC地址。</description>
       
       
       
@@ -98,10 +91,7 @@
       <guid>https://yhxjs.github.io/2024/03/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid>
       <pubDate>Fri, 01 Mar 2024 15:05:40 GMT</pubDate>
       
-        
-        
-      <description>&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;设计模式提供了一套在特定问题场景下解决软件设计问题的标准化解决方案，能够帮助开发者避免重复造轮子，提高代码的可复用性、可维护性和可扩展性，并</description>
-        
+      <description>设计模式是一种在特定情境下解决特定问题的方法论。</description>
       
       
       
@@ -124,10 +114,7 @@
       <guid>https://yhxjs.github.io/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</guid>
       <pubDate>Thu, 29 Feb 2024 12:08:40 GMT</pubDate>
       
-        
-        
-      <description>&lt;h2 id=&quot;环境准备&quot;&gt;&lt;a href=&quot;#环境准备&quot; class=&quot;headerlink&quot; title=&quot;环境准备&quot;&gt;&lt;/a&gt;环境准备&lt;/h2&gt;&lt;p&gt;Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 &lt;a class=</description>
-        
+      <description>Hexo简要配置指南</description>
       
       
       
@@ -137,9 +124,9 @@
       <category domain="https://yhxjs.github.io/categories/%E6%9D%82%E9%A1%B9/">杂项</category>
       
       
-      <category domain="https://yhxjs.github.io/tags/Hexo/">Hexo</category>
-      
       <category domain="https://yhxjs.github.io/tags/%E9%85%8D%E7%BD%AE/">配置</category>
+      
+      <category domain="https://yhxjs.github.io/tags/Hexo/">Hexo</category>
       
       
       <comments>https://yhxjs.github.io/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/#disqus_thread</comments>
