@@ -9,8 +9,36 @@
     <atom:link href="https://yhxjs.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>yhxjs的博客</description>
-    <pubDate>Sun, 14 Apr 2024 14:01:27 GMT</pubDate>
+    <pubDate>Mon, 03 Jun 2024 15:04:56 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>基于Docker和K8s的部署方案</title>
+      <link>https://yhxjs.github.io/2024/06/03/%E5%9F%BA%E4%BA%8EDocker%E5%92%8CK8s%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88/</link>
+      <guid>https://yhxjs.github.io/2024/06/03/%E5%9F%BA%E4%BA%8EDocker%E5%92%8CK8s%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88/</guid>
+      <pubDate>Mon, 03 Jun 2024 14:59:16 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h3 id=&quot;虚拟机与容器&quot;&gt;&lt;a href=&quot;#虚拟机与容器&quot; class=&quot;headerlink&quot; title=&quot;虚拟机与容器&quot;&gt;&lt;/a&gt;虚拟机与容器&lt;/h3&gt;&lt;h4 id=&quot;传统虚拟机&quot;&gt;&lt;a href=&quot;#传统虚拟机&quot; class=&quot;headerlink&quot; title=</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h3 id="虚拟机与容器"><a href="#虚拟机与容器" class="headerlink" title="虚拟机与容器"></a>虚拟机与容器</h3><h4 id="传统虚拟机"><a href="#传统虚拟机" class="headerlink" title="传统虚拟机"></a>传统虚拟机</h4><p>传统虚拟机泛指包含完整系统镜像，即带环境安装的一种解决方案，它可以在一种操作系统里面运行另一种操作系统，比如在Windows系统里运行Ubuntu，就是一个普通文件，不需要了就删掉，对其他部分毫无影响。但带来的缺点显而易见，占用资源多，冗余步骤多，启动慢，为了解决上述缺点，容器应运而生。</p><h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><p>容器是与系统其他部分隔离开的一系列进程，从另一个镜像运行，并由该镜像提供支持进程所需的全部文件。容器提供的镜像包含了应用的所有依赖项，因而在从开发到测试再到生产的整个过程中，它都具有可移植性和一致性。</p><p>容器不是模拟一个完整的操作系统，而是对进程进行隔离。有了容器，就可以将软件运行所需的所有资源打包到一个隔离的容器中。容器与虚拟机不同，不需要捆绑一整套操作系统，只需要软件工作所需的库资源和设置。系统因此而变得高效轻量并保证部署在任何环境中的软件都能始终如一地运行。</p><h4 id="虚拟机与容器对比"><a href="#虚拟机与容器对比" class="headerlink" title="虚拟机与容器对比"></a>虚拟机与容器对比</h4><p>传统虚拟机技术是虚拟出一套硬件后，在其上运行一个完整操作系统，在该系统上再运行所需应用进程，而容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核且也没有进行硬件虚拟。因此容器要比传统虚拟机更为轻便，镜像体积更小。每个容器之间互相隔离，每个容器有自己的文件系统，容器之间进程不会相互影响，能区分计算资源。</p><h3 id="什么是Docker"><a href="#什么是Docker" class="headerlink" title="什么是Docker"></a>什么是Docker</h3><p>Docker借鉴了集装箱的概念。集装箱将货物运往世界各地，Docker将这个模型运用到自己的设计中，唯一不同的是：集装箱运输货物，而Docker运输软件。</p><h4 id="基本组成"><a href="#基本组成" class="headerlink" title="基本组成"></a>基本组成</h4><ol><li><p>镜像</p><p>镜像（Image）就是一个<strong>只读</strong>的模板。镜像可以用来创建Docker容器，一个镜像可以创建很多容器。相当于容器的“源代码“，Docker镜像文件类似于Java的类模板，而Docker容器实例类似于Java中new出来的实例对象。</p></li><li><p>容器</p><p>容器（Container）是独立运行的一个或一组应用，应用程序或服务运行在容器里面，容器就类似于一个虚拟化的运行环境，容器是用镜像创建的运行实例。就像是Java中的类和实例对象一样，镜像是静态的定义，容器是镜像运行时的实体。容器为镜像提供了一个标准的和隔离的运行环境，它可以被启动、开始、停止、删除。每个容器都是相互隔离的、保证安全的平台。</p><p>可以将容器看作是一个简易的Linux环境，包含内核、进程、用户、网络等一系列支持系统运行的部分。</p></li><li><p>仓库</p><p>仓库（Repository）是集中存放镜像文件的场所，可以把镜像发布到仓库中，需要的时候再从仓库中拉下来使用即可。</p><p>类似于Maven仓库，存放各种jar包的地方；github仓库，存放各种git项目的地方。</p><p>Docker公司提供的官方registry被称为Docker Hub，存放各种镜像模板的地方。</p><p>而喜闻乐见的需要国内镜像站才能稳定下载，如阿里云、清华源、中科大源等。</p></li></ol><h4 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h4><p>Docker是一个Client-Server结构的系统，是一个松耦合架构，众多模块各司其职，Docker守护进程运行在主机上，然后通过Socket连接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。</p><p>交互基本流程：</p><ol><li>用户使用Docker Client与Docker Daemon建立通信，并发送请求给后者。</li><li>Docker Daemon作为Docker架构中的主体部分，首先提供Docker Server的功能使其可以接受Docker Client的请求。</li><li>Docker Engine执行Docker内部的一系列工作，每一项工作都是以一个Job的形式的存在。</li><li>Job的运行过程中，当需要容器镜像时，则从Docker Register中下载镜像，并通过镜像管理驱动Graph driver将下载镜像以Graph的形式存储。</li><li>当需要为Docker创建网络环境时，通过网络驱动Network driver创建并配置Docker容器网络环境。</li><li>当需要限制Docker容器运行资源或执行用户指令等操作时，则通过Exec driver来完成。</li><li>Libcontainer是一项独立的容器管理包，Network driver以及Exec driver都是通过Libcontainer来实现具体容器进行的操作。</li></ol><h4 id="为什么快？"><a href="#为什么快？" class="headerlink" title="为什么快？"></a>为什么快？</h4><p>由于Docker不需要虚拟机实现硬件资源虚拟化，运行在Docker容器上的程序直接使用的都是实际物理机的硬件资源，因此在CPU、内存利用率上Docker将会在效率上有明显优势。且Docker利用的是宿主机的内核，而不需要加载操作系统OS内核，当新建一个容器时，Docker不需要和虚拟机一样重新加载一个操作系统内核。进而避免引导、加载操作系统内核返回等比较费时费资源的过程，当新建一个虚拟机时，虚拟机软件需要加载OS，返回新建过程是分钟级别的。而Docker由于直接利用宿主机的操作系统，则省略了返回过程，因此新建一个Docker容器只需要几秒钟。</p><h3 id="Docker镜像"><a href="#Docker镜像" class="headerlink" title="Docker镜像"></a>Docker镜像</h3><p>Docker的镜像实际上是由一层一层的文件系统组成，这种层级的文件系统叫UnionFS（联合文件系统），是一种分层、轻量级并且高性能的文件系统，它支持对文件系统的修改作为一次提交来一层层的叠加，同时可以将不同目录挂载到同一个虚拟文件系统下，是Docker镜像的基础。镜像可以通过分层来进行继承，基于基础镜像，可以制作各种具体的应用镜像。</p><p>bootfs(boot file system)主要包含bootloader和kernel，bootloader主要是引导加载kernel，Linux刚启动时会加载bootfs文件系统，在Docker镜像的最底层是引导文件系统bootfs。这一层与我们典型的Linux&#x2F;Unix系统是一样的，包含bootloader和kernel。当boot加载完成之后整个内核就都在内存中了，此时内存的使用权已由bootfs转交给内核，此时系统也会卸载bootfs。</p><p>rootfs(root file system)，在bootfs之上。包含的就是典型Linux系统中的&#x2F;dev，&#x2F;proc，&#x2F;bin，&#x2F;etc等标准目录和文件。rootfs就是各种不同的操作系统发行版，比如Ubuntu，Centos等等。</p><p>对于一个精简的OS，rootfs可以很小，只需要包括最基本的命令、工具和程序库就可以了，因为底层直接用宿主机的kernel，自己只需要提供rootfs就行了。由此可见对于不同的linux发行版，bootfs基本是一致的，rootfs会有差别，因此不同的发行版可以公用bootfs。</p><p>Docker镜像层都是只读的，容器层是可写的，当容器启动时，一个新的可写层被加载到镜像的顶部。这一层通常被称作”容器层”，”容器层”之下的都叫”镜像层”。所有对容器的改动，无论添加、删除、还是修改文件都只会发生在容器层中。</p><p>Docker中的镜像分层，支持通过扩展现有镜像，创建新的镜像。类似Java继承于一个基础类，自己再按需扩展。新镜像是从基础镜像一层一层叠加生成的，每安装一个软件，就在现有镜像的基础上增加一层。</p><h3 id="DockerFile"><a href="#DockerFile" class="headerlink" title="DockerFile"></a>DockerFile</h3><p>DockerFile是用来构建Docker镜像的文本文件，是由一条条构建镜像所需的指令和参数构成的脚本。</p><h4 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h4><p>构建三步骤：</p><ol><li>编写DockerFile文件</li><li>docker build命令构建镜像</li><li>docker run运行容器实例</li></ol><p>构建大致流程：</p><ol><li>docker从基础镜像运行一个容器</li><li>执行一条指令并对容器做出修改</li><li>执行类似docker commit的操作提交一个新的镜像层</li><li>docker在基于刚提交的镜像运行一个新容器</li><li>执行dockerfile中的下一条指令直到所有指令执行完成</li></ol><p>从应用软件的角度来看，Dockerfile、Docker镜像与Docker容器分别代表软件的三个不同阶段：</p><p>Dockerfile是软件的原材料</p><p>Docker镜像是软件的交付品</p><p>Docker容器则可以认为是软件镜像的运行态，即依照镜像运行的容器实例</p><p>Dockerfile面向开发，Docker镜像成为交付标准，Docker容器则涉及部署与运维，三者缺一不可，合力充当Docker体系的基石。</p><h4 id="常用保留字指令"><a href="#常用保留字指令" class="headerlink" title="常用保留字指令"></a>常用保留字指令</h4><ol><li><p>FROM</p><p>基础镜像，当前新镜像是基于哪个镜像的，指定一个已经存在的镜像作为模板，第一条必须是FROM。</p></li><li><p>MANINTAINER</p></li></ol><p>  镜像维护者的姓名和邮箱地址。</p><ol start="3"><li>Run</li></ol><p>  容器构建时需要运行的命令。</p><p>  两种格式：</p><p>  shell格式</p><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN yum -y install vim</span><br></pre></td></tr></table></figure></div><p>  exec格式</p><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN [&quot;可执行文件&quot;, &quot;参数1&quot;, &quot;参数2&quot;]</span><br></pre></td></tr></table></figure></div><ol start="4"><li>EXPOSE</li><li>WORKDIR</li><li>USER</li><li>ENV</li><li>ADD</li><li>COPY</li><li>VOLUME</li><li>CMD</li><li>ENTRYPOINT</li></ol>]]></content:encoded>
+      
+      
+      <category domain="https://yhxjs.github.io/categories/%E5%90%8E%E7%AB%AF/">后端</category>
+      
+      
+      <category domain="https://yhxjs.github.io/tags/Docker/">Docker</category>
+      
+      <category domain="https://yhxjs.github.io/tags/K8s/">K8s</category>
+      
+      
+      <comments>https://yhxjs.github.io/2024/06/03/%E5%9F%BA%E4%BA%8EDocker%E5%92%8CK8s%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>再识MyBatis-Plus</title>

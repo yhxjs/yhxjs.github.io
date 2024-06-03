@@ -1,6 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Hexo配置</title>
+    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
+<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
+
+  <div class="note p-4 mb-4 rounded-small success">
+    <figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
+                      class="" alt="hexo -v"
+                ><figcaption>hexo -v</figcaption></figure>
+  </div>
+
+<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./creat_repository.png"
+                      width="600px" height="auto" alt="创建个人页仓库"
+                ><figcaption>创建个人页仓库</figcaption></figure>
+
+<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
+
+<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
+
+<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
+<p>Hexo 程序目录：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./directory_structure.png"
+                      width="400px" height="auto" alt="目录结构"
+                ><figcaption>目录结构</figcaption></figure>
+
+<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
+
+<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
+<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，挑选一个心仪的主题并进行下载。</p>
+<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，用该主题介绍如何进行安装。</p>
+<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
+<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
+<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 挑选，甚至可以自己开发一个。</p>
+<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
+<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>使用时可以直接像下面这样：</p>
+<div class="highlight-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./bilibili_url.png"
+                      width="700px" height="auto" alt="修改哔哩哔哩url"
+                ><figcaption>修改哔哩哔哩url</figcaption></figure>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>配置</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ARP协议</title>
     <url>/2024/03/05/ARP%E5%8D%8F%E8%AE%AE/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ARP即地址解析协议，将IP地址解析为MAC地址。数据要在以太网中传输，需要完成以太网封装，这项工作由网络层负责。要完成以太网的数据封装，需要知道目的设备的MAC地址。</p>
@@ -166,109 +250,6 @@
         <tag>ARP</tag>
         <tag>通信</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hexo配置</title>
-    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
-<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
-
-<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
-
-  <div class="note p-4 mb-4 rounded-small success">
-    <figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
-                      class="" alt="hexo -v"
-                ><figcaption>hexo -v</figcaption></figure>
-  </div>
-
-<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./creat_repository.png"
-                      width="600px" height="auto" alt="创建个人页仓库"
-                ><figcaption>创建个人页仓库</figcaption></figure>
-
-<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
-
-<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
-
-<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
-<p>Hexo 程序目录：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./directory_structure.png"
-                      width="400px" height="auto" alt="目录结构"
-                ><figcaption>目录结构</figcaption></figure>
-
-<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
-
-<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
-<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
-
-<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
-<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，挑选一个心仪的主题并进行下载。</p>
-<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，用该主题介绍如何进行安装。</p>
-<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
-
-<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
-<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
-
-<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
-<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
-<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 挑选，甚至可以自己开发一个。</p>
-<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
-<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>使用时可以直接像下面这样：</p>
-<div class="highlight-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./bilibili_url.png"
-                      width="700px" height="auto" alt="修改哔哩哔哩url"
-                ><figcaption>修改哔哩哔哩url</figcaption></figure>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>配置</tag>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>也许那么...</title>
-    <url>/2016/09/25/%E4%B9%9F%E8%AE%B8%E9%82%A3%E4%B9%88/</url>
-    <content><![CDATA[<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./time.jpg"
-                      width="400px" height="auto" alt="时光里"
-                ><figcaption>时光里</figcaption></figure>
-
-<p>那么<br>曾经喜欢过，<br>也许<br>现在还喜欢，<br>但是<br>早已过去。</p>
-<p>曾经铭记于心，<br>现在隐藏内心。<br>包裹着<br>一层又一层的皮囊；<br>感受着<br>一次又一次的煎熬；<br>回想着<br>过去的点点滴滴；<br>不禁<br>心有感悟。</p>
-<p>过去的人和事，<br>如若还在身边，<br>那么这形同陌路，<br>却不如不见。<br>可不见，<br>却又倍加思念，<br>不知该何去何从，<br>便只能做好如今的事。</p>
-<p>那么不如待我如初见——至逝去的三年（初中）</p>
-<p style="text-align:right;">写于2016-09-25</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
   </entry>
   <entry>
     <title>ND协议</title>
@@ -464,16 +445,20 @@
       </tags>
   </entry>
   <entry>
-    <title>伤</title>
-    <url>/2022/06/29/%E4%BC%A4/</url>
-    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
-<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
-<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
-<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
-<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
-<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
-<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
-]]></content>
+    <title>也许那么...</title>
+    <url>/2016/09/25/%E4%B9%9F%E8%AE%B8%E9%82%A3%E4%B9%88/</url>
+    <content><![CDATA[<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./time.jpg"
+                      width="400px" height="auto" alt="时光里"
+                ><figcaption>时光里</figcaption></figure>
+
+<p>那么<br>曾经喜欢过，<br>也许<br>现在还喜欢，<br>但是<br>早已过去。</p>
+<p>曾经铭记于心，<br>现在隐藏内心。<br>包裹着<br>一层又一层的皮囊；<br>感受着<br>一次又一次的煎熬；<br>回想着<br>过去的点点滴滴；<br>不禁<br>心有感悟。</p>
+<p>过去的人和事，<br>如若还在身边，<br>那么这形同陌路，<br>却不如不见。<br>可不见，<br>却又倍加思念，<br>不知该何去何从，<br>便只能做好如今的事。</p>
+<p>那么不如待我如初见——至逝去的三年（初中）</p>
+<p style="text-align:right;">写于2016-09-25</p>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -483,6 +468,21 @@
     <url>/2019/06/28/%E5%91%8A%E5%88%AB%E9%AB%98%E4%B8%AD/</url>
     <content><![CDATA[<p>回想高中三年，有许多说不清道不明的意味，就好像天边的云彩，随着风飘动变得灵动万分，随着太阳的映射变得多姿多彩，但云终究是由液滴组成的，在不断的变化过程中，化为泡影，虽大气是不断循环的，但我就好比是其中的一个不起眼的水滴，终究会脱离这个大群体，融入另一个集体之中，这是必然性的结果。</p>
 <p>来不及说声告别，就恍如昨天，梦幻一般，煽情的话语已是不及我内心情感的激荡，一切尽在不言中，虽说这三年，我说实话并未真正了解任何一个人，但尽管如此，我们还是共度了高中，经历了高考的洗礼，有的人收获了喜悦，有的人却不尽人意，不论如何，我们必定拥有了属于自己的那一份悸动，愿今后我们能朝着前方，秉持信仰，一路披荆斩棘，这就是我的所感所想，一个在路上的准大一学生。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>伤</title>
+    <url>/2022/06/29/%E4%BC%A4/</url>
+    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
+<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
+<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
+<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
+<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
+<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
+<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
 ]]></content>
       <categories>
         <category>随笔</category>
@@ -599,26 +599,103 @@
       </categories>
   </entry>
   <entry>
-    <title>学习路线</title>
-    <url>/2024/03/03/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/</url>
-    <content><![CDATA[
-<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码错误，请重新输入。" data-whm="Oh, these decrypted content cannot be verified, but you can still have a look.">
-  <script id="hbeData" type="hbeData" data-hmacdigest="fcd872a8a18954221eb5bec248309c4032caa06adb0df6b6a1cd208009af638a">7e302a64c19ca2d3ce010e4131597270786b1bb1aaf244198f42d692eb66feb4bc070be16da0a052557145b88b06a7387e3029ffbbbb6130fe0a097cb8511ca043a3a1ac49a1c8d6e3209fbd33f4b5ec808511bbbcbf9eed5db3d988448945fdaf4926c793654b80518ba075a6b012b2b528ba26ffb32b6aa542d403457d3f99e138490ec2452377bb9d0aa0876d21a39ad74194eaaae82bac2f29811278064ba1ad8d323242753fcec2d647caf57e8c68a1631c6ea4b6795455aa5bddb4a7a5a6984c24e714e3a1d4b6a1f5b40d103dff22152cb5767dc0a07e63d419d50e66a3bacd98da6b63001b6dca188b97684ded665fa39e575da0bb50467826e5ab6c4e9bc7c13e5ffd851a763e80e8888f1eb158ace8a3adae10e4952a59972ded7b629425a5ba52a89aa1eb7f33f9f7a05e2282c8dd2eebdff6cbc5ff68888ad769e483801c95580f6dd44181059e723b45f1fad1441331cea7c03cf97f53e7bbceb448a73794b615a27670c7f537a9c0a360483360caa5392103a0a8887c3638cb9e49ef68db8040d2bfba1151e13c678a03996de7eb7942afe332a110eac08fa47e6c6e0ac1170d4ede7d0cc4e3cfc361c8e7e46aa9772c81e54cc1b1860fd6d08f2eb449ec0070f9f3a8162522a544bab118fb9a3234c10d03c9fdef4589ca16f812d81e033618be3866d1dc6668f8a08cb1cd9cefc5c7f6dcfe027c736e704176c9c3f75175d7c8c0852104d043665cbe3e2aca512baaf852962b738a979e4a0c0aae312650f44bc3239b826102c17e1e9d7f63fe28418a2487b913515c15782cd7a799666617bb8c49f1f6b6f4e4c758a8ba1f52b017517a27f5824b06817b4c24374441f553427fc8caf213d20e780d69ca47bc27a799bff3d895b50b5dc1a9773881963fa87203c2d78abed04f544dd4302843677e7e3fefac05e85f4879404a1fae894d13a6ca799b0b6e2c9f6222c7973239865cf5f59d645d62349f8645c2e852d24366c5149903c8042effb49e3b513f7138905e63070c65e09036604217472a4e1b29e6f6fe3e4b5c6ec873275af907d941e05fea1c9a009519b4b22d60c43f7661efea590b5a85170908fde78956f72a07c619eab9211dc2b2c7deb69fb6924b659d0e9e620f264c67af600828e4f3271a017f36249688ef1c45fcb2e0ad046ea84df8b3453e599365a3ed4a2d3123e88c84d23fb5d252bffb78ce4f7743912face06c5f0509b96c59f7ab815c00c5c7ff19d4edf909f0797610aacd54e12819bd04e9322ab69c9c0a969191ada2d3926f588e7ad54cd323632033cbec7c345891d53cf2c7dd566a888fbff271258b42f01cfaef3b87d6b660a928889bddbcede75e86cc0b28e8a7e5f8cfbfb75743436c86a48116ca0a24126bcd4790114ad22f2254d4f54ae663437574bcbd53a3a7a81dc066e2b37601836679b9eb5bf061368d82d99fd3ec79037eb24bcaf6130d7eedb69eef6fc0d3a3bcf197f4d243a61f272407c7399a446da734325a3d057459ae9b486045bd55d2d5e3c50c2aca45f13257a3d916dec48ce80382f53e5295a691c4842c74b02407228849e96782179788918da40ef252656db9e7c524ba793e5965dbcfb4a8e8e0d5d3a3fc0e155f5ff2b3debbf4f0d261bf6c61e251e28f068d212722aca95a476410f12aa2580dfbb0ef0163532a61925506e645da8dc4cd5ae960ccbd8bd05094ba81016a3ee4181bd7c383e0b5bd573e5eef0ef546b1a0846af0c6b3b583a2cbad7dcf7aabc61a27bd36aa997a1c4508ebcfec0459960cfc35bc55477158a0923d1e79fd04e5414b6e219df9727d7030a2b05c37243264470b9c491b71b840c499d06d4ff19232b800579722d0fb8c281df6b5a54e4b0fe252fecc5c3dd081da3fcdb629c8d4f274d003155890883791c1b6e731ea0bd2f297cde53a49d1aea1233a39103cab73d3454e3a6ae70a310d6be786d4d9dc40d2b7d74bffec2a76d3444fabf4309ea25fe6113f2b771125804c24394966bfc50ab206519ba84bbccefcb715d69a020651fe01f797486c12c54405bb0ca40a50a7b193e5e3617178d982d35370517af59205004ae784934c108fba3568433b7eaaf184fef2a88342af90a2cf1f92d5f78b293e5044b47d4e064ff496a05714e531619477eb38953faed1ea67380fa73df0afec0e415978d1afa6b9a2fb952575a197bb86351946df3965dd858bdbc55ff067b26c252dc7cc13fcd3f3206f82ce231f5970e43aa65dc9c53cefd494b30776d9128fdbdc9eec0f969d53b2905a47a92e4e19ad224b7ab950344043c6d53cdaec9e739a4968d6d86f2c833d283d9fb88ce043fb203fbb7bbea6c9db3683efaf2426a8847df5730c920a637f4f324bf7dfefa70f7096fd9fbc0481ca5fc0b5b89d0b605c428ebe71d1c59c06620670f316d0c9e90fa6e29006446d2b3af79fc84ff604c4192db8548f1c2373bbd401ea9b3153195a0bf7a6e2858ecbacbec605fe763840d8eb1b899750e6064b890a362398871604d7b8bad7065e5cc6dc6c19d9ee8723161c7989723b315608bd4e2b37f9c7c44776d925f120c4cd1408a62dc8e57fce927789a09aa54e46875cd78f5af37720d890113b24e68a12d97da5f4a395a383b242e1570c31160f0a4c948c810dc59979d51971f90a6c5be91e7ef1abe178e25978a2a187872b6d0fb6086ec078a83111cb223f9f2843ecf636ef594c44c48409f8a9cc71d55d1c40266356c1b32f7e3753cfaa4670976b6f5245de0eaac54f9d8b4d36c166673749114159c186212d59f6f486141a314a43fd0153939a861ac8d09fcd911f0e6f006d019861f2e22f8a53ddbd7706982727fb759e7989250580a723d714e81c1772ebb0d74c5795d2a5d881724ae5a574e22402ad02097c64fad3d2f921f04799230cccc327c2a1c3979dc3a0b7e7f5c012b50e4607c6ba1f0efaef9abf57dd3053d6c95c5c8b9b49f6784e6f70ccc31a0a1f9d6002ae7a14a14e02f3b211c8c6188a581f42a17e0eae92f9d0c765ddcc2bb1aad1688ba5191cf950cbf4d77dcb61999aa0022cd6a3bbf8bb4660aaff9e03430937649f73b5f368e11a849fbd80cd243c2c5200e2c322c6864d4493db52ef92441e597bb691342c2ee2bde1d6c0d89658e6b5da26e2ef99817d58e607e4f685ddbf0ddb801d979412c4cdfaaf503e2ee4fc37067f0ae27c49af14680b9543e55d72e8b90de6e6690f23754f14fb13b4389dc98d3f90ec147219310ed97d939380fe496695aae506eba74131619cd4f4835b2396f7a5f7ea958a78362465a11a330af9ed23f2fdb160a78a90b40a3a24616dd0c3fcbc38cc3309483bb667e36bea412ff9b87e092b3f969c2d307be0bc91295b6590257be4dd82f8d984b8237f601f4248371f92a7be29caf3ae43861e1ee0b622c17e5db7eb710bb397d15e869cc3f2b80dad790d9593a7658236a7c08c4d0e205e84c6345228aa84d7342487c8411af7dc35283a7c1c388ab081ba1246242154c90e39d1cde511f20e0499a6822de5e851aa3fb901e259e512ef0c9f9c841fa459f54e74bd58359cfef4406427763a7f88dad64777df66c0cc6942bb6184089488d9a4b422d523f01964d403cf54725d49ba1ae7938c72d1ecdccf188dd0e6ad808f8de81ae37578f8339360ad9378fb5e2e24149eaf969836c5b35a5f6171f5dbf22d2b53a8279e945fbbed794eda5c92b3e7748f97162d9cb476ae1b516c9f637e1e2c31f0945301f41ffa01705670920e56719399f32b1f9cafd331673f68ab8d55edf28b0167f06d18a96bdd64243db44b935dbfe9a644b428b12186fa8bf4acfaabcb11a989d7ab62c3789074ebe442c131c2d8a82f328f87d6bdd17676ab16c8244400e740fddb58e7b9984432f976837f23244d8c34c84c0e22d9184e3feea47bd41fa78443f34683d1cb2653dc001da20b43b0a6865a4a550481752cf6d04666a5465b3c8ebe4a6f0a8818ccfd2610b5ebc9ca55bdeef887ff5c4352147ca8cfaea7639dbcf40edbc229ccffe0cc9d666b3cde15d7a3e2cc98bf32be412bb6fb5b07af5163abb9587e69ee296c0b943431bbd8a70e5ca213671a2beefc93ff915c1fa294a7221b43aa754dfe207f66144829b54225b78f0cdc5aa4dea708a55b7afa4ef7040a541067d61a3c964ff4c6ce80152d189d807b2909bb718379fb44098df5d7426d5597cb3e87219a800672cb05e2f5a8446208dfae73d45888ad9996e5d0342c82e35597a06055c735e7afb17118c1e8c6140c607b888807c695d264bf894b60b99e90bbb20ca6cb0950b012c7031b767fd6daf1671939a49b1f78f79dcf67e0afb1a537edbd81ce2bbfb246f8e7ed3934625b78f11a86e0f06216f659dba527c406fdbe402d18ad6b29c86bbea1e7dcc0a4ec66e38f8169940d3a3721dd0ab375d546470ad10db57c41432cd5d0a56d956885bc0607aac39ec7b52b05e9f3768cd0eec9aab86ffefabd74968bb0fca3294356bb2600b508b19a9721c32a301d8b66acbb1e38b0aa3ed1c321625f2786601aa7bba88195f442928143f828070507d9086b48460887f314afd6ccc06993db086d0f0d91ff8d92ed10aaedaddb2a3cf5cf00c7c41c54a434b2ccaed4185d029d6a8917729a9b6f347acb20434a592d9e28b290c20a1e26465ba2e232e8165b3553a0329214de11314fe0dbd38dab6a2b7a15cd0828ce0e11592e282f22ff65b9d4c30b241db46d04a510102db0d3da88046119f68d8ecd28b0041d6f7c49a1f97b2f3ee910b558e322e1c4a0747985d59b1d59b28d3fd57e7b5a6553d6cced1982ea799336a256b6ac0c1bda8244cad82bea85f9fadea6dace60d277d4e7cb20f03430ff54c218435032c0a574a1cf02be3587254a355e26597e2a26ee52444f784e58570ccaad574bb12c3d8f903b1116c03b28c2d243c364955ee58ee14113612d1bf757441d99075a32e8fad3b79c9d27a61742121fe1c429ddf43920c7b677cafd935c485074f123b6f7dbad4a2fa4e6244b2e3c9078461741f0d35ed9f379530471df92a7a911cc522aaf76ba291e916b23959109595dc8c2a6a7877c49666b1048eabc8ebf2f565103027d065e91aa3fda5ccda5883e703ae098e1e9cef7d74f5d77e9a89db6f40ded9fb07a1e96bab71b4a1880d47bddda751d407d1073848315e2545dc1d293f51ae5b5da65b96d811f7dfcae49e4bc461f999ad46b6e7480595ea0e244cb486fd2a18db5ab759f0684dd42808f6d56854c2f2a9e7bdf5783ef897ce8d918281f567fdbfaa2dc3c78618030688cd83aca2fec7d0269aec6f2fd56b403573b0150aa4401b234e1063c73d2db713170658ba574277878282c61388a74db49361b9df62291c02fe72229d385440a542edb6b5d49a035441ba3c9f47bae9b594ce9cbb49181377eb466fb5c91e6e90d6f449002865010c260336fb7b8341b9be9ebbc8da96010f9154ca98384b9ae8686a848a31dad6ff5e0b28d364a3fea816ce581a0883159dfa3070e3b3d0c2ef2eebe96594d87ff30024bc9b30e0393296dd9269a4b540dfee54b8af0823bfd9ba9b4ecd375d2f2e3fee6e770f4f9a33b9cc2f95d028d8a5fdebfdf684f6cc140f57b66acbc9b842d414d23a9ad8403b199ae7c66ce91ddde60b09d12daac53d1b42ada914c27d5d629ae5cb07a4a097015cfcff786ec28d6c7b4659dd95411ec55655be98d5f4c4e1f1b486920747cdd434989e51c9e3f65d966e865ffed06aa8cb94f9f71551f62762fd8c867caff3989bda035c5e9fcce80f5c602d039e33a9b9978fefb081f934a701464c31be557882e41d735e7d1dfbdc528bdf5d4d3193d97dddfdf87161815883ad5a411ea503f582211a7c3662d89a89b718ed323e80ba40c4616814665508d87619f0fa1bd1c412531bfd7e4e6cace850f59a57150ee94c738d65b41b870b43e631c8b3180e3fec98e6c43e68a63eae94e929b8e7b6c482248fe6d42e1eff95ddaf60db41660842a08ad9be993935d81c44b126d25e60e7ea1fc0c5ffbd0340aef680f1c073c2dc25ed156453395632cba0443e7a96173626cee6a8997fb30bffca87221b7bbcb1cbb38181b12a34bd6f6b6fe0585b9e467f9208fbbf3d0c58ed91df5d13942326c7c8bd03ad85637f2761870660bf9bd49c7aca5cba68014da63baa5f71d880dedb65d4983e5bc9da58ac72a4c28ecb97eabd9301e10f9602ef57bbfed94fdacaa50f390779171da55eb29941268976588bcd0e85edc57ce2cf7d4ce03c5dcf41b218f904c3a452f5a22a5aeacdeda7ca2564a4d298448f49077b2504434db58bd1c4e4792ba150f77da9e76e09a15e0722abe8a2e2b7059c9812243673887d872cfdf35c16c748bc5a2d2d58ac0dc8b5fc2ada0dbe40ec9b6438e5f1a7cf18df91240942dc5f6410e5fb79486d42013981816c4da8052a1595280d9608831c9986e2aec705e72804cc31d164dadf9b341cf4b777fea4483028cfbdd5a4ca6a55d89bb993417c074d4cd4158b8291cba93f81edf95e6cd1009a776344cd171ba01039f4f594a12b5c68c9991160aba10535ead809265f7c2e6feda97cd4398653e72a4f5742e141d7d36b30ffb4d43dc5802fc0a33c4ea534cc33f9cd73e987cb95d4c8db78cd5525a1e2792305578181153af1fb011e1043c6aa79991e9a1cb2c0b682a55f1c753e21fe8dbcd963291cb5bfd2b9acb5a499727ea0874b1f2ee0f4a1586277f28611823d3b860f359b32ac2e11ddf6ac9b6c017c34dc9a1d3ebfb0445a24fc092758390f511251ee3fda0441b0f1ae2f474d9ec418410d0beaa560cbd9ac7631c40666442d35445fd7388e13f3032a3042e89ac38046700dd46abc926d8e5eea50ea37fd42308aad7247e586c3578175b543640cfdd300dcff36c6b933e73f4ae5bc49369cddc6a9c868a97e618b279fceb5f1f5c2d93e1f3294367a2b5aa63bb28b186da2d5c488061a507b3574981dcd98c305841eeef2c48c2a067d8f3bc3da682f23825fde8c40225646bf945254583d266ccb8fc96fc548df2c7d4316faee1a5574afd425cedd5746829dba46ca3c407a013db1b3b85bfd62b2c37342c1642850c17df5407de96728991556bc844345df21454aa9357782a7ec976a831bc6ac8367db7e42ed61e1cfb43953af26886a61573e5216c92aa802d1bcdfa639960854f45d1c6dab7c542b685197e56a1d222c5442f8540f91e10d9dd377d0bb97ac0bdca77bb967ad3301e474dabbc5f5a740f3c25cca8bbe241e0df592d3ba237915192b62eaf49008524dc7cca8d9fc428f55f35b118dd16f21b8c0cea6947c4bede806658681223196335ebd4cff569c5efb95f178eaa872b4756a55398dd70fc4307a4dfb6268b39143dd37cb3099e8c8e29be0233b6283d3fbc630ba0b29eadfaafaf9c681e621b65d05d239dfb4116c360d6837ab8da6396581020eed80fef9caff766784f0f44c7fe8e0258a1a7d84a0ee5956fc85a18fba291ce00b5e6f52339c166d5fa2ea143caa9a9fb04dc544e2513c44f1f674488d3f2700f8113dedcedc162643abb1cd6c1b6f42fca0ed85ace8d11158ffd8b9bec99093418f3dc2dd45cb2c8715a1c0c544ca0395916f2481549b1c99744864c66e18db04a36e773c7eec640dc40b8b81c2e87b499d57cf802e949680356d6521e82d559fd8e33f326650dd18551aa40403397101b105020283d06025eaa6919fb0a0359d8107a0bbeff5a4733014467ea0b6d51f85e2eeb14ee9b138e5d8c092861cafdcd60bd071b34051319371efdd68c4791be022f5f1256adc5c31d2b69d120eb8ecb5f47d700b9dfdfa099b2e5e8e5db0dbd3ed546d18200493f40928bddea332401ab8ac43c35fcf32c2a9d498c4f10a8b26d56387f4e8f5d23b0d1c538b44dca774e04eb645b2bcb0ff3e61dcca359b2a5b359bdf58cdd57231c5a38aaa37f01ae7f38104d45c69109796cd82c7a7b2ab52a3be1d822f50451bf25d1dbd241a48e91bbdaeb0064544810168b5113a1adbf04f16dedab798cc498ed33b87762144ade62bb6542dfd40b01e5687f9e824513024d1be123eef63398cae0f743e189be8ba061eea920245d7bab094e861049cde4a84b258289b4eae060c2c01e0f863267d2046cc50270704a145bdae7fa1ce050958b209bffaa74c1ff262c3b83db62ed1db88773bcb2af87459b8b3ec1e48278334812b5726a0e8f73fa18c696b2e7438cba18922c040d1204762aec9534c82f955f83ff54a3be8df948da0af93212346bf32d0d73e67303427476198fca32dd374c4482699bee8e770f815da2927401f289b70dea6d3992dd521e1cfcb4c16575aca99a6f3dae31968e57ca2dc1bd9030ecf0fd277ead6057b046de8f8df08ee5196ead1c3187d1fb323578cb1a6955e0445f1313f8349c4b910ca570edc4e115fac4e0977a9f30d854530dd429b8d89e4c33a120162cfe8c9dfcb17dc665b0ab3fc1a1cfbc05a321f6747caf13bf2dc1be2e1ef736608425c4cd78131ddb847fd9cb6ceb9572e5f6418f3136bf14f23cd4c30d2a5b840d2fb01e00f7563ed43050ba28c98759d014e91d5a78c5dfe07bb70a55d4e811c6810994cfa45700b8d2633bf1fd0b9bf4fdc03cafb5e828dc79687bdc2676efaaa8636f5204c712add719d98e6aab8cce93519cab08a3aaef5a2877da9d68b6b719dbc72eb4d42558821f5a8ca06c2ab869a38616f57d0f48eb7a7fcafd66811e6fba3d1621883bdb035f2220241312e4de913e1545a6212b7c5d696ea31a18986585d31d6922f7367eab0c69d69e7ab52e9f06b032807a288b6992b60330d727c0733b14ac8e12b595b353db688c006fb6539c99a243b0dc4ca11dd8d62bd9bae8b38beab4a4e7dc3095a892836fed09f36f45df9002ba741c8d075203544ac2a6524cfc5ef69f71d265a4aedd7ea876128d037139ad8d6b500ed2f4264f3aba7bc7</script>
-  <div class="hbe hbe-content">
-    <div class="hbe hbe-input hbe-input-default">
-      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
-      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
-        <span class="hbe hbe-input-label-content hbe-input-label-content-default">请输入密码以查看此内容</span>
-      </label>
-    </div>
-  </div>
-</div>
-<script data-swup-reload-script src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
+    <title>基于Docker和K8s的部署方案</title>
+    <url>/2024/06/03/%E5%9F%BA%E4%BA%8EDocker%E5%92%8CK8s%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h3 id="虚拟机与容器"><a href="#虚拟机与容器" class="headerlink" title="虚拟机与容器"></a>虚拟机与容器</h3><h4 id="传统虚拟机"><a href="#传统虚拟机" class="headerlink" title="传统虚拟机"></a>传统虚拟机</h4><p>传统虚拟机泛指包含完整系统镜像，即带环境安装的一种解决方案，它可以在一种操作系统里面运行另一种操作系统，比如在Windows系统里运行Ubuntu，就是一个普通文件，不需要了就删掉，对其他部分毫无影响。但带来的缺点显而易见，占用资源多，冗余步骤多，启动慢，为了解决上述缺点，容器应运而生。</p>
+<h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><p>容器是与系统其他部分隔离开的一系列进程，从另一个镜像运行，并由该镜像提供支持进程所需的全部文件。容器提供的镜像包含了应用的所有依赖项，因而在从开发到测试再到生产的整个过程中，它都具有可移植性和一致性。</p>
+<p>容器不是模拟一个完整的操作系统，而是对进程进行隔离。有了容器，就可以将软件运行所需的所有资源打包到一个隔离的容器中。容器与虚拟机不同，不需要捆绑一整套操作系统，只需要软件工作所需的库资源和设置。系统因此而变得高效轻量并保证部署在任何环境中的软件都能始终如一地运行。</p>
+<h4 id="虚拟机与容器对比"><a href="#虚拟机与容器对比" class="headerlink" title="虚拟机与容器对比"></a>虚拟机与容器对比</h4><p>传统虚拟机技术是虚拟出一套硬件后，在其上运行一个完整操作系统，在该系统上再运行所需应用进程，而容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核且也没有进行硬件虚拟。因此容器要比传统虚拟机更为轻便，镜像体积更小。每个容器之间互相隔离，每个容器有自己的文件系统，容器之间进程不会相互影响，能区分计算资源。</p>
+<h3 id="什么是Docker"><a href="#什么是Docker" class="headerlink" title="什么是Docker"></a>什么是Docker</h3><p>Docker借鉴了集装箱的概念。集装箱将货物运往世界各地，Docker将这个模型运用到自己的设计中，唯一不同的是：集装箱运输货物，而Docker运输软件。</p>
+<h4 id="基本组成"><a href="#基本组成" class="headerlink" title="基本组成"></a>基本组成</h4><ol>
+<li><p>镜像</p>
+<p>镜像（Image）就是一个<strong>只读</strong>的模板。镜像可以用来创建Docker容器，一个镜像可以创建很多容器。相当于容器的“源代码“，Docker镜像文件类似于Java的类模板，而Docker容器实例类似于Java中new出来的实例对象。</p>
+</li>
+<li><p>容器</p>
+<p>容器（Container）是独立运行的一个或一组应用，应用程序或服务运行在容器里面，容器就类似于一个虚拟化的运行环境，容器是用镜像创建的运行实例。就像是Java中的类和实例对象一样，镜像是静态的定义，容器是镜像运行时的实体。容器为镜像提供了一个标准的和隔离的运行环境，它可以被启动、开始、停止、删除。每个容器都是相互隔离的、保证安全的平台。</p>
+<p>可以将容器看作是一个简易的Linux环境，包含内核、进程、用户、网络等一系列支持系统运行的部分。</p>
+</li>
+<li><p>仓库</p>
+<p>仓库（Repository）是集中存放镜像文件的场所，可以把镜像发布到仓库中，需要的时候再从仓库中拉下来使用即可。</p>
+<p>类似于Maven仓库，存放各种jar包的地方；github仓库，存放各种git项目的地方。</p>
+<p>Docker公司提供的官方registry被称为Docker Hub，存放各种镜像模板的地方。</p>
+<p>而喜闻乐见的需要国内镜像站才能稳定下载，如阿里云、清华源、中科大源等。</p>
+</li>
+</ol>
+<h4 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h4><p>Docker是一个Client-Server结构的系统，是一个松耦合架构，众多模块各司其职，Docker守护进程运行在主机上，然后通过Socket连接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。</p>
+<p>交互基本流程：</p>
+<ol>
+<li>用户使用Docker Client与Docker Daemon建立通信，并发送请求给后者。</li>
+<li>Docker Daemon作为Docker架构中的主体部分，首先提供Docker Server的功能使其可以接受Docker Client的请求。</li>
+<li>Docker Engine执行Docker内部的一系列工作，每一项工作都是以一个Job的形式的存在。</li>
+<li>Job的运行过程中，当需要容器镜像时，则从Docker Register中下载镜像，并通过镜像管理驱动Graph driver将下载镜像以Graph的形式存储。</li>
+<li>当需要为Docker创建网络环境时，通过网络驱动Network driver创建并配置Docker容器网络环境。</li>
+<li>当需要限制Docker容器运行资源或执行用户指令等操作时，则通过Exec driver来完成。</li>
+<li>Libcontainer是一项独立的容器管理包，Network driver以及Exec driver都是通过Libcontainer来实现具体容器进行的操作。</li>
+</ol>
+<h4 id="为什么快？"><a href="#为什么快？" class="headerlink" title="为什么快？"></a>为什么快？</h4><p>由于Docker不需要虚拟机实现硬件资源虚拟化，运行在Docker容器上的程序直接使用的都是实际物理机的硬件资源，因此在CPU、内存利用率上Docker将会在效率上有明显优势。且Docker利用的是宿主机的内核，而不需要加载操作系统OS内核，当新建一个容器时，Docker不需要和虚拟机一样重新加载一个操作系统内核。进而避免引导、加载操作系统内核返回等比较费时费资源的过程，当新建一个虚拟机时，虚拟机软件需要加载OS，返回新建过程是分钟级别的。而Docker由于直接利用宿主机的操作系统，则省略了返回过程，因此新建一个Docker容器只需要几秒钟。</p>
+<h3 id="Docker镜像"><a href="#Docker镜像" class="headerlink" title="Docker镜像"></a>Docker镜像</h3><p>Docker的镜像实际上是由一层一层的文件系统组成，这种层级的文件系统叫UnionFS（联合文件系统），是一种分层、轻量级并且高性能的文件系统，它支持对文件系统的修改作为一次提交来一层层的叠加，同时可以将不同目录挂载到同一个虚拟文件系统下，是Docker镜像的基础。镜像可以通过分层来进行继承，基于基础镜像，可以制作各种具体的应用镜像。</p>
+<p>bootfs(boot file system)主要包含bootloader和kernel，bootloader主要是引导加载kernel，Linux刚启动时会加载bootfs文件系统，在Docker镜像的最底层是引导文件系统bootfs。这一层与我们典型的Linux&#x2F;Unix系统是一样的，包含bootloader和kernel。当boot加载完成之后整个内核就都在内存中了，此时内存的使用权已由bootfs转交给内核，此时系统也会卸载bootfs。</p>
+<p>rootfs(root file system)，在bootfs之上。包含的就是典型Linux系统中的&#x2F;dev，&#x2F;proc，&#x2F;bin，&#x2F;etc等标准目录和文件。rootfs就是各种不同的操作系统发行版，比如Ubuntu，Centos等等。</p>
+<p>对于一个精简的OS，rootfs可以很小，只需要包括最基本的命令、工具和程序库就可以了，因为底层直接用宿主机的kernel，自己只需要提供rootfs就行了。由此可见对于不同的linux发行版，bootfs基本是一致的，rootfs会有差别，因此不同的发行版可以公用bootfs。</p>
+<p>Docker镜像层都是只读的，容器层是可写的，当容器启动时，一个新的可写层被加载到镜像的顶部。这一层通常被称作”容器层”，”容器层”之下的都叫”镜像层”。所有对容器的改动，无论添加、删除、还是修改文件都只会发生在容器层中。</p>
+<p>Docker中的镜像分层，支持通过扩展现有镜像，创建新的镜像。类似Java继承于一个基础类，自己再按需扩展。新镜像是从基础镜像一层一层叠加生成的，每安装一个软件，就在现有镜像的基础上增加一层。</p>
+<h3 id="DockerFile"><a href="#DockerFile" class="headerlink" title="DockerFile"></a>DockerFile</h3><p>DockerFile是用来构建Docker镜像的文本文件，是由一条条构建镜像所需的指令和参数构成的脚本。</p>
+<h4 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h4><p>构建三步骤：</p>
+<ol>
+<li>编写DockerFile文件</li>
+<li>docker build命令构建镜像</li>
+<li>docker run运行容器实例</li>
+</ol>
+<p>构建大致流程：</p>
+<ol>
+<li>docker从基础镜像运行一个容器</li>
+<li>执行一条指令并对容器做出修改</li>
+<li>执行类似docker commit的操作提交一个新的镜像层</li>
+<li>docker在基于刚提交的镜像运行一个新容器</li>
+<li>执行dockerfile中的下一条指令直到所有指令执行完成</li>
+</ol>
+<p>从应用软件的角度来看，Dockerfile、Docker镜像与Docker容器分别代表软件的三个不同阶段：</p>
+<p>Dockerfile是软件的原材料</p>
+<p>Docker镜像是软件的交付品</p>
+<p>Docker容器则可以认为是软件镜像的运行态，即依照镜像运行的容器实例</p>
+<p>Dockerfile面向开发，Docker镜像成为交付标准，Docker容器则涉及部署与运维，三者缺一不可，合力充当Docker体系的基石。</p>
+<h4 id="常用保留字指令"><a href="#常用保留字指令" class="headerlink" title="常用保留字指令"></a>常用保留字指令</h4><ol>
+<li><p>FROM</p>
+<p>基础镜像，当前新镜像是基于哪个镜像的，指定一个已经存在的镜像作为模板，第一条必须是FROM。</p>
+</li>
+<li><p>MANINTAINER</p>
+</li>
+</ol>
+<p>  镜像维护者的姓名和邮箱地址。</p>
+<ol start="3">
+<li>Run</li>
+</ol>
+<p>  容器构建时需要运行的命令。</p>
+<p>  两种格式：</p>
+<p>  shell格式</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">RUN yum -y install vim</span><br></pre></td></tr></table></figure></div>
+
+<p>  exec格式</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">RUN [&quot;可执行文件&quot;, &quot;参数1&quot;, &quot;参数2&quot;]</span><br></pre></td></tr></table></figure></div>
+
+<ol start="4">
+<li>EXPOSE</li>
+<li>WORKDIR</li>
+<li>USER</li>
+<li>ENV</li>
+<li>ADD</li>
+<li>COPY</li>
+<li>VOLUME</li>
+<li>CMD</li>
+<li>ENTRYPOINT</li>
+</ol>
+]]></content>
       <categories>
-        <category>杂项</category>
+        <category>后端</category>
       </categories>
       <tags>
-        <tag>学习路线</tag>
+        <tag>Docker</tag>
+        <tag>K8s</tag>
       </tags>
   </entry>
   <entry>
@@ -657,6 +734,29 @@
       </categories>
   </entry>
   <entry>
+    <title>学习路线</title>
+    <url>/2024/03/03/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/</url>
+    <content><![CDATA[
+<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码错误，请重新输入。" data-whm="Oh, these decrypted content cannot be verified, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="fcd872a8a18954221eb5bec248309c4032caa06adb0df6b6a1cd208009af638a">7e302a64c19ca2d3ce010e4131597270786b1bb1aaf244198f42d692eb66feb4bc070be16da0a052557145b88b06a7387e3029ffbbbb6130fe0a097cb8511ca043a3a1ac49a1c8d6e3209fbd33f4b5ec808511bbbcbf9eed5db3d988448945fdaf4926c793654b80518ba075a6b012b2b528ba26ffb32b6aa542d403457d3f99e138490ec2452377bb9d0aa0876d21a39ad74194eaaae82bac2f29811278064ba1ad8d323242753fcec2d647caf57e8c68a1631c6ea4b6795455aa5bddb4a7a5a6984c24e714e3a1d4b6a1f5b40d103dff22152cb5767dc0a07e63d419d50e66a3bacd98da6b63001b6dca188b97684ded665fa39e575da0bb50467826e5ab6c4e9bc7c13e5ffd851a763e80e8888f1eb158ace8a3adae10e4952a59972ded7b629425a5ba52a89aa1eb7f33f9f7a05e2282c8dd2eebdff6cbc5ff68888ad769e483801c95580f6dd44181059e723b45f1fad1441331cea7c03cf97f53e7bbceb448a73794b615a27670c7f537a9c0a360483360caa5392103a0a8887c3638cb9e49ef68db8040d2bfba1151e13c678a03996de7eb7942afe332a110eac08fa47e6c6e0ac1170d4ede7d0cc4e3cfc361c8e7e46aa9772c81e54cc1b1860fd6d08f2eb449ec0070f9f3a8162522a544bab118fb9a3234c10d03c9fdef4589ca16f812d81e033618be3866d1dc6668f8a08cb1cd9cefc5c7f6dcfe027c736e704176c9c3f75175d7c8c0852104d043665cbe3e2aca512baaf852962b738a979e4a0c0aae312650f44bc3239b826102c17e1e9d7f63fe28418a2487b913515c15782cd7a799666617bb8c49f1f6b6f4e4c758a8ba1f52b017517a27f5824b06817b4c24374441f553427fc8caf213d20e780d69ca47bc27a799bff3d895b50b5dc1a9773881963fa87203c2d78abed04f544dd4302843677e7e3fefac05e85f4879404a1fae894d13a6ca799b0b6e2c9f6222c7973239865cf5f59d645d62349f8645c2e852d24366c5149903c8042effb49e3b513f7138905e63070c65e09036604217472a4e1b29e6f6fe3e4b5c6ec873275af907d941e05fea1c9a009519b4b22d60c43f7661efea590b5a85170908fde78956f72a07c619eab9211dc2b2c7deb69fb6924b659d0e9e620f264c67af600828e4f3271a017f36249688ef1c45fcb2e0ad046ea84df8b3453e599365a3ed4a2d3123e88c84d23fb5d252bffb78ce4f7743912face06c5f0509b96c59f7ab815c00c5c7ff19d4edf909f0797610aacd54e12819bd04e9322ab69c9c0a969191ada2d3926f588e7ad54cd323632033cbec7c345891d53cf2c7dd566a888fbff271258b42f01cfaef3b87d6b660a928889bddbcede75e86cc0b28e8a7e5f8cfbfb75743436c86a48116ca0a24126bcd4790114ad22f2254d4f54ae663437574bcbd53a3a7a81dc066e2b37601836679b9eb5bf061368d82d99fd3ec79037eb24bcaf6130d7eedb69eef6fc0d3a3bcf197f4d243a61f272407c7399a446da734325a3d057459ae9b486045bd55d2d5e3c50c2aca45f13257a3d916dec48ce80382f53e5295a691c4842c74b02407228849e96782179788918da40ef252656db9e7c524ba793e5965dbcfb4a8e8e0d5d3a3fc0e155f5ff2b3debbf4f0d261bf6c61e251e28f068d212722aca95a476410f12aa2580dfbb0ef0163532a61925506e645da8dc4cd5ae960ccbd8bd05094ba81016a3ee4181bd7c383e0b5bd573e5eef0ef546b1a0846af0c6b3b583a2cbad7dcf7aabc61a27bd36aa997a1c4508ebcfec0459960cfc35bc55477158a0923d1e79fd04e5414b6e219df9727d7030a2b05c37243264470b9c491b71b840c499d06d4ff19232b800579722d0fb8c281df6b5a54e4b0fe252fecc5c3dd081da3fcdb629c8d4f274d003155890883791c1b6e731ea0bd2f297cde53a49d1aea1233a39103cab73d3454e3a6ae70a310d6be786d4d9dc40d2b7d74bffec2a76d3444fabf4309ea25fe6113f2b771125804c24394966bfc50ab206519ba84bbccefcb715d69a020651fe01f797486c12c54405bb0ca40a50a7b193e5e3617178d982d35370517af59205004ae784934c108fba3568433b7eaaf184fef2a88342af90a2cf1f92d5f78b293e5044b47d4e064ff496a05714e531619477eb38953faed1ea67380fa73df0afec0e415978d1afa6b9a2fb952575a197bb86351946df3965dd858bdbc55ff067b26c252dc7cc13fcd3f3206f82ce231f5970e43aa65dc9c53cefd494b30776d9128fdbdc9eec0f969d53b2905a47a92e4e19ad224b7ab950344043c6d53cdaec9e739a4968d6d86f2c833d283d9fb88ce043fb203fbb7bbea6c9db3683efaf2426a8847df5730c920a637f4f324bf7dfefa70f7096fd9fbc0481ca5fc0b5b89d0b605c428ebe71d1c59c06620670f316d0c9e90fa6e29006446d2b3af79fc84ff604c4192db8548f1c2373bbd401ea9b3153195a0bf7a6e2858ecbacbec605fe763840d8eb1b899750e6064b890a362398871604d7b8bad7065e5cc6dc6c19d9ee8723161c7989723b315608bd4e2b37f9c7c44776d925f120c4cd1408a62dc8e57fce927789a09aa54e46875cd78f5af37720d890113b24e68a12d97da5f4a395a383b242e1570c31160f0a4c948c810dc59979d51971f90a6c5be91e7ef1abe178e25978a2a187872b6d0fb6086ec078a83111cb223f9f2843ecf636ef594c44c48409f8a9cc71d55d1c40266356c1b32f7e3753cfaa4670976b6f5245de0eaac54f9d8b4d36c166673749114159c186212d59f6f486141a314a43fd0153939a861ac8d09fcd911f0e6f006d019861f2e22f8a53ddbd7706982727fb759e7989250580a723d714e81c1772ebb0d74c5795d2a5d881724ae5a574e22402ad02097c64fad3d2f921f04799230cccc327c2a1c3979dc3a0b7e7f5c012b50e4607c6ba1f0efaef9abf57dd3053d6c95c5c8b9b49f6784e6f70ccc31a0a1f9d6002ae7a14a14e02f3b211c8c6188a581f42a17e0eae92f9d0c765ddcc2bb1aad1688ba5191cf950cbf4d77dcb61999aa0022cd6a3bbf8bb4660aaff9e03430937649f73b5f368e11a849fbd80cd243c2c5200e2c322c6864d4493db52ef92441e597bb691342c2ee2bde1d6c0d89658e6b5da26e2ef99817d58e607e4f685ddbf0ddb801d979412c4cdfaaf503e2ee4fc37067f0ae27c49af14680b9543e55d72e8b90de6e6690f23754f14fb13b4389dc98d3f90ec147219310ed97d939380fe496695aae506eba74131619cd4f4835b2396f7a5f7ea958a78362465a11a330af9ed23f2fdb160a78a90b40a3a24616dd0c3fcbc38cc3309483bb667e36bea412ff9b87e092b3f969c2d307be0bc91295b6590257be4dd82f8d984b8237f601f4248371f92a7be29caf3ae43861e1ee0b622c17e5db7eb710bb397d15e869cc3f2b80dad790d9593a7658236a7c08c4d0e205e84c6345228aa84d7342487c8411af7dc35283a7c1c388ab081ba1246242154c90e39d1cde511f20e0499a6822de5e851aa3fb901e259e512ef0c9f9c841fa459f54e74bd58359cfef4406427763a7f88dad64777df66c0cc6942bb6184089488d9a4b422d523f01964d403cf54725d49ba1ae7938c72d1ecdccf188dd0e6ad808f8de81ae37578f8339360ad9378fb5e2e24149eaf969836c5b35a5f6171f5dbf22d2b53a8279e945fbbed794eda5c92b3e7748f97162d9cb476ae1b516c9f637e1e2c31f0945301f41ffa01705670920e56719399f32b1f9cafd331673f68ab8d55edf28b0167f06d18a96bdd64243db44b935dbfe9a644b428b12186fa8bf4acfaabcb11a989d7ab62c3789074ebe442c131c2d8a82f328f87d6bdd17676ab16c8244400e740fddb58e7b9984432f976837f23244d8c34c84c0e22d9184e3feea47bd41fa78443f34683d1cb2653dc001da20b43b0a6865a4a550481752cf6d04666a5465b3c8ebe4a6f0a8818ccfd2610b5ebc9ca55bdeef887ff5c4352147ca8cfaea7639dbcf40edbc229ccffe0cc9d666b3cde15d7a3e2cc98bf32be412bb6fb5b07af5163abb9587e69ee296c0b943431bbd8a70e5ca213671a2beefc93ff915c1fa294a7221b43aa754dfe207f66144829b54225b78f0cdc5aa4dea708a55b7afa4ef7040a541067d61a3c964ff4c6ce80152d189d807b2909bb718379fb44098df5d7426d5597cb3e87219a800672cb05e2f5a8446208dfae73d45888ad9996e5d0342c82e35597a06055c735e7afb17118c1e8c6140c607b888807c695d264bf894b60b99e90bbb20ca6cb0950b012c7031b767fd6daf1671939a49b1f78f79dcf67e0afb1a537edbd81ce2bbfb246f8e7ed3934625b78f11a86e0f06216f659dba527c406fdbe402d18ad6b29c86bbea1e7dcc0a4ec66e38f8169940d3a3721dd0ab375d546470ad10db57c41432cd5d0a56d956885bc0607aac39ec7b52b05e9f3768cd0eec9aab86ffefabd74968bb0fca3294356bb2600b508b19a9721c32a301d8b66acbb1e38b0aa3ed1c321625f2786601aa7bba88195f442928143f828070507d9086b48460887f314afd6ccc06993db086d0f0d91ff8d92ed10aaedaddb2a3cf5cf00c7c41c54a434b2ccaed4185d029d6a8917729a9b6f347acb20434a592d9e28b290c20a1e26465ba2e232e8165b3553a0329214de11314fe0dbd38dab6a2b7a15cd0828ce0e11592e282f22ff65b9d4c30b241db46d04a510102db0d3da88046119f68d8ecd28b0041d6f7c49a1f97b2f3ee910b558e322e1c4a0747985d59b1d59b28d3fd57e7b5a6553d6cced1982ea799336a256b6ac0c1bda8244cad82bea85f9fadea6dace60d277d4e7cb20f03430ff54c218435032c0a574a1cf02be3587254a355e26597e2a26ee52444f784e58570ccaad574bb12c3d8f903b1116c03b28c2d243c364955ee58ee14113612d1bf757441d99075a32e8fad3b79c9d27a61742121fe1c429ddf43920c7b677cafd935c485074f123b6f7dbad4a2fa4e6244b2e3c9078461741f0d35ed9f379530471df92a7a911cc522aaf76ba291e916b23959109595dc8c2a6a7877c49666b1048eabc8ebf2f565103027d065e91aa3fda5ccda5883e703ae098e1e9cef7d74f5d77e9a89db6f40ded9fb07a1e96bab71b4a1880d47bddda751d407d1073848315e2545dc1d293f51ae5b5da65b96d811f7dfcae49e4bc461f999ad46b6e7480595ea0e244cb486fd2a18db5ab759f0684dd42808f6d56854c2f2a9e7bdf5783ef897ce8d918281f567fdbfaa2dc3c78618030688cd83aca2fec7d0269aec6f2fd56b403573b0150aa4401b234e1063c73d2db713170658ba574277878282c61388a74db49361b9df62291c02fe72229d385440a542edb6b5d49a035441ba3c9f47bae9b594ce9cbb49181377eb466fb5c91e6e90d6f449002865010c260336fb7b8341b9be9ebbc8da96010f9154ca98384b9ae8686a848a31dad6ff5e0b28d364a3fea816ce581a0883159dfa3070e3b3d0c2ef2eebe96594d87ff30024bc9b30e0393296dd9269a4b540dfee54b8af0823bfd9ba9b4ecd375d2f2e3fee6e770f4f9a33b9cc2f95d028d8a5fdebfdf684f6cc140f57b66acbc9b842d414d23a9ad8403b199ae7c66ce91ddde60b09d12daac53d1b42ada914c27d5d629ae5cb07a4a097015cfcff786ec28d6c7b4659dd95411ec55655be98d5f4c4e1f1b486920747cdd434989e51c9e3f65d966e865ffed06aa8cb94f9f71551f62762fd8c867caff3989bda035c5e9fcce80f5c602d039e33a9b9978fefb081f934a701464c31be557882e41d735e7d1dfbdc528bdf5d4d3193d97dddfdf87161815883ad5a411ea503f582211a7c3662d89a89b718ed323e80ba40c4616814665508d87619f0fa1bd1c412531bfd7e4e6cace850f59a57150ee94c738d65b41b870b43e631c8b3180e3fec98e6c43e68a63eae94e929b8e7b6c482248fe6d42e1eff95ddaf60db41660842a08ad9be993935d81c44b126d25e60e7ea1fc0c5ffbd0340aef680f1c073c2dc25ed156453395632cba0443e7a96173626cee6a8997fb30bffca87221b7bbcb1cbb38181b12a34bd6f6b6fe0585b9e467f9208fbbf3d0c58ed91df5d13942326c7c8bd03ad85637f2761870660bf9bd49c7aca5cba68014da63baa5f71d880dedb65d4983e5bc9da58ac72a4c28ecb97eabd9301e10f9602ef57bbfed94fdacaa50f390779171da55eb29941268976588bcd0e85edc57ce2cf7d4ce03c5dcf41b218f904c3a452f5a22a5aeacdeda7ca2564a4d298448f49077b2504434db58bd1c4e4792ba150f77da9e76e09a15e0722abe8a2e2b7059c9812243673887d872cfdf35c16c748bc5a2d2d58ac0dc8b5fc2ada0dbe40ec9b6438e5f1a7cf18df91240942dc5f6410e5fb79486d42013981816c4da8052a1595280d9608831c9986e2aec705e72804cc31d164dadf9b341cf4b777fea4483028cfbdd5a4ca6a55d89bb993417c074d4cd4158b8291cba93f81edf95e6cd1009a776344cd171ba01039f4f594a12b5c68c9991160aba10535ead809265f7c2e6feda97cd4398653e72a4f5742e141d7d36b30ffb4d43dc5802fc0a33c4ea534cc33f9cd73e987cb95d4c8db78cd5525a1e2792305578181153af1fb011e1043c6aa79991e9a1cb2c0b682a55f1c753e21fe8dbcd963291cb5bfd2b9acb5a499727ea0874b1f2ee0f4a1586277f28611823d3b860f359b32ac2e11ddf6ac9b6c017c34dc9a1d3ebfb0445a24fc092758390f511251ee3fda0441b0f1ae2f474d9ec418410d0beaa560cbd9ac7631c40666442d35445fd7388e13f3032a3042e89ac38046700dd46abc926d8e5eea50ea37fd42308aad7247e586c3578175b543640cfdd300dcff36c6b933e73f4ae5bc49369cddc6a9c868a97e618b279fceb5f1f5c2d93e1f3294367a2b5aa63bb28b186da2d5c488061a507b3574981dcd98c305841eeef2c48c2a067d8f3bc3da682f23825fde8c40225646bf945254583d266ccb8fc96fc548df2c7d4316faee1a5574afd425cedd5746829dba46ca3c407a013db1b3b85bfd62b2c37342c1642850c17df5407de96728991556bc844345df21454aa9357782a7ec976a831bc6ac8367db7e42ed61e1cfb43953af26886a61573e5216c92aa802d1bcdfa639960854f45d1c6dab7c542b685197e56a1d222c5442f8540f91e10d9dd377d0bb97ac0bdca77bb967ad3301e474dabbc5f5a740f3c25cca8bbe241e0df592d3ba237915192b62eaf49008524dc7cca8d9fc428f55f35b118dd16f21b8c0cea6947c4bede806658681223196335ebd4cff569c5efb95f178eaa872b4756a55398dd70fc4307a4dfb6268b39143dd37cb3099e8c8e29be0233b6283d3fbc630ba0b29eadfaafaf9c681e621b65d05d239dfb4116c360d6837ab8da6396581020eed80fef9caff766784f0f44c7fe8e0258a1a7d84a0ee5956fc85a18fba291ce00b5e6f52339c166d5fa2ea143caa9a9fb04dc544e2513c44f1f674488d3f2700f8113dedcedc162643abb1cd6c1b6f42fca0ed85ace8d11158ffd8b9bec99093418f3dc2dd45cb2c8715a1c0c544ca0395916f2481549b1c99744864c66e18db04a36e773c7eec640dc40b8b81c2e87b499d57cf802e949680356d6521e82d559fd8e33f326650dd18551aa40403397101b105020283d06025eaa6919fb0a0359d8107a0bbeff5a4733014467ea0b6d51f85e2eeb14ee9b138e5d8c092861cafdcd60bd071b34051319371efdd68c4791be022f5f1256adc5c31d2b69d120eb8ecb5f47d700b9dfdfa099b2e5e8e5db0dbd3ed546d18200493f40928bddea332401ab8ac43c35fcf32c2a9d498c4f10a8b26d56387f4e8f5d23b0d1c538b44dca774e04eb645b2bcb0ff3e61dcca359b2a5b359bdf58cdd57231c5a38aaa37f01ae7f38104d45c69109796cd82c7a7b2ab52a3be1d822f50451bf25d1dbd241a48e91bbdaeb0064544810168b5113a1adbf04f16dedab798cc498ed33b87762144ade62bb6542dfd40b01e5687f9e824513024d1be123eef63398cae0f743e189be8ba061eea920245d7bab094e861049cde4a84b258289b4eae060c2c01e0f863267d2046cc50270704a145bdae7fa1ce050958b209bffaa74c1ff262c3b83db62ed1db88773bcb2af87459b8b3ec1e48278334812b5726a0e8f73fa18c696b2e7438cba18922c040d1204762aec9534c82f955f83ff54a3be8df948da0af93212346bf32d0d73e67303427476198fca32dd374c4482699bee8e770f815da2927401f289b70dea6d3992dd521e1cfcb4c16575aca99a6f3dae31968e57ca2dc1bd9030ecf0fd277ead6057b046de8f8df08ee5196ead1c3187d1fb323578cb1a6955e0445f1313f8349c4b910ca570edc4e115fac4e0977a9f30d854530dd429b8d89e4c33a120162cfe8c9dfcb17dc665b0ab3fc1a1cfbc05a321f6747caf13bf2dc1be2e1ef736608425c4cd78131ddb847fd9cb6ceb9572e5f6418f3136bf14f23cd4c30d2a5b840d2fb01e00f7563ed43050ba28c98759d014e91d5a78c5dfe07bb70a55d4e811c6810994cfa45700b8d2633bf1fd0b9bf4fdc03cafb5e828dc79687bdc2676efaaa8636f5204c712add719d98e6aab8cce93519cab08a3aaef5a2877da9d68b6b719dbc72eb4d42558821f5a8ca06c2ab869a38616f57d0f48eb7a7fcafd66811e6fba3d1621883bdb035f2220241312e4de913e1545a6212b7c5d696ea31a18986585d31d6922f7367eab0c69d69e7ab52e9f06b032807a288b6992b60330d727c0733b14ac8e12b595b353db688c006fb6539c99a243b0dc4ca11dd8d62bd9bae8b38beab4a4e7dc3095a892836fed09f36f45df9002ba741c8d075203544ac2a6524cfc5ef69f71d265a4aedd7ea876128d037139ad8d6b500ed2f4264f3aba7bc7</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">请输入密码以查看此内容</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-swup-reload-script src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>学习路线</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>把握</title>
     <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
     <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
@@ -673,23 +773,24 @@
       </categories>
   </entry>
   <entry>
-    <title>沉默的大多数</title>
-    <url>/2017/01/14/%E6%B2%89%E9%BB%98%E7%9A%84%E5%A4%A7%E5%A4%9A%E6%95%B0/</url>
-    <content><![CDATA[<p>沉默，一切无言，对于世间的种种，我只能冷眼相对，不是冷漠，而是心力交瘁，感觉内心充满了黑暗，却装出一副无所谓、不在乎的样子，仅仅是为了更好地融入这个虚伪的世界，那又能怎么样呢？迷失了方向，只有家的光芒仍引导着我向前走，尽管前路茫茫，但，路在前方，坚持走下去，哪怕是为了自己的信念，也要咬牙坚持走下去。</p>
-<p>可是，却早已无力，瘫倒在冰冷的地上，看着天空，白茫茫的一片覆盖了蓝天，仅露出些空隙，光从中渗透出来，洒满了大地，也照到我的脸上，麻木的脸颊甚至感受不到丝毫暖意，此刻太阳仿佛冷焰一般，燃烧着，却冷到无感，这早已不是火，而是晃动着的光球，散发着寒人的光芒，世间这一切仿佛失色，在这天地间，仅剩我一人，自由地飞翔在冰冷的大地上，内心燃烧起一团火，双眼只剩下无尽的深邃，毫无感情，无奈化作脸上那唯一的标志——沉默，无尽的沉默。</p>
-<p>曾几何时，可笑的认为这世间如此美好，却在一瞬之间，破灭了，一点点消散在内心深处，化为一道道无法修复的伤痕，触目惊心，却又蕴含着对从前的回忆，不禁交杂着一种复杂的情感，在笑的时候，眼角却冒出了眼泪，内心痛苦，牵动着神经，身体做出抗拒的表现，想要发泄，却又不能，只能任由它肆意破坏曾经美好的感受，剩下一片废墟，慢慢沙化，渴望雨水将其冲刷干净，却只有几滴眼泪。</p>
-<p>无言，岁月流逝，也许废墟会重建，但一切早已不是原来的模样，只有那面目全非的痕迹才能证明这曾经存在过，只能独自缅怀逝去的青春，却无人能懂，烦闷瞬间爆炸，将我炸得血肉横飞。一次又一次地隐忍，早已受不了那倦怠，我只想逃离，逃离这一切。</p>
+    <title>溺水</title>
+    <url>/2017/04/08/%E6%BA%BA%E6%B0%B4/</url>
+    <content><![CDATA[<p>渐渐丧失知觉，阳光仿佛随我一起消失在这河里，逐渐黯淡，岸上的呼喊声在耳边若隐若现。有那么几刻，我甚至怀疑这并不真实，仿佛做梦一般飘渺，它就那样将我拉入万丈深渊，我不禁想要挣扎，去挣脱它的控制，但毫无成效，反而使我越陷越深，我感到一丝无力与绝望，不甘就这么死去，世间的种种在眼前浮现，我不禁笑了笑，是啊，又有什么可怀念的呢？放弃挣扎的我慢慢下沉，我仿佛看到世间最美的景色，一切是那么安静，祥和，我闭上眼睛，想去感受死亡所带来的一丝不安与恐惧，但我感受到的只有无尽的黑暗和一片虚无。</p>
+<p>岸上的那人仿佛冷漠无比，事不关己地看着我，渐渐死去，于是，我便长眠于此，世间再无我的容身之地，我已不复存在，接管这个皮囊的是另一种存在，一种未知的存在，它就在那，就那么默默注视着我，看着我渐渐堕落，迷失自我，取代我的便是它，是我助长它的存在，使它慢慢腐蚀我的灵魂，侵入我的内心，但对此我一无所知，直至此刻，我死了，我才领悟，但也没有什么值得我去留念了，当初的信念早已覆灭，随着我一同消散在这世间。</p>
 <p style="text-align:right;">写于高中某天</p>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
   </entry>
   <entry>
-    <title>溺水</title>
-    <url>/2017/04/08/%E6%BA%BA%E6%B0%B4/</url>
-    <content><![CDATA[<p>渐渐丧失知觉，阳光仿佛随我一起消失在这河里，逐渐黯淡，岸上的呼喊声在耳边若隐若现。有那么几刻，我甚至怀疑这并不真实，仿佛做梦一般飘渺，它就那样将我拉入万丈深渊，我不禁想要挣扎，去挣脱它的控制，但毫无成效，反而使我越陷越深，我感到一丝无力与绝望，不甘就这么死去，世间的种种在眼前浮现，我不禁笑了笑，是啊，又有什么可怀念的呢？放弃挣扎的我慢慢下沉，我仿佛看到世间最美的景色，一切是那么安静，祥和，我闭上眼睛，想去感受死亡所带来的一丝不安与恐惧，但我感受到的只有无尽的黑暗和一片虚无。</p>
-<p>岸上的那人仿佛冷漠无比，事不关己地看着我，渐渐死去，于是，我便长眠于此，世间再无我的容身之地，我已不复存在，接管这个皮囊的是另一种存在，一种未知的存在，它就在那，就那么默默注视着我，看着我渐渐堕落，迷失自我，取代我的便是它，是我助长它的存在，使它慢慢腐蚀我的灵魂，侵入我的内心，但对此我一无所知，直至此刻，我死了，我才领悟，但也没有什么值得我去留念了，当初的信念早已覆灭，随着我一同消散在这世间。</p>
-<p style="text-align:right;">写于高中某天</p>]]></content>
+    <title>致百日誓师的我</title>
+    <url>/2018/09/16/%E8%87%B4%E7%99%BE%E6%97%A5%E8%AA%93%E5%B8%88%E7%9A%84%E6%88%91/</url>
+    <content><![CDATA[<p>当我审视自己，我看到了无数个视角下不同的我，为了他人目光活着，有点累，而我却看不清真实的自己到底是哪个，还是说，我早已不是当初的那个我，我曾以为我便是我，一个自由放纵的我，可现实却击中了我，把我击倒在地，我强忍着伤痛，匍匐前进，前方始终是黑暗，我心逐渐绝望，终于，我看清了，我就是我，一个独一无二的我，也许他人目光将我弄得遍体鳞伤，但我终究是我，随自己的心意而活，可是，真的吗？我不禁陷入了深思，我真的能吗？我想这是不可能的，生活本就是一个囚笼，你无法打破它，只能去学会接受它，去改造它，让它变得更加美好，哪怕再不堪，也要好好的，没有人能真正按照自己心意而活，生活本就是如此，面对他人的目光，不要去逃避，不然你终将会被其击倒在地，我挣扎着爬起来，哪怕前方没有光亮，我也要用我这心，去照亮前方，只为那当初的我，于是，我便不断前行，披荆斩棘。</p>
+<p>我知道你内心挣扎，并全力克制着疑惑，我理解你每次每次哭泣时的痛苦与无奈，但我早已没了眼泪，被生活磨去了棱角，你本能再坚强一点的，把握明天将给予的一切，但是等待我们的往往是狂风骤雨，不要害怕，去感受它，敞开心胸，让它来吧，学会接受恐惧给你带来的感受，是那么黑暗，那么纯粹，而带来恐惧的正是你的心，不要抵触，让它成为你的一部分，让它驱使你前进，哪怕跟当初的我一样，你也要前行，因为你一旦停止了脚步，你将迷失在这黑暗之中，陷入深潭，恐惧将会吞噬你，所以，接受它吧，没有人能真正按照自己的心意而活，我也不例外，如今我已完全醒悟，过去那些将我击倒的，逐渐使我升华，所以，请不要灰心，相信明天将会是美好的，哪怕狂风骤雨，但你也不怕了，不是吗？勇敢的去面对它，我知道，真正的敌人就在我内心深处，那里是恐惧本源，我须战胜自我，去降服他，可是，我的双手早已无力，我的内心早已千疮百孔，我已无心战斗，但我的灵魂不允许我松懈，于是，我便不断前行，披荆斩棘。</p>
+<p>那么，便努力吧，努力做自己，去冲。</p>
+<p style="text-align:right;">——致百日誓师的我</p>
+
+<p style="text-align:right;">写于2018-9-16</p>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -716,17 +817,33 @@
       </categories>
   </entry>
   <entry>
-    <title>致百日誓师的我</title>
-    <url>/2018/09/16/%E8%87%B4%E7%99%BE%E6%97%A5%E8%AA%93%E5%B8%88%E7%9A%84%E6%88%91/</url>
-    <content><![CDATA[<p>当我审视自己，我看到了无数个视角下不同的我，为了他人目光活着，有点累，而我却看不清真实的自己到底是哪个，还是说，我早已不是当初的那个我，我曾以为我便是我，一个自由放纵的我，可现实却击中了我，把我击倒在地，我强忍着伤痛，匍匐前进，前方始终是黑暗，我心逐渐绝望，终于，我看清了，我就是我，一个独一无二的我，也许他人目光将我弄得遍体鳞伤，但我终究是我，随自己的心意而活，可是，真的吗？我不禁陷入了深思，我真的能吗？我想这是不可能的，生活本就是一个囚笼，你无法打破它，只能去学会接受它，去改造它，让它变得更加美好，哪怕再不堪，也要好好的，没有人能真正按照自己心意而活，生活本就是如此，面对他人的目光，不要去逃避，不然你终将会被其击倒在地，我挣扎着爬起来，哪怕前方没有光亮，我也要用我这心，去照亮前方，只为那当初的我，于是，我便不断前行，披荆斩棘。</p>
-<p>我知道你内心挣扎，并全力克制着疑惑，我理解你每次每次哭泣时的痛苦与无奈，但我早已没了眼泪，被生活磨去了棱角，你本能再坚强一点的，把握明天将给予的一切，但是等待我们的往往是狂风骤雨，不要害怕，去感受它，敞开心胸，让它来吧，学会接受恐惧给你带来的感受，是那么黑暗，那么纯粹，而带来恐惧的正是你的心，不要抵触，让它成为你的一部分，让它驱使你前进，哪怕跟当初的我一样，你也要前行，因为你一旦停止了脚步，你将迷失在这黑暗之中，陷入深潭，恐惧将会吞噬你，所以，接受它吧，没有人能真正按照自己的心意而活，我也不例外，如今我已完全醒悟，过去那些将我击倒的，逐渐使我升华，所以，请不要灰心，相信明天将会是美好的，哪怕狂风骤雨，但你也不怕了，不是吗？勇敢的去面对它，我知道，真正的敌人就在我内心深处，那里是恐惧本源，我须战胜自我，去降服他，可是，我的双手早已无力，我的内心早已千疮百孔，我已无心战斗，但我的灵魂不允许我松懈，于是，我便不断前行，披荆斩棘。</p>
-<p>那么，便努力吧，努力做自己，去冲。</p>
-<p style="text-align:right;">——致百日誓师的我</p>
-
-<p style="text-align:right;">写于2018-9-16</p>]]></content>
+    <title>沉默的大多数</title>
+    <url>/2017/01/14/%E6%B2%89%E9%BB%98%E7%9A%84%E5%A4%A7%E5%A4%9A%E6%95%B0/</url>
+    <content><![CDATA[<p>沉默，一切无言，对于世间的种种，我只能冷眼相对，不是冷漠，而是心力交瘁，感觉内心充满了黑暗，却装出一副无所谓、不在乎的样子，仅仅是为了更好地融入这个虚伪的世界，那又能怎么样呢？迷失了方向，只有家的光芒仍引导着我向前走，尽管前路茫茫，但，路在前方，坚持走下去，哪怕是为了自己的信念，也要咬牙坚持走下去。</p>
+<p>可是，却早已无力，瘫倒在冰冷的地上，看着天空，白茫茫的一片覆盖了蓝天，仅露出些空隙，光从中渗透出来，洒满了大地，也照到我的脸上，麻木的脸颊甚至感受不到丝毫暖意，此刻太阳仿佛冷焰一般，燃烧着，却冷到无感，这早已不是火，而是晃动着的光球，散发着寒人的光芒，世间这一切仿佛失色，在这天地间，仅剩我一人，自由地飞翔在冰冷的大地上，内心燃烧起一团火，双眼只剩下无尽的深邃，毫无感情，无奈化作脸上那唯一的标志——沉默，无尽的沉默。</p>
+<p>曾几何时，可笑的认为这世间如此美好，却在一瞬之间，破灭了，一点点消散在内心深处，化为一道道无法修复的伤痕，触目惊心，却又蕴含着对从前的回忆，不禁交杂着一种复杂的情感，在笑的时候，眼角却冒出了眼泪，内心痛苦，牵动着神经，身体做出抗拒的表现，想要发泄，却又不能，只能任由它肆意破坏曾经美好的感受，剩下一片废墟，慢慢沙化，渴望雨水将其冲刷干净，却只有几滴眼泪。</p>
+<p>无言，岁月流逝，也许废墟会重建，但一切早已不是原来的模样，只有那面目全非的痕迹才能证明这曾经存在过，只能独自缅怀逝去的青春，却无人能懂，烦闷瞬间爆炸，将我炸得血肉横飞。一次又一次地隐忍，早已受不了那倦怠，我只想逃离，逃离这一切。</p>
+<p style="text-align:right;">写于高中某天</p>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
+  </entry>
+  <entry>
+    <title>重构</title>
+    <url>/2023/11/06/%E9%87%8D%E6%9E%84/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>重构，即对程序内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。重构以增加程序的可维护性、可靠性，这是门学问，这与古老的谚语“程序能跑就不要动它”背道而驰，这句谚语也是屎山如何形成的最根本原因，没有定期地重构不合理的代码，使得埋下的坑越来越深，解bug就像探宝一样，时不时能发现其他宝藏：更难解的bug，这就是为什么bug越解越多。当然，重构总是与bug如影随形，这就要求以最小的步伐来进行重构，每一次重构完成时要进行详尽的测试，最好是提供统一稳定的测试环境，按照相同的方法进行测试，以免重构引入bug。</p>
+<p>重复的代码块IDE会进行提醒，如果有两个及以上重复就可以考虑抽象出一个函数了，这样当这块代码出错，就无需修改每处地方，仅需修改那个函数，这就是重构，其实我们每天都在进行重构，提炼、分析，从而选出最适合的数据结构，或者逻辑顺序。重构有许多种方法，其中按照既有模版进行重构是最简单的，因此了解设计模式以及类似的思想是很有必要的，可以减少编写代码出错的概率。重构就像是在梳理代码，只有理解了具体的逻辑，重构才成为可能，这就是代码可理解性的重要性，难以理解的设计非常不利于重构，因此，代码可读性优先于其他要义（如果不考虑性能的情况下，如果要进行性能优化，可能就会摒弃可读性，这是没办法的，不过也可以增加适当的注解来提高可读性，不要让别人揣测你代码的意思，而是浅显易懂，这才是好的设计）。讲个笑话，当有天回过头来看之前写的代码，会看不懂，惊呼一句卧槽这啥*玩意，那么就需要进行重构了，如果当初代码的作者都看不明白了，那么指望别人能快速理解代码意图是不太可能了。</p>
+<h2 id="设计大于编码"><a href="#设计大于编码" class="headerlink" title="设计大于编码"></a>设计大于编码</h2><p>良好的设计才是快速开发的秘诀，恶劣的设计会使得开发大半的时间都花在不断重复地调试当中，因为程序状况百出，不得不每每打断开发的进度，甚至因为修复bug而打上的补丁会影响后续的开发，使代码愈来愈臃肿，这是我们不希望看见的，因此，我再次强调设计思想的重要性，这是重构的前提。</p>
+<p>事先做好设计可以有效减少返工次数，即进行重构的次数，甚至无需进行重构，就能完美符合需求且代码结构清晰，维护容易，当然，不要过度设计，过于揣测之后的变化是不利于开发的，应该能够在满足需求的情况下，然后一定限度地对风险进行预测，考虑增加容错，而不是一上来就“疑神疑鬼”。掌握设计和编码难度的平衡性也是挺困难的，设计为需求而服务，但满足需求并不一定能够实际落地，需要切实考虑编码难度、时间花费、风险控制等等因素，而不是盲目地追求所谓好的设计。在设计前请务必理清需求和度量系统，不要臆测，想当然地以为那样就是那样，需要不断沟通以完善设计。</p>
+<h2 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h2><h3 id="重复代码"><a href="#重复代码" class="headerlink" title="重复代码"></a>重复代码</h3><p>这是再正常不过的坏味道了，当一段代码在多处出现，那就要考虑是否需要进行重构了，提炼出重复代码，然后封装到一个函数中，这样出问题只需改一处即可，而不是牵一发而动全身。</p>
+<h3 id="过长函数"><a href="#过长函数" class="headerlink" title="过长函数"></a>过长函数</h3><p>当一个函数过长，就要注意了，函数越长，逻辑就越难理清，也就越难维护，所谓屎山就是堆砌起来的，当一段冗长的代码摆在面前，且没有相应注释，我想是个人都会抗拒去阅读它，将这类代码分割成一小块一小块，每一块都是单独的一段逻辑，然后再串联起来，这样不仅能减少临时变量，且还能让逻辑变得清晰明了，最重要的是，复用性大大增加。</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>重构</tag>
+      </tags>
   </entry>
   <entry>
     <title>设计模式</title>
@@ -811,23 +928,6 @@
       </categories>
       <tags>
         <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>重构</title>
-    <url>/2023/11/06/%E9%87%8D%E6%9E%84/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>重构，即对程序内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。重构以增加程序的可维护性、可靠性，这是门学问，这与古老的谚语“程序能跑就不要动它”背道而驰，这句谚语也是屎山如何形成的最根本原因，没有定期地重构不合理的代码，使得埋下的坑越来越深，解bug就像探宝一样，时不时能发现其他宝藏：更难解的bug，这就是为什么bug越解越多。当然，重构总是与bug如影随形，这就要求以最小的步伐来进行重构，每一次重构完成时要进行详尽的测试，最好是提供统一稳定的测试环境，按照相同的方法进行测试，以免重构引入bug。</p>
-<p>重复的代码块IDE会进行提醒，如果有两个及以上重复就可以考虑抽象出一个函数了，这样当这块代码出错，就无需修改每处地方，仅需修改那个函数，这就是重构，其实我们每天都在进行重构，提炼、分析，从而选出最适合的数据结构，或者逻辑顺序。重构有许多种方法，其中按照既有模版进行重构是最简单的，因此了解设计模式以及类似的思想是很有必要的，可以减少编写代码出错的概率。重构就像是在梳理代码，只有理解了具体的逻辑，重构才成为可能，这就是代码可理解性的重要性，难以理解的设计非常不利于重构，因此，代码可读性优先于其他要义（如果不考虑性能的情况下，如果要进行性能优化，可能就会摒弃可读性，这是没办法的，不过也可以增加适当的注解来提高可读性，不要让别人揣测你代码的意思，而是浅显易懂，这才是好的设计）。讲个笑话，当有天回过头来看之前写的代码，会看不懂，惊呼一句卧槽这啥*玩意，那么就需要进行重构了，如果当初代码的作者都看不明白了，那么指望别人能快速理解代码意图是不太可能了。</p>
-<h2 id="设计大于编码"><a href="#设计大于编码" class="headerlink" title="设计大于编码"></a>设计大于编码</h2><p>良好的设计才是快速开发的秘诀，恶劣的设计会使得开发大半的时间都花在不断重复地调试当中，因为程序状况百出，不得不每每打断开发的进度，甚至因为修复bug而打上的补丁会影响后续的开发，使代码愈来愈臃肿，这是我们不希望看见的，因此，我再次强调设计思想的重要性，这是重构的前提。</p>
-<p>事先做好设计可以有效减少返工次数，即进行重构的次数，甚至无需进行重构，就能完美符合需求且代码结构清晰，维护容易，当然，不要过度设计，过于揣测之后的变化是不利于开发的，应该能够在满足需求的情况下，然后一定限度地对风险进行预测，考虑增加容错，而不是一上来就“疑神疑鬼”。掌握设计和编码难度的平衡性也是挺困难的，设计为需求而服务，但满足需求并不一定能够实际落地，需要切实考虑编码难度、时间花费、风险控制等等因素，而不是盲目地追求所谓好的设计。在设计前请务必理清需求和度量系统，不要臆测，想当然地以为那样就是那样，需要不断沟通以完善设计。</p>
-<h2 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h2><h3 id="重复代码"><a href="#重复代码" class="headerlink" title="重复代码"></a>重复代码</h3><p>这是再正常不过的坏味道了，当一段代码在多处出现，那就要考虑是否需要进行重构了，提炼出重复代码，然后封装到一个函数中，这样出问题只需改一处即可，而不是牵一发而动全身。</p>
-<h3 id="过长函数"><a href="#过长函数" class="headerlink" title="过长函数"></a>过长函数</h3><p>当一个函数过长，就要注意了，函数越长，逻辑就越难理清，也就越难维护，所谓屎山就是堆砌起来的，当一段冗长的代码摆在面前，且没有相应注释，我想是个人都会抗拒去阅读它，将这类代码分割成一小块一小块，每一块都是单独的一段逻辑，然后再串联起来，这样不仅能减少临时变量，且还能让逻辑变得清晰明了，最重要的是，复用性大大增加。</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>重构</tag>
       </tags>
   </entry>
 </search>
