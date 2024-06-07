@@ -464,6 +464,31 @@
       </categories>
   </entry>
   <entry>
+    <title>伤</title>
+    <url>/2022/06/29/%E4%BC%A4/</url>
+    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
+<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
+<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
+<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
+<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
+<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
+<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>告别高中</title>
+    <url>/2019/06/28/%E5%91%8A%E5%88%AB%E9%AB%98%E4%B8%AD/</url>
+    <content><![CDATA[<p>回想高中三年，有许多说不清道不明的意味，就好像天边的云彩，随着风飘动变得灵动万分，随着太阳的映射变得多姿多彩，但云终究是由液滴组成的，在不断的变化过程中，化为泡影，虽大气是不断循环的，但我就好比是其中的一个不起眼的水滴，终究会脱离这个大群体，融入另一个集体之中，这是必然性的结果。</p>
+<p>来不及说声告别，就恍如昨天，梦幻一般，煽情的话语已是不及我内心情感的激荡，一切尽在不言中，虽说这三年，我说实话并未真正了解任何一个人，但尽管如此，我们还是共度了高中，经历了高考的洗礼，有的人收获了喜悦，有的人却不尽人意，不论如何，我们必定拥有了属于自己的那一份悸动，愿今后我们能朝着前方，秉持信仰，一路披荆斩棘，这就是我的所感所想，一个在路上的准大一学生。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
     <title>再识MyBatis-Plus</title>
     <url>/2024/03/23/%E5%86%8D%E8%AF%86MyBatis-Plus/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本人之前学习过 MyBatis-Plus，但实际自己开发还是用的 MyBatis，基本就是简单 sql，因此用注解进行开发，手写 sql 也还好，故并未采用 MyBatis-Plus进行开发，但新入职的公司需要用到，于是进行重温，才有了这篇简略的记录。</p>
@@ -557,31 +582,6 @@
       </tags>
   </entry>
   <entry>
-    <title>伤</title>
-    <url>/2022/06/29/%E4%BC%A4/</url>
-    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
-<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
-<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
-<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
-<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
-<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
-<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>告别高中</title>
-    <url>/2019/06/28/%E5%91%8A%E5%88%AB%E9%AB%98%E4%B8%AD/</url>
-    <content><![CDATA[<p>回想高中三年，有许多说不清道不明的意味，就好像天边的云彩，随着风飘动变得灵动万分，随着太阳的映射变得多姿多彩，但云终究是由液滴组成的，在不断的变化过程中，化为泡影，虽大气是不断循环的，但我就好比是其中的一个不起眼的水滴，终究会脱离这个大群体，融入另一个集体之中，这是必然性的结果。</p>
-<p>来不及说声告别，就恍如昨天，梦幻一般，煽情的话语已是不及我内心情感的激荡，一切尽在不言中，虽说这三年，我说实话并未真正了解任何一个人，但尽管如此，我们还是共度了高中，经历了高考的洗礼，有的人收获了喜悦，有的人却不尽人意，不论如何，我们必定拥有了属于自己的那一份悸动，愿今后我们能朝着前方，秉持信仰，一路披荆斩棘，这就是我的所感所想，一个在路上的准大一学生。</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
     <title>呐喊</title>
     <url>/2016/10/30/%E5%91%90%E5%96%8A/</url>
     <content><![CDATA[<p>回想过去，多么怀念曾经的美好时光，但却早已只剩下那渐行渐远的一个个瞬间仍然徘徊，转瞬即逝。深入骨髓的孤独感慢慢侵蚀着我，迷失在人海中，与自己的影子为伍，不时躲闪来往的行人，我只想躲到阴暗的角落，回想过去的点点滴滴，仅此而已，但外在虚伪的皮囊早已机械麻木，与这繁华世界格格不入。此刻，我只想呐喊。<br>内心的苦楚遍布在每一个角落，想呐喊，却不行，就像一个异类，不被人所正视，即便有，那也是不长久的，顷刻间，可能往昔的情分早已烟消云散，不复存在，只剩下那充斥着虚伪笑容的脸仍留在脑中，久久挥之不去，仿佛在讥讽，嘲笑，我想这是不能呐喊的原因吧，因为它无时无刻不在压抑你，让你无法置身事外，世间种种皆是如此，想要逃离这一切，却发现自己早已被捆绑住了，无法挣脱，甚至无法发声，身边的人诧异地看着你，你的那些看似有些另类的行为不被人所接受，因为人们习惯于司空见惯，而当一些不正常的东西出现的时候，他们会质疑它，甚至去摧残它。</p>
@@ -599,9 +599,9 @@
       </categories>
   </entry>
   <entry>
-    <title>基于Docker和K8s的部署方案</title>
+    <title></title>
     <url>/2024/06/03/%E5%9F%BA%E4%BA%8EDocker%E5%92%8CK8s%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h3 id="虚拟机与容器"><a href="#虚拟机与容器" class="headerlink" title="虚拟机与容器"></a>虚拟机与容器</h3><h4 id="传统虚拟机"><a href="#传统虚拟机" class="headerlink" title="传统虚拟机"></a>传统虚拟机</h4><p>传统虚拟机泛指包含完整系统镜像，即带环境安装的一种解决方案，它可以在一种操作系统里面运行另一种操作系统，比如在Windows系统里运行Ubuntu，就是一个普通文件，不需要了就删掉，对其他部分毫无影响。但带来的缺点显而易见，占用资源多，冗余步骤多，启动慢，为了解决上述缺点，容器应运而生。</p>
+    <content><![CDATA[<h2 id="基于Docker和k8s的部署方案"><a href="#基于Docker和k8s的部署方案" class="headerlink" title="基于Docker和k8s的部署方案"></a>基于Docker和k8s的部署方案</h2><h3 id="虚拟机与容器"><a href="#虚拟机与容器" class="headerlink" title="虚拟机与容器"></a>虚拟机与容器</h3><h4 id="传统虚拟机"><a href="#传统虚拟机" class="headerlink" title="传统虚拟机"></a>传统虚拟机</h4><p>传统虚拟机泛指包含完整系统镜像，即带环境安装的一种解决方案，它可以在一种操作系统里面运行另一种操作系统，比如在Windows系统里运行Ubuntu，就是一个普通文件，不需要了就删掉，对其他部分毫无影响。但带来的缺点显而易见，占用资源多，冗余步骤多，启动慢，为了解决上述缺点，容器应运而生。</p>
 <h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><p>容器是与系统其他部分隔离开的一系列进程，从另一个镜像运行，并由该镜像提供支持进程所需的全部文件。容器提供的镜像包含了应用的所有依赖项，因而在从开发到测试再到生产的整个过程中，它都具有可移植性和一致性。</p>
 <p>容器不是模拟一个完整的操作系统，而是对进程进行隔离。有了容器，就可以将软件运行所需的所有资源打包到一个隔离的容器中。容器与虚拟机不同，不需要捆绑一整套操作系统，只需要软件工作所需的库资源和设置。系统因此而变得高效轻量并保证部署在任何环境中的软件都能始终如一地运行。</p>
 <h4 id="虚拟机与容器对比"><a href="#虚拟机与容器对比" class="headerlink" title="虚拟机与容器对比"></a>虚拟机与容器对比</h4><p>传统虚拟机技术是虚拟出一套硬件后，在其上运行一个完整操作系统，在该系统上再运行所需应用进程，而容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核且也没有进行硬件虚拟。因此容器要比传统虚拟机更为轻便，镜像体积更小。每个容器之间互相隔离，每个容器有自己的文件系统，容器之间进程不会相互影响，能区分计算资源。</p>
@@ -639,6 +639,34 @@
 <p>对于一个精简的OS，rootfs可以很小，只需要包括最基本的命令、工具和程序库就可以了，因为底层直接用宿主机的kernel，自己只需要提供rootfs就行了。由此可见对于不同的linux发行版，bootfs基本是一致的，rootfs会有差别，因此不同的发行版可以公用bootfs。</p>
 <p>Docker镜像层都是只读的，容器层是可写的，当容器启动时，一个新的可写层被加载到镜像的顶部。这一层通常被称作”容器层”，”容器层”之下的都叫”镜像层”。所有对容器的改动，无论添加、删除、还是修改文件都只会发生在容器层中。</p>
 <p>Docker中的镜像分层，支持通过扩展现有镜像，创建新的镜像。类似Java继承于一个基础类，自己再按需扩展。新镜像是从基础镜像一层一层叠加生成的，每安装一个软件，就在现有镜像的基础上增加一层。</p>
+<h3 id="Docker简要使用"><a href="#Docker简要使用" class="headerlink" title="Docker简要使用"></a>Docker简要使用</h3><h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">搜索镜像</span></span><br><span class="line">docker search 镜像名</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">拉取镜像</span></span><br><span class="line">docker pull 镜像名[:TAG]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除镜像</span></span><br><span class="line">docker rmi -f 镜像ID</span><br><span class="line">docker rmi -f 镜像名1:TAG 镜像名2:TAG</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">列出本地主机上的镜像</span></span><br><span class="line">docker images</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建+启动容器</span></span><br><span class="line">docker run [OPTIONS] IMAGE [COMMAND] [ARG...]</span><br><span class="line">OPTIONS说明（常用）：</span><br><span class="line">--name=&quot;容器新名字&quot;：为容器指定一个名称</span><br><span class="line">-d: 后台运行容器并返回容器ID，也即启动守护式容器(后台运行)</span><br><span class="line">-i：以交互模式运行容器，通常与-t同时使用 </span><br><span class="line">-t：为容器重新分配一个伪输入终端，通常与-i同时使用，也即启动交互式容器(前台有伪终端，等待交互)</span><br><span class="line">-P: 随机端口映射，大写P</span><br><span class="line">-p: 指定端口映射，小写p</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">列出当前所有正在运行的容器</span></span><br><span class="line">docker ps [OPTIONS]</span><br><span class="line">OPTIONS：</span><br><span class="line">-a: 列出当前所有正在运行的容器+历史上运行过的 </span><br><span class="line">-l：显示最近创建的容器</span><br><span class="line">-n：显示最近n个创建的容器</span><br><span class="line">-q：静默模式，只显示容器编号</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">退出容器</span></span><br><span class="line">1、exit退出，容器停止</span><br><span class="line">2、ctrl+p+q退出，容器不停止</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动已停止运行的容器</span></span><br><span class="line">docker start 容器ID或者容器名</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重启容器</span></span><br><span class="line">docker restart 容器ID或者容器名</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">停止容器</span></span><br><span class="line">docker stop 容器ID或者容器名</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">强制停止容器</span></span><br><span class="line">docker kill 容器ID或容器名</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除已停止的容器</span></span><br><span class="line">docker rm 容器ID</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看容器日志</span></span><br><span class="line">docker logs 容器ID</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看容器内运行的进程</span></span><br><span class="line">docker top 容器ID</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看容器内部细节</span></span><br><span class="line">docker inspect 容器ID</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">进入正在运行的容器并以命令行交互</span></span><br><span class="line">docker exec -it 容器ID bashShell</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重新进入</span></span><br><span class="line">docker attach 容器ID</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>attach直接进入容器启动命令的终端，不会启动新的进程，用exit退出，会导致容器的停止。</p>
+<p>exec是在容器中打开新的终端，并且可以启动新的进程，用exit退出，不会导致容器的停止。</p>
+<p>一般来说，使用exec来进入终端。</p>
+</blockquote>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">拷贝文件，可双向进行拷贝</span></span><br><span class="line">docker cp 容器ID:容器内路径 目的主机路径</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">导出容器</span></span><br><span class="line">docker export 容器ID &gt; 文件.tar</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">导入容器</span></span><br><span class="line">docker import 文件.tar 镜像名[:TAG]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">映射容器卷</span></span><br><span class="line">docker run -it -v /宿主机目录:/容器内目录</span><br><span class="line">默认为rw即读写，可:ro指定为只读，容器实例内部被限制，只能读取不能写。</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Docker安装常规流程"><a href="#Docker安装常规流程" class="headerlink" title="Docker安装常规流程"></a>Docker安装常规流程</h4><p>以安装tomcat为例</p>
+<ol>
+<li><p>搜索镜像</p>
+<p>docker search tomcat</p>
+</li>
+<li><p>拉取镜像</p>
+<p>docker pull tomcat</p>
+</li>
+<li><p>查看镜像</p>
+<p>docker images tomcat</p>
+</li>
+<li><p>启动容器</p>
+<p>docker run -it -p 8080:8080 tomcat</p>
+</li>
+</ol>
+<p>此时即可访问宿主机的8080端口，出现一只小猫。</p>
+<blockquote>
+<p>关于Docker网络，默认使用内部网桥来保证通信，一般无需修改，感兴趣的可前往官网查看教程。</p>
+</blockquote>
 <h3 id="DockerFile"><a href="#DockerFile" class="headerlink" title="DockerFile"></a>DockerFile</h3><p>DockerFile是用来构建Docker镜像的文本文件，是由一条条构建镜像所需的指令和参数构成的脚本。</p>
 <h4 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h4><p>构建三步骤：</p>
 <ol>
@@ -664,39 +692,90 @@
 <p>基础镜像，当前新镜像是基于哪个镜像的，指定一个已经存在的镜像作为模板，第一条必须是FROM。</p>
 </li>
 <li><p>MANINTAINER</p>
+<p>镜像维护者的姓名和邮箱地址。</p>
+</li>
+<li><p>Run</p>
+<p>容器构建时需要运行的命令。</p>
+<p>两种格式：</p>
+<p>shell格式</p>
+<div class="highlight-container" data-rel="Dockerfile"><figure class="iseeu highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="language-bash"> yum -y install vim</span></span><br></pre></td></tr></table></figure></div>
+
+<p>exec格式</p>
+<div class="highlight-container" data-rel="Dockerfile"><figure class="iseeu highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="language-bash"> [<span class="string">&quot;可执行文件&quot;</span>, <span class="string">&quot;参数1&quot;</span>, <span class="string">&quot;参数2&quot;</span>]</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>EXPOSE</p>
+<p>当前容器对外暴露出的端口。</p>
+</li>
+<li><p>WORKDIR</p>
+<p>指定在创建容器后，终端默认登录后进来的工作目录。</p>
+</li>
+<li><p>USER</p>
+<p>指定该镜像以什么样的用户去执行，如果都不指定，默认是root。</p>
+</li>
+<li><p>ENV</p>
+<p>用来在构建镜像过程中设置环境变量。</p>
+<div class="highlight-container" data-rel="Dockerfile"><figure class="iseeu highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ENV</span> MY_PATH /usr/java</span><br><span class="line">这个环境变量可以在后续的任何<span class="keyword">RUN</span><span class="language-bash">指令中使用，这就如同在命令前面指定了环境变量前缀一样</span></span><br><span class="line">也可以在其它指令中直接使用这些环境变量</span><br><span class="line">比如：<span class="keyword">WORKDIR</span><span class="language-bash"> <span class="variable">$MY_PATH</span></span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>ADD</p>
+<p>将宿主机目录下的文件拷贝进镜像且会自动处理URL和解压tar压缩包。</p>
+</li>
+<li><p>COPY</p>
+<p>类似ADD，拷贝文件和目录到镜像中。将从构建上下文目录中&lt;源路径&gt;的文件&#x2F;目录复制到新的一层镜像内的&lt;目标路径&gt;位置。</p>
+<div class="highlight-container" data-rel="Dockerfile"><figure class="iseeu highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">COPY</span><span class="language-bash"> src dest</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> [<span class="string">&quot;src&quot;</span>, <span class="string">&quot;dest&quot;</span>]</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>VOLUME</p>
+<p>容器数据卷，用于数据保存和持久化的工作。</p>
+</li>
+<li><p>CMD</p>
+<p>指定容器启动后要干的事情。</p>
+<blockquote>
+<p>Dockerfile中可以有多个CMD指令，但是只有最后一个生效，CMD会被docker run之后的参数替换。</p>
+</blockquote>
+<p>与RUN的区别</p>
+<p>CMD在docker run时运行；RUN在docker build时运行。</p>
+</li>
+<li><p>ENTRYPOINT</p>
+<p>指定一个容器启动时要运行的命令。</p>
+<p>类似于CMD指令，但是ENTRYPOINT不会被docker run后面的命令覆盖，而且这些命令行参数会被当作参数送给ENTRYPOINT指令指定的程序。</p>
+<p>可以和CMD组合使用，如下：</p>
+<div class="highlight-container" data-rel="Dockerfile"><figure class="iseeu highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;nginx&quot;</span>, <span class="string">&quot;-c&quot;</span>] <span class="comment">#定参</span></span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;/etc/nginx/nginx.conf&quot;</span>] <span class="comment">#变参</span></span></span><br></pre></td></tr></table></figure></div>
+
+<table>
+<thead>
+<tr>
+<th>Docker命令</th>
+<th>实际命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docker run nginx:test</td>
+<td>nginx -c &#x2F;etc&#x2F;nginx&#x2F;nginx.conf</td>
+</tr>
+<tr>
+<td>docker run nginx:test -c &#x2F;etc&#x2F;nginx&#x2F;new.conf</td>
+<td>nginx -c &#x2F;etc&#x2F;nginx&#x2F;new.conf</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>与CMD相同，如果存在多个ENTRYPOINT指令，仅最后一个生效。</p>
+</blockquote>
 </li>
 </ol>
-<p>  镜像维护者的姓名和邮箱地址。</p>
-<ol start="3">
-<li>Run</li>
-</ol>
-<p>  容器构建时需要运行的命令。</p>
-<p>  两种格式：</p>
-<p>  shell格式</p>
-<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">RUN yum -y install vim</span><br></pre></td></tr></table></figure></div>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./Dockerfile.png"
+                      width="500px" height="auto" alt="Dockerfile"
+                ><figcaption>Dockerfile</figcaption></figure>
 
-<p>  exec格式</p>
-<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">RUN [&quot;可执行文件&quot;, &quot;参数1&quot;, &quot;参数2&quot;]</span><br></pre></td></tr></table></figure></div>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>打包jdk到镜像中</p>
+<h5 id="编写Dockerfile"><a href="#编写Dockerfile" class="headerlink" title="编写Dockerfile"></a>编写Dockerfile</h5><div class="highlight-container" data-rel="Dockerfile"><figure class="iseeu highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 指定基础镜像</span></span><br><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">22.04</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 镜像维护者</span></span><br><span class="line"><span class="keyword">MAINTAINER</span> yhxjs@****.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置初始路径</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /usr/java</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行必要操作</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; apt-get -y install vim net-tools</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">mkdir</span> /usr/java/jdk</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加jdk到容器中，安装包必须要和Dockerfile文件在同一位置 </span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> jdk-17_linux-x64_bin.tar.gz /usr/java/jdk/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置环境变量</span></span><br><span class="line"><span class="keyword">ENV</span> JAVA_HOME /usr/java/jdk/jdk-<span class="number">17.0</span>.<span class="number">4.1</span></span><br><span class="line"><span class="keyword">ENV</span> JRE_HOME /usr/java/jdk/jdk-<span class="number">17.0</span>.<span class="number">4.1</span></span><br><span class="line"><span class="keyword">ENV</span> CLASSPATH .:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH</span><br><span class="line"><span class="keyword">ENV</span> PATH $JAVA_HOME/bin:$JRE_HOME/bin:$JAVA_HOME:$PATH</span><br><span class="line"></span><br><span class="line"><span class="comment"># 暴露80端口</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印Java版本</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;java&quot;</span>, <span class="string">&quot;-version&quot;</span>]</span></span><br></pre></td></tr></table></figure></div>
 
-<ol start="4">
-<li>EXPOSE</li>
-<li>WORKDIR</li>
-<li>USER</li>
-<li>ENV</li>
-<li>ADD</li>
-<li>COPY</li>
-<li>VOLUME</li>
-<li>CMD</li>
-<li>ENTRYPOINT</li>
-</ol>
+<h5 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h5><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">docker build -t myjava:0.1 .</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h5><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -it myjava:0.1</span><br></pre></td></tr></table></figure></div>
+
 ]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>K8s</tag>
-      </tags>
   </entry>
   <entry>
     <title>学习路线</title>
@@ -816,6 +895,23 @@
       </categories>
   </entry>
   <entry>
+    <title>重构</title>
+    <url>/2023/11/06/%E9%87%8D%E6%9E%84/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>重构，即对程序内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。重构以增加程序的可维护性、可靠性，这是门学问，这与古老的谚语“程序能跑就不要动它”背道而驰，这句谚语也是屎山如何形成的最根本原因，没有定期地重构不合理的代码，使得埋下的坑越来越深，解bug就像探宝一样，时不时能发现其他宝藏：更难解的bug，这就是为什么bug越解越多。当然，重构总是与bug如影随形，这就要求以最小的步伐来进行重构，每一次重构完成时要进行详尽的测试，最好是提供统一稳定的测试环境，按照相同的方法进行测试，以免重构引入bug。</p>
+<p>重复的代码块IDE会进行提醒，如果有两个及以上重复就可以考虑抽象出一个函数了，这样当这块代码出错，就无需修改每处地方，仅需修改那个函数，这就是重构，其实我们每天都在进行重构，提炼、分析，从而选出最适合的数据结构，或者逻辑顺序。重构有许多种方法，其中按照既有模版进行重构是最简单的，因此了解设计模式以及类似的思想是很有必要的，可以减少编写代码出错的概率。重构就像是在梳理代码，只有理解了具体的逻辑，重构才成为可能，这就是代码可理解性的重要性，难以理解的设计非常不利于重构，因此，代码可读性优先于其他要义（如果不考虑性能的情况下，如果要进行性能优化，可能就会摒弃可读性，这是没办法的，不过也可以增加适当的注解来提高可读性，不要让别人揣测你代码的意思，而是浅显易懂，这才是好的设计）。讲个笑话，当有天回过头来看之前写的代码，会看不懂，惊呼一句卧槽这啥*玩意，那么就需要进行重构了，如果当初代码的作者都看不明白了，那么指望别人能快速理解代码意图是不太可能了。</p>
+<h2 id="设计大于编码"><a href="#设计大于编码" class="headerlink" title="设计大于编码"></a>设计大于编码</h2><p>良好的设计才是快速开发的秘诀，恶劣的设计会使得开发大半的时间都花在不断重复地调试当中，因为程序状况百出，不得不每每打断开发的进度，甚至因为修复bug而打上的补丁会影响后续的开发，使代码愈来愈臃肿，这是我们不希望看见的，因此，我再次强调设计思想的重要性，这是重构的前提。</p>
+<p>事先做好设计可以有效减少返工次数，即进行重构的次数，甚至无需进行重构，就能完美符合需求且代码结构清晰，维护容易，当然，不要过度设计，过于揣测之后的变化是不利于开发的，应该能够在满足需求的情况下，然后一定限度地对风险进行预测，考虑增加容错，而不是一上来就“疑神疑鬼”。掌握设计和编码难度的平衡性也是挺困难的，设计为需求而服务，但满足需求并不一定能够实际落地，需要切实考虑编码难度、时间花费、风险控制等等因素，而不是盲目地追求所谓好的设计。在设计前请务必理清需求和度量系统，不要臆测，想当然地以为那样就是那样，需要不断沟通以完善设计。</p>
+<h2 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h2><h3 id="重复代码"><a href="#重复代码" class="headerlink" title="重复代码"></a>重复代码</h3><p>这是再正常不过的坏味道了，当一段代码在多处出现，那就要考虑是否需要进行重构了，提炼出重复代码，然后封装到一个函数中，这样出问题只需改一处即可，而不是牵一发而动全身。</p>
+<h3 id="过长函数"><a href="#过长函数" class="headerlink" title="过长函数"></a>过长函数</h3><p>当一个函数过长，就要注意了，函数越长，逻辑就越难理清，也就越难维护，所谓屎山就是堆砌起来的，当一段冗长的代码摆在面前，且没有相应注释，我想是个人都会抗拒去阅读它，将这类代码分割成一小块一小块，每一块都是单独的一段逻辑，然后再串联起来，这样不仅能减少临时变量，且还能让逻辑变得清晰明了，最重要的是，复用性大大增加。</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>重构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>致百日誓师的我</title>
     <url>/2018/09/16/%E8%87%B4%E7%99%BE%E6%97%A5%E8%AA%93%E5%B8%88%E7%9A%84%E6%88%91/</url>
     <content><![CDATA[<p>当我审视自己，我看到了无数个视角下不同的我，为了他人目光活着，有点累，而我却看不清真实的自己到底是哪个，还是说，我早已不是当初的那个我，我曾以为我便是我，一个自由放纵的我，可现实却击中了我，把我击倒在地，我强忍着伤痛，匍匐前进，前方始终是黑暗，我心逐渐绝望，终于，我看清了，我就是我，一个独一无二的我，也许他人目光将我弄得遍体鳞伤，但我终究是我，随自己的心意而活，可是，真的吗？我不禁陷入了深思，我真的能吗？我想这是不可能的，生活本就是一个囚笼，你无法打破它，只能去学会接受它，去改造它，让它变得更加美好，哪怕再不堪，也要好好的，没有人能真正按照自己心意而活，生活本就是如此，面对他人的目光，不要去逃避，不然你终将会被其击倒在地，我挣扎着爬起来，哪怕前方没有光亮，我也要用我这心，去照亮前方，只为那当初的我，于是，我便不断前行，披荆斩棘。</p>
@@ -911,23 +1007,6 @@
       </categories>
       <tags>
         <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>重构</title>
-    <url>/2023/11/06/%E9%87%8D%E6%9E%84/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>重构，即对程序内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。重构以增加程序的可维护性、可靠性，这是门学问，这与古老的谚语“程序能跑就不要动它”背道而驰，这句谚语也是屎山如何形成的最根本原因，没有定期地重构不合理的代码，使得埋下的坑越来越深，解bug就像探宝一样，时不时能发现其他宝藏：更难解的bug，这就是为什么bug越解越多。当然，重构总是与bug如影随形，这就要求以最小的步伐来进行重构，每一次重构完成时要进行详尽的测试，最好是提供统一稳定的测试环境，按照相同的方法进行测试，以免重构引入bug。</p>
-<p>重复的代码块IDE会进行提醒，如果有两个及以上重复就可以考虑抽象出一个函数了，这样当这块代码出错，就无需修改每处地方，仅需修改那个函数，这就是重构，其实我们每天都在进行重构，提炼、分析，从而选出最适合的数据结构，或者逻辑顺序。重构有许多种方法，其中按照既有模版进行重构是最简单的，因此了解设计模式以及类似的思想是很有必要的，可以减少编写代码出错的概率。重构就像是在梳理代码，只有理解了具体的逻辑，重构才成为可能，这就是代码可理解性的重要性，难以理解的设计非常不利于重构，因此，代码可读性优先于其他要义（如果不考虑性能的情况下，如果要进行性能优化，可能就会摒弃可读性，这是没办法的，不过也可以增加适当的注解来提高可读性，不要让别人揣测你代码的意思，而是浅显易懂，这才是好的设计）。讲个笑话，当有天回过头来看之前写的代码，会看不懂，惊呼一句卧槽这啥*玩意，那么就需要进行重构了，如果当初代码的作者都看不明白了，那么指望别人能快速理解代码意图是不太可能了。</p>
-<h2 id="设计大于编码"><a href="#设计大于编码" class="headerlink" title="设计大于编码"></a>设计大于编码</h2><p>良好的设计才是快速开发的秘诀，恶劣的设计会使得开发大半的时间都花在不断重复地调试当中，因为程序状况百出，不得不每每打断开发的进度，甚至因为修复bug而打上的补丁会影响后续的开发，使代码愈来愈臃肿，这是我们不希望看见的，因此，我再次强调设计思想的重要性，这是重构的前提。</p>
-<p>事先做好设计可以有效减少返工次数，即进行重构的次数，甚至无需进行重构，就能完美符合需求且代码结构清晰，维护容易，当然，不要过度设计，过于揣测之后的变化是不利于开发的，应该能够在满足需求的情况下，然后一定限度地对风险进行预测，考虑增加容错，而不是一上来就“疑神疑鬼”。掌握设计和编码难度的平衡性也是挺困难的，设计为需求而服务，但满足需求并不一定能够实际落地，需要切实考虑编码难度、时间花费、风险控制等等因素，而不是盲目地追求所谓好的设计。在设计前请务必理清需求和度量系统，不要臆测，想当然地以为那样就是那样，需要不断沟通以完善设计。</p>
-<h2 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h2><h3 id="重复代码"><a href="#重复代码" class="headerlink" title="重复代码"></a>重复代码</h3><p>这是再正常不过的坏味道了，当一段代码在多处出现，那就要考虑是否需要进行重构了，提炼出重复代码，然后封装到一个函数中，这样出问题只需改一处即可，而不是牵一发而动全身。</p>
-<h3 id="过长函数"><a href="#过长函数" class="headerlink" title="过长函数"></a>过长函数</h3><p>当一个函数过长，就要注意了，函数越长，逻辑就越难理清，也就越难维护，所谓屎山就是堆砌起来的，当一段冗长的代码摆在面前，且没有相应注释，我想是个人都会抗拒去阅读它，将这类代码分割成一小块一小块，每一块都是单独的一段逻辑，然后再串联起来，这样不仅能减少临时变量，且还能让逻辑变得清晰明了，最重要的是，复用性大大增加。</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>重构</tag>
       </tags>
   </entry>
 </search>
