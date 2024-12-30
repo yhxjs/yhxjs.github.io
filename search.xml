@@ -1,6 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Hexo配置</title>
+    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
+<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
+
+  <div class="note p-4 mb-4 rounded-small success">
+    <figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
+                      class="" alt="hexo -v"
+                ><figcaption>hexo -v</figcaption></figure>
+  </div>
+
+<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./creat_repository.png"
+                      width="600px" height="auto" alt="创建个人页仓库"
+                ><figcaption>创建个人页仓库</figcaption></figure>
+
+<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
+
+<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
+
+<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
+<p>Hexo 程序目录：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./directory_structure.png"
+                      width="400px" height="auto" alt="目录结构"
+                ><figcaption>目录结构</figcaption></figure>
+
+<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
+
+<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
+<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，挑选一个心仪的主题并进行下载。</p>
+<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，用该主题介绍如何进行安装。</p>
+<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
+<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
+<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 挑选，甚至可以自己开发一个。</p>
+<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
+<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>使用时可以直接像下面这样：</p>
+<div class="highlight-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./bilibili_url.png"
+                      width="700px" height="auto" alt="修改哔哩哔哩url"
+                ><figcaption>修改哔哩哔哩url</figcaption></figure>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>配置</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ARP协议</title>
     <url>/2024/03/05/ARP%E5%8D%8F%E8%AE%AE/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ARP即地址解析协议，将IP地址解析为MAC地址。数据要在以太网中传输，需要完成以太网封装，这项工作由网络层负责。要完成以太网的数据封装，需要知道目的设备的MAC地址。</p>
@@ -168,88 +252,38 @@
       </tags>
   </entry>
   <entry>
-    <title>Hexo配置</title>
-    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
-<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
-
-<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
-
-  <div class="note p-4 mb-4 rounded-small success">
-    <figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
-                      class="" alt="hexo -v"
-                ><figcaption>hexo -v</figcaption></figure>
-  </div>
-
-<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./creat_repository.png"
-                      width="600px" height="auto" alt="创建个人页仓库"
-                ><figcaption>创建个人页仓库</figcaption></figure>
-
-<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
-
-<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
-
-<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
-<p>Hexo 程序目录：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./directory_structure.png"
-                      width="400px" height="auto" alt="目录结构"
-                ><figcaption>目录结构</figcaption></figure>
-
-<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
-
-<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
-<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
-
-<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
-<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，挑选一个心仪的主题并进行下载。</p>
-<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，用该主题介绍如何进行安装。</p>
-<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
-
-<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
-<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
-
-<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
-<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
-<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 挑选，甚至可以自己开发一个。</p>
-<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
-<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>使用时可以直接像下面这样：</p>
-<div class="highlight-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./bilibili_url.png"
-                      width="700px" height="auto" alt="修改哔哩哔哩url"
-                ><figcaption>修改哔哩哔哩url</figcaption></figure>
+    <title>伤</title>
+    <url>/2022/06/29/%E4%BC%A4/</url>
+    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
+<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
+<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
+<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
+<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
+<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
+<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
 ]]></content>
       <categories>
-        <category>杂项</category>
+        <category>随笔</category>
       </categories>
-      <tags>
-        <tag>配置</tag>
-        <tag>Hexo</tag>
-      </tags>
+  </entry>
+  <entry>
+    <title>也许那么...</title>
+    <url>/2016/09/25/%E4%B9%9F%E8%AE%B8%E9%82%A3%E4%B9%88/</url>
+    <content><![CDATA[<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./time.jpg"
+                      width="400px" height="auto" alt="时光里"
+                ><figcaption>时光里</figcaption></figure>
+
+<p>那么<br>曾经喜欢过，<br>也许<br>现在还喜欢，<br>但是<br>早已过去。</p>
+<p>曾经铭记于心，<br>现在隐藏内心。<br>包裹着<br>一层又一层的皮囊；<br>感受着<br>一次又一次的煎熬；<br>回想着<br>过去的点点滴滴；<br>不禁<br>心有感悟。</p>
+<p>过去的人和事，<br>如若还在身边，<br>那么这形同陌路，<br>却不如不见。<br>可不见，<br>却又倍加思念，<br>不知该何去何从，<br>便只能做好如今的事。</p>
+<p>那么不如待我如初见——至逝去的三年（初中）</p>
+<p style="text-align:right;">写于2016-09-25</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
   </entry>
   <entry>
     <title>IOC和AOP原理</title>
@@ -338,326 +372,6 @@
       <tags>
         <tag>Java</tag>
         <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ND协议</title>
-    <url>/2024/03/06/ND%E5%8D%8F%E8%AE%AE/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>邻居发现协议，相当于IPv4中ARP、ICMP路由器发现和ICMP重定向这三种协议的组合。</p>
-<p>什么是邻居？即一个链路上的相邻主机或者路由器，主机与主机，主机和路由器，路由器和路由器可以互为邻居。</p>
-<p>地址解析放在ICMP层，通过使用ICMPv6报文实现功能。</p>
-<h3 id="报文格式"><a href="#报文格式" class="headerlink" title="报文格式"></a>报文格式</h3><figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./ipv6_packet_head_format.png"
-                      width="400px" height="auto" alt="IPv6报头格式"
-                ><figcaption>IPv6报头格式</figcaption></figure>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./ipv6_packet_head_format_wireshark.png"
-                      width="550px" height="auto" alt="IPv6报头(Wireshark)"
-                ><figcaption>IPv6报头(Wireshark)</figcaption></figure>
-
-<p><strong>版本号</strong>(version)：同IPv4，指示IP版本</p>
-<p><strong>流量等级</strong>(Traffic Class)：类似IPv4中的TOS字段，指示IPv6数据流通信类别或优先级</p>
-<p><strong>流标签</strong>（FlowLabel)：标记需要特殊处理的数据流，用于某些对连接的服务质量有特殊要求的通信，诸如音频或视频等实时数据</p>
-<p><strong>传输数据长度</strong>(Payload Length)：包含有效载荷数据的IPv6报文总长度</p>
-<p><strong>下一个报头</strong>(Next Header)：该字段定义了紧跟在IPv6报头后面的第一个扩展报头(如果存在)的类型，或者上层协议数据单元中的协议类型</p>
-<p><strong>跳限制</strong>(Hop Limit)：类似于IPv4中的TTL字段，它定义了IP数据包所能经过路由器的最大跳数</p>
-<p><strong>源地址</strong>(Source Address)：128bit的IPv6地址</p>
-<p><strong>目的地址</strong>(Destination Address)：128bit的IPv6地址</p>
-<h4 id="与IPv4对比"><a href="#与IPv4对比" class="headerlink" title="与IPv4对比"></a>与IPv4对比</h4><p><strong>IPv6报头结构的改善</strong>：基本的IPv4报头长度为20个字节，基本的IPv6报头长度为40个字节</p>
-<p><strong>取消了IP的校验</strong>：由于2层与4层的校验已经足够健壮，取消了IP的三层校验</p>
-<p><strong>取消中间节点的分片功能</strong>：分片重组功能由源端实现，通过Path MTU机制来发现路径MTU</p>
-<p><strong>定义最长的IPv6报头</strong>：有利于硬件的快速处理，中间节点节约大量资源</p>
-<p><strong>安全选项的支持</strong>：IPv6提供了对IPsec的完美支持，上层协议省去大量安全选项，例如OSPFv3取消了认证</p>
-<p><strong>增加流标签</strong>：提高QoS效率</p>
-<h3 id="报文分类"><a href="#报文分类" class="headerlink" title="报文分类"></a>报文分类</h3><p>邻居发现协议定义了五种不同的ICMP包类型：路由请求RS（Router Solicitation）和路由告知RA（ Router Advertisement）消息，邻居请求NS（Neighbor Solicitation）和邻居告知NA（Neighbor Advertisements）消息，以及重定向（Redirect message）消息。</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./nd_packet_type.png"
-                      width="450px" height="auto" alt="ND协议报文类型"
-                ><figcaption>ND协议报文类型</figcaption></figure>
-
-<h4 id="路由请求"><a href="#路由请求" class="headerlink" title="路由请求"></a>路由请求</h4><p>当一个接口变为可用时，主机可以发出路由请求消息来要求路由器马上生成路由告知（ Router Advertisement）消息，而不是等它的下一个固定生成时间。</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./rs_packet_format.png"
-                      width="500px" height="auto" alt="RS报文格式"
-                ><figcaption>RS报文格式</figcaption></figure>
-
-<p>源地址：接口的地址或者全0</p>
-<p>目的地址：全部路由器组播地址</p>
-<p>跳数：255</p>
-<p>ICMP6 TYPE：133</p>
-<p>ICMP6 CODE：0</p>
-<h4 id="路由告知"><a href="#路由告知" class="headerlink" title="路由告知"></a>路由告知</h4><p>路由器周期地用此消息通告它们的存在及各种链路参数和互联网参数，或响应Router Solicitation消息。Router Advertisements包括前缀，这些前缀用于确定是否另一个地址共享相同链路(on-link确认)和&#x2F;或地址配置，建议的跳数限制值，等等。</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./ra_packet_format.png"
-                      width="500px" height="auto" alt="RA报文格式"
-                ><figcaption>RA报文格式</figcaption></figure>
-
-<p><strong>当前跳数值</strong>（Current Hop Limit）字段，用法如下：链路上的结点发送IPv6报文时，会用该字段的值来填充IPv6报文头的跳数限制字段。如果该字段值为0，说明路由器并不确定该值为多少。</p>
-<p><strong>M位</strong>被称为管理地址配置（Managed Address Configuration）标志位，当该位被置1时，说明DHCPv6可用于结点地址配置。</p>
-<p><strong>O位</strong>被称为其它有状态配置（Other Stateful Configuration）标志位，当该位被置1时，说明DHCPv6可用于获得非地址相关的配置信息，如DNS名称服务器的IPv6地址。</p>
-<p><strong>路由器生命期</strong>字段是一个16位无符号数，计量单位为秒，它指示链路上的结点把该路由器做为默认路由器的时间为多长，最大值为18.2小时。该字段为0表示发送该报文的路由器不做为默认路由器，这时，结点在发送报文时，不会选择该路由器做为下一跳路由器。</p>
-<p><strong>可达时间</strong>字段是一个32位无符号数，计量单位为毫秒，它指示链路上的结点在收到一个邻居可达的确认报文后，认为该邻居仍然可达的时间。在这段时间内，如果结点没有再收到邻居可达的确认报文，结点会执行邻居不可达检测以确认邻居是否可达。该字段为0表示路由器不指定该参数。</p>
-<p><strong>重传时间</strong>字段是一个32位无符号数，计量单位为毫秒，它指示链路上的结点在执行邻居不可达检测或者地址解析时，连续发送邻居请求报文中间的时间间隔。该字段为0表示路由器不指定该参数。</p>
-<p><strong>前缀</strong>选项，通过该选项，路由器向链路上通告本链路所有可达的前缀，并且通过标志位指出哪些前缀可用于结点的地址自动配置。</p>
-<p>源地址：接口的本地链路地址</p>
-<p>目的地址：发送路由器请求的主机的源地址或者全部节点组播地址</p>
-<p>跳数：255</p>
-<p>ICMP6 TYPE：134</p>
-<p>ICMP6 CODE：0</p>
-<h4 id="邻居请求"><a href="#邻居请求" class="headerlink" title="邻居请求"></a>邻居请求</h4><p>节点发送该消息以确定某个邻居的链路层地址，或者用来验证通过缓存里的链路层地址是否依然能够到达该邻居。也经常用来做地址重复检测。</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./ns_packet_format.png"
-                      width="500px" height="auto" alt="NS报文格式"
-                ><figcaption>NS报文格式</figcaption></figure>
-
-<p><strong>目标地址</strong>字段是一个IPv6地址，一般与目的地址相同，填的是请求的地址，该字段不能是多播地址。</p>
-<p><strong>源链路层地址</strong>选项，协议建议携带，一般为源MAC</p>
-<p>源地址：接口的地址或者未指定地址</p>
-<p>目的地址：目标地址或者目标地址对应的请求节点组播地址</p>
-<p>跳数：255</p>
-<p>ICMP6 TYPE：135</p>
-<p>ICMP6 CODE：0</p>
-<h4 id="邻居告知"><a href="#邻居告知" class="headerlink" title="邻居告知"></a>邻居告知</h4><p>邻居请求消息的回应。节点也可以发送非请求的Neighbor Advertisements，通知链路层地址改变。</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./na_packet_format.png"
-                      width="500px" height="auto" alt="NA报文格式"
-                ><figcaption>NA报文格式</figcaption></figure>
-
-<p><strong>R位</strong>是路由器（IsRouter）标志位，当这个标志位置1时，说明发送者是路由器。</p>
-<p><strong>S位</strong>是被请求（Solicited）标志位，当这个标志位置1时，说明发送者发送邻居通告报文是因为接收到一个邻居请求报文，这个邻居通告报文的目的地址是单播地址；如果邻居通告报文目的地址是多播地址，则该位置0。</p>
-<p><strong>O位</strong>是覆盖（Override）标志位，当这个标志位置1时，接收到该报文的结点查看邻居缓存，如果缓存中有发送该邻居通告报文结点的链路层地址，则更新之。否则忽略该邻居通告报文。</p>
-<p><strong>目标地址</strong>字段是一个IPv6地址，如果邻居通告报文是由邻居请求报文触发的，则该地址是邻居请求报文中的目标地址。如果邻居通告报文是因为链路层地址变化触发的，则该地址是和变化的链路层地址相关的IPv6地址。该字段不能包含一个多播地址。</p>
-<p><strong>目标链路层地址</strong>选项。如果邻居通告报文目的地址是多播地址，必须包含目标链路层地址选项。</p>
-<p>源地址：接口的地址</p>
-<p>目的地址：发送邻居请求节点的源地址或者全部节点组播地址</p>
-<p>跳数：255</p>
-<p>ICMP6 TYPE：136</p>
-<p>ICMP6 CODE：0</p>
-<h4 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h4><p>由路由器使用，用于通知主机有到目的地的较好的第一跳。路由器收到一个报文后，如果发现报文的目的地址和源地址是同一个链路的，或者到目的地址有一个更优的路由器，都会发送重定向报文。重定向报文的源地址必须使用链路本地地址。</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./redirect_packet_format.png"
-                      width="500px" height="auto" alt="重定向报文格式"
-                ><figcaption>重定向报文格式</figcaption></figure>
-
-<p><strong>重定向报文头</strong>选项包含了引发重定向报文的原始报文的内容。</p>
-<p>源地址：接口的链路本地地址</p>
-<p>目的地址：触发重定向的数据包的源地址</p>
-<p>跳数：255</p>
-<p>ICMP6 TYPE：137</p>
-<p>ICMP6 CODE：0</p>
-<blockquote>
-<p>主机不能发送路由器通告，路由器不能发送路由器请求。</p>
-<p>主机不能发送重定向报文，路由器不能处理重定向报文。</p>
-</blockquote>
-<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ul>
-<li><a href="#%E8%A7%A3%E6%9E%90%E9%82%BB%E5%B1%85%E7%9A%84%E9%93%BE%E8%B7%AF%E5%B1%82%E5%9C%B0%E5%9D%80">解析邻居的链路层地址</a></li>
-<li><a href="#%E5%9C%B0%E5%9D%80%E5%86%B2%E7%AA%81%E6%A3%80%E6%B5%8B%EF%BC%88DAD%EF%BC%89">地址冲突检测（DAD）</a></li>
-<li><a href="#%E9%82%BB%E5%B1%85%E4%B8%8D%E5%8F%AF%E8%BE%BE%E6%A3%80%E6%B5%8B%EF%BC%88NUD%EF%BC%89">邻居不可达检测（NUD）</a></li>
-<li><a href="#%E8%B7%AF%E7%94%B1%E5%99%A8%E5%92%8C%E5%89%8D%E7%BC%80%E5%8F%91%E7%8E%B0">路由器和前缀发现</a></li>
-<li><a href="#%E8%B7%AF%E7%94%B1%E9%87%8D%E5%AE%9A%E5%90%91">路由重定向</a></li>
-</ul>
-<h3 id="解析邻居的链路层地址"><a href="#解析邻居的链路层地址" class="headerlink" title="解析邻居的链路层地址"></a>解析邻居的链路层地址</h3><p>IPv6取消ARP协议，通过邻居请求（NS）和邻居通告（NA）报文来解析三层地址对应的链路层地址。</p>
-<p>邻居请求NS使用组播，比ARP效率高，邻居公告NA返回则直接使用单播。</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./ipv6_address_resolution.png"
-                      width="650px" height="auto" alt="IPv6地址解析"
-                ><figcaption>IPv6地址解析</figcaption></figure>
-
-<p>一整个ping的过程跟ARP一样相当于两个来回：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./ipv6_ping_wireshark.png"
-                      width="800px" height="auto" alt="ping(Wireshark)"
-                ><figcaption>ping(Wireshark)</figcaption></figure>
-
-<p>通过我开发的show ipv6 nd-packet history命令也可以看到整个过程：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./show_ipv6_nd_packet_history.png"
-                      width="100%" height="auto" alt="show ipv6 nd-packet history"
-                ><figcaption>show ipv6 nd-packet history</figcaption></figure>
-
-<h3 id="地址冲突检测（DAD）"><a href="#地址冲突检测（DAD）" class="headerlink" title="地址冲突检测（DAD）"></a>地址冲突检测（DAD）</h3><p>DAD首先发送源地址为未分配地址，目的地址为要进行DAD检测的地址所对应被请求节点的组播地址，然后目标IP携带要进行DAD检测的地址的NS报文，若有冲突，则被请求节点发送源地址为DAD检测的地址，目的地址为全局组播地址，并目标IP携带DAD检测的地址，以及源链路层选项附上自己的链路层地址的NA报文。</p>
-<h3 id="邻居不可达检测（NUD）"><a href="#邻居不可达检测（NUD）" class="headerlink" title="邻居不可达检测（NUD）"></a>邻居不可达检测（NUD）</h3><p>NUD首先发送源地址为接口的链路本地地址，目的地址为要进行NUD检测的单播地址，然后目标IP携带要进行NUD检测的单播地址的NS报文，若可达，则被请求节点发送源地址为NUD检测的地址，目的地址为NS的源地址，并目标IP携带NUD检测的地址，并将S位置为1的NA报文。</p>
-<h3 id="路由器和前缀发现"><a href="#路由器和前缀发现" class="headerlink" title="路由器和前缀发现"></a>路由器和前缀发现</h3><p>当主机未配置单播地址时，就会发送RS，路由器和本地链路节点会发送RA，以使主机进行自动地址配置。</p>
-<p>当主机接收到RA后，使用其中的前缀信息和本地接口ID自动形成IPV6地址，还可根据其中的路由器信息设置默认路由器。</p>
-<p>RS可定位邻居路由器，同时学习和自动配置有关的前缀和配置参数。</p>
-<h3 id="路由重定向"><a href="#路由重定向" class="headerlink" title="路由重定向"></a>路由重定向</h3><p>假设链路上一个结点发送一个报文，源地址是A，目的地址是B，路由器收到该报文后，发送一个重定向报文，重定向报文中目标地址字段是C，该地址是告诉结点更好的下一跳地址，目的地址字段是B，该地址是结点发出去报文的目的地址，和上面的B是同一个地址。如果C和B不同，说明C地址是一个更优的路由器地址，如果C和B相同，说明B地址是同一个链路上结点的地址。</p>
-<h2 id="表项状态"><a href="#表项状态" class="headerlink" title="表项状态"></a>表项状态</h2><p>ND表项有五种状态：</p>
-<p><strong>INCOMPLETE</strong>（未完成的）地址解析在进行中，邻居的链路层地址还没有被确定。</p>
-<p><strong>REACHABLE</strong>（可到达的）粗略讲，已知邻居最近(几十秒前)是可达的。</p>
-<p><strong>STALE</strong>（陈旧的）邻居不再被认为是可达的，但是直到流量发送给该邻居时，不应当尝试改变它的可达性。</p>
-<p><strong>DELAY</strong>（延时）邻居不再被认为是可达的，最近流量已经发送到该邻居。然而，不立即探测该邻居的可达性，延时一段时间发送探测消息，以便给上层协议一个机会提供可达性确认。</p>
-<p><strong>PROBE</strong>（探测）邻居不再被认为是可达的，并且发送了单播NS探测消息以便验证可达性。</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./nd_entry_state.png"
-                      width="700px" height="auto" alt="ND表项状态机"
-                ><figcaption>ND表项状态机</figcaption></figure>
-
-<p><strong>EMPTY</strong>状态代表邻居表项不存在或者被删除。发送IPv6报文时，如果下一跳不在邻居表中，那么创建一条状态为INCOMPLETE的邻居表项，发送多播邻居请求报文，每隔1秒钟发一次，连发3次，直到收到应答为止。如果连发3次邻居请求报文都没有收到应答，那么删除邻居表项。如果收到应答，邻居表项的状态迁移到REACHABLE。</p>
-<p><strong>REACHABLE</strong>状态的持续时间缺省值是30秒，即在30秒钟内认为邻居可到达，30秒以后，迁移到STALE状态。如果在REACHABLE状态，收到邻居请求或者公告，发现MAC地址变化了，表项迁移到STALE状态。</p>
-<p>处于<strong>STALE</strong>状态，如果发送报文时命中这条邻居表项，那么迁移到DELAY状态，准备进行邻居不可达检测。对于STALE状态的持续时间，RFC没有规定。</p>
-<p>处于<strong>DELAY</strong>状态，5秒钟以后进入PROBE状态。</p>
-<p>处于<strong>PROBE</strong>状态，开始进行邻居不可达检测，发单播邻居请求，每秒发一次，连发3次，直到收到应答为止。如果收到应答，迁移到REACHABLE状态。如果连发3次仍然没有收到应答，就认为邻居不可达，删除邻居表项。</p>
-<p>收到邻居请求，创建新的邻居表项，状态必须是STALE，因为收到邻居请求只能证明对方发送的报文可到达自己，而不能确定自己发送的报文能到达对方。</p>
-<p>在进行邻居不可达检测时，结点发送的邻居请求报文可以包含源链路层地址选项，也可以不包含。如果邻居请求报文中没有包含源链路层地址选项。接收结点在发送邻居通告报文时，可能还需要执行地址解析操作。所以RFC2461建议邻居请求报文发送者包含源链路层地址选项。</p>
-]]></content>
-      <categories>
-        <category>通信</category>
-      </categories>
-      <tags>
-        <tag>通信</tag>
-        <tag>ND</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>也许那么...</title>
-    <url>/2016/09/25/%E4%B9%9F%E8%AE%B8%E9%82%A3%E4%B9%88/</url>
-    <content><![CDATA[<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./time.jpg"
-                      width="400px" height="auto" alt="时光里"
-                ><figcaption>时光里</figcaption></figure>
-
-<p>那么<br>曾经喜欢过，<br>也许<br>现在还喜欢，<br>但是<br>早已过去。</p>
-<p>曾经铭记于心，<br>现在隐藏内心。<br>包裹着<br>一层又一层的皮囊；<br>感受着<br>一次又一次的煎熬；<br>回想着<br>过去的点点滴滴；<br>不禁<br>心有感悟。</p>
-<p>过去的人和事，<br>如若还在身边，<br>那么这形同陌路，<br>却不如不见。<br>可不见，<br>却又倍加思念，<br>不知该何去何从，<br>便只能做好如今的事。</p>
-<p>那么不如待我如初见——至逝去的三年（初中）</p>
-<p style="text-align:right;">写于2016-09-25</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>伤</title>
-    <url>/2022/06/29/%E4%BC%A4/</url>
-    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
-<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
-<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
-<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
-<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
-<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
-<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>再识MyBatis-Plus</title>
-    <url>/2024/03/23/%E5%86%8D%E8%AF%86MyBatis-Plus/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本人之前学习过 MyBatis-Plus，但实际自己开发还是用的 MyBatis，基本就是简单 sql，因此用注解进行开发，手写 sql 也还好，故并未采用 MyBatis-Plus进行开发，但新入职的公司需要用到，于是进行重温，才有了这篇简略的记录。</p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>正如<a class="link"   href="https://mybatis.plus/" >官网 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>所说的愿景：成为 MyBatis 最好的搭档，就像魂斗罗中的 1P、2P，基友搭配，效率翻倍。MyBatis-Plus 相当于 MyBatis 的增强版插件，可以一起使用，事半功倍，省去编写简单 sql 的功夫，具体介绍可自行去官网查看。</p>
-<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><h3 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h3><ol>
-<li><p>@TableName</p>
-<p>标识实体类对应的数据库表。</p>
-</li>
-<li><p>@TableId</p>
-<p>标识主键属性。</p>
-</li>
-<li><p>@TableField</p>
-<p>标识对应数据库字段。</p>
-</li>
-<li><p>@TableLogic</p>
-<p>标识删除类型。</p>
-</li>
-</ol>
-<h3 id="基本crud"><a href="#基本crud" class="headerlink" title="基本crud"></a>基本crud</h3><p>所有的基本 crud 都在 BaseMapper 接口中定义，只需要继承并指定具体实体类即可。</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;User&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<p>BaseMapper 接口如下：</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BaseMapper</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Mapper</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="comment">// 新增数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">insert</span><span class="params">(T entity)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 删除</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">delete</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 更新</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">updateById</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity)</span>;</span><br><span class="line">	<span class="comment">// 更新数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">update</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; updateWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 查询</span></span><br><span class="line">    T <span class="title function_">selectById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量查询</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 查询数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 查询一条数据</span></span><br><span class="line">    T <span class="title function_">selectOne</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询记录总数</span></span><br><span class="line">    Integer <span class="title function_">selectCount</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectList</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">selectMaps</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Object&gt; <span class="title function_">selectObjs</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;T&gt;&gt; E <span class="title function_">selectPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;Map&lt;String, Object&gt;&gt;&gt; E <span class="title function_">selectMapsPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="增"><a href="#增" class="headerlink" title="增"></a>增</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setName(<span class="string">&quot;奕凰轩祭侍&quot;</span>);</span><br><span class="line">user.setAge(<span class="number">18</span>);</span><br><span class="line">userMapper.insert(user);</span><br><span class="line"><span class="comment">// 获取插入数据的主键 ID</span></span><br><span class="line"><span class="type">Long</span> <span class="variable">id</span> <span class="operator">=</span> user.getId();</span><br></pre></td></tr></table></figure></div>
-
-<p>一般使用@TableId(type &#x3D; IdType.AUTO)来指定数据库主键，然后数据库还存在另外一个唯一标识符，一般由后端进行UUID或者雪花算法生成，该标识符相当于业务中使用的主键。</p>
-<h4 id="删"><a href="#删" class="headerlink" title="删"></a>删</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.deleteById(<span class="number">10059249854L</span>); <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
-
-<p>根据主键删除，也可以直接传入对象，会根据标识的主键属性进行删除，以及可以根据其他条件删除，条件构造在<a href="#%E6%9F%A5">查询</a>中介绍。</p>
-<h4 id="改"><a href="#改" class="headerlink" title="改"></a>改</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setId(<span class="number">10059249854L</span>);</span><br><span class="line">user.setGender(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 实际执行的 SQL : UPDATE user SET gender=1 WHERE id=10059249854;</span></span><br><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.updateById(user);  <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
-
-<h4 id="查"><a href="#查" class="headerlink" title="查"></a>查</h4><p>在使用前需要进行 sql 条件语句的构建，有三种条件构建格式：</p>
-<ol>
-<li>常规条件构建格式</li>
-</ol>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapperr&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapperr</span>&lt;User&gt;();</span><br><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//今年刚满18岁~</span></span><br></pre></td></tr></table></figure></div>
-
-<ol start="2">
-<li>lamda格式条件构建格式</li>
-</ol>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lambda().eq(User::getName,<span class="string">&quot;劳大&quot;</span>); <span class="comment">//see you again（</span></span><br></pre></td></tr></table></figure></div>
-
-<ol start="3">
-<li>lambda格式条件构建格式</li>
-</ol>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">LambdaQueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">LambdaQueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lt(User::getPlay, <span class="string">&quot;Genshin Impact&quot;</span>); <span class="comment">//原神启动！</span></span><br></pre></td></tr></table></figure></div>
-
-<h5 id="常见的单条件查询"><a href="#常见的单条件查询" class="headerlink" title="常见的单条件查询"></a>常见的单条件查询</h5><h6 id="lt匹配"><a href="#lt匹配" class="headerlink" title="lt匹配"></a>lt匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="le匹配"><a href="#le匹配" class="headerlink" title="le匹配"></a>le匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.le(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="eq匹配"><a href="#eq匹配" class="headerlink" title="eq匹配"></a>eq匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//等同于=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="gt匹配"><a href="#gt匹配" class="headerlink" title="gt匹配"></a>gt匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="ge匹配"><a href="#ge匹配" class="headerlink" title="ge匹配"></a>ge匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ge(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="ne匹配"><a href="#ne匹配" class="headerlink" title="ne匹配"></a>ne匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ne(User::getAge,<span class="number">18</span>); <span class="comment">//等同于!=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="between匹配"><a href="#between匹配" class="headerlink" title="between匹配"></a>between匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.between(User::getAge, <span class="number">17</span>, <span class="number">19</span>); <span class="comment">//等同于&gt;=17 &amp;&amp; &lt;= 19</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="like匹配"><a href="#like匹配" class="headerlink" title="like匹配"></a>like匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.likeLeft(User::getName, <span class="string">&quot;奕&quot;</span>); <span class="comment">//相当于like %奕，还有like对应like %奕%、likeRight对应like 奕%</span></span><br></pre></td></tr></table></figure></div>
-
-<p>还有其他的一些条件，例如orderByAsc对应升序等，具体可以自己操作看看。</p>
-<h5 id="多条件查询"><a href="#多条件查询" class="headerlink" title="多条件查询"></a>多条件查询</h5><p>且</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">17</span>).lt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>或</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">17</span>).or().gt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
-
-<h5 id="动态查询"><a href="#动态查询" class="headerlink" title="动态查询"></a>动态查询</h5><p>可以通过 condition 参数动态拼接条件，例如：</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(minAge != <span class="literal">null</span>, User::getAge, minAge);</span><br><span class="line">userWrapper.lt(maxAge != <span class="literal">null</span>, User::getAge, maxAge);</span><br></pre></td></tr></table></figure></div>
-
-<h5 id="查询投影"><a href="#查询投影" class="headerlink" title="查询投影"></a>查询投影</h5><h6 id="查询部分属性"><a href="#查询部分属性" class="headerlink" title="查询部分属性"></a>查询部分属性</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(User::getName, User::getAge);</span><br></pre></td></tr></table></figure></div>
-
-<h6 id="查询未定义属性"><a href="#查询未定义属性" class="headerlink" title="查询未定义属性"></a>查询未定义属性</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(<span class="string">&quot;count(*) as count&quot;</span>,<span class="string">&quot;age&quot;</span>)</span><br><span class="line">		   .groupBy(<span class="string">&quot;age&quot;</span>)  <span class="comment">//分组字段</span></span><br><span class="line">           .having(<span class="string">&quot;COUNT(*)&gt;5&quot;</span>); <span class="comment">// 添加having筛选条件</span></span><br></pre></td></tr></table></figure></div>
-
-<h5 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h5><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 子查询 select id from user where id &lt;= 10059249854</span></span><br><span class="line">userWrapper.inSql(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;select id from user where id &lt;= 10059249854&quot;</span>);</span><br><span class="line">userWrapper.select(<span class="string">&quot;name&quot;</span>,<span class="string">&quot;age&quot;</span>);</span><br><span class="line">userWrapper.last(<span class="string">&quot;LIMIT 10&quot;</span>);</span><br><span class="line"><span class="comment">// 实际执行 SQL : SELECT name,age FROM user WHERE (id IN (select id from user where id &lt;= 10059249854)) LIMIT 10;</span></span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>ps:然而调到了另一个小组，没用到（</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>MyBatis-Plus</tag>
       </tags>
   </entry>
   <entry>
@@ -857,14 +571,290 @@
       </tags>
   </entry>
   <entry>
-    <title>告别高中</title>
-    <url>/2019/06/28/%E5%91%8A%E5%88%AB%E9%AB%98%E4%B8%AD/</url>
-    <content><![CDATA[<p>回想高中三年，有许多说不清道不明的意味，就好像天边的云彩，随着风飘动变得灵动万分，随着太阳的映射变得多姿多彩，但云终究是由液滴组成的，在不断的变化过程中，化为泡影，虽大气是不断循环的，但我就好比是其中的一个不起眼的水滴，终究会脱离这个大群体，融入另一个集体之中，这是必然性的结果。</p>
-<p>来不及说声告别，就恍如昨天，梦幻一般，煽情的话语已是不及我内心情感的激荡，一切尽在不言中，虽说这三年，我说实话并未真正了解任何一个人，但尽管如此，我们还是共度了高中，经历了高考的洗礼，有的人收获了喜悦，有的人却不尽人意，不论如何，我们必定拥有了属于自己的那一份悸动，愿今后我们能朝着前方，秉持信仰，一路披荆斩棘，这就是我的所感所想，一个在路上的准大一学生。</p>
+    <title>ND协议</title>
+    <url>/2024/03/06/ND%E5%8D%8F%E8%AE%AE/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>邻居发现协议，相当于IPv4中ARP、ICMP路由器发现和ICMP重定向这三种协议的组合。</p>
+<p>什么是邻居？即一个链路上的相邻主机或者路由器，主机与主机，主机和路由器，路由器和路由器可以互为邻居。</p>
+<p>地址解析放在ICMP层，通过使用ICMPv6报文实现功能。</p>
+<h3 id="报文格式"><a href="#报文格式" class="headerlink" title="报文格式"></a>报文格式</h3><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ipv6_packet_head_format.png"
+                      width="400px" height="auto" alt="IPv6报头格式"
+                ><figcaption>IPv6报头格式</figcaption></figure>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ipv6_packet_head_format_wireshark.png"
+                      width="550px" height="auto" alt="IPv6报头(Wireshark)"
+                ><figcaption>IPv6报头(Wireshark)</figcaption></figure>
+
+<p><strong>版本号</strong>(version)：同IPv4，指示IP版本</p>
+<p><strong>流量等级</strong>(Traffic Class)：类似IPv4中的TOS字段，指示IPv6数据流通信类别或优先级</p>
+<p><strong>流标签</strong>（FlowLabel)：标记需要特殊处理的数据流，用于某些对连接的服务质量有特殊要求的通信，诸如音频或视频等实时数据</p>
+<p><strong>传输数据长度</strong>(Payload Length)：包含有效载荷数据的IPv6报文总长度</p>
+<p><strong>下一个报头</strong>(Next Header)：该字段定义了紧跟在IPv6报头后面的第一个扩展报头(如果存在)的类型，或者上层协议数据单元中的协议类型</p>
+<p><strong>跳限制</strong>(Hop Limit)：类似于IPv4中的TTL字段，它定义了IP数据包所能经过路由器的最大跳数</p>
+<p><strong>源地址</strong>(Source Address)：128bit的IPv6地址</p>
+<p><strong>目的地址</strong>(Destination Address)：128bit的IPv6地址</p>
+<h4 id="与IPv4对比"><a href="#与IPv4对比" class="headerlink" title="与IPv4对比"></a>与IPv4对比</h4><p><strong>IPv6报头结构的改善</strong>：基本的IPv4报头长度为20个字节，基本的IPv6报头长度为40个字节</p>
+<p><strong>取消了IP的校验</strong>：由于2层与4层的校验已经足够健壮，取消了IP的三层校验</p>
+<p><strong>取消中间节点的分片功能</strong>：分片重组功能由源端实现，通过Path MTU机制来发现路径MTU</p>
+<p><strong>定义最长的IPv6报头</strong>：有利于硬件的快速处理，中间节点节约大量资源</p>
+<p><strong>安全选项的支持</strong>：IPv6提供了对IPsec的完美支持，上层协议省去大量安全选项，例如OSPFv3取消了认证</p>
+<p><strong>增加流标签</strong>：提高QoS效率</p>
+<h3 id="报文分类"><a href="#报文分类" class="headerlink" title="报文分类"></a>报文分类</h3><p>邻居发现协议定义了五种不同的ICMP包类型：路由请求RS（Router Solicitation）和路由告知RA（ Router Advertisement）消息，邻居请求NS（Neighbor Solicitation）和邻居告知NA（Neighbor Advertisements）消息，以及重定向（Redirect message）消息。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./nd_packet_type.png"
+                      width="450px" height="auto" alt="ND协议报文类型"
+                ><figcaption>ND协议报文类型</figcaption></figure>
+
+<h4 id="路由请求"><a href="#路由请求" class="headerlink" title="路由请求"></a>路由请求</h4><p>当一个接口变为可用时，主机可以发出路由请求消息来要求路由器马上生成路由告知（ Router Advertisement）消息，而不是等它的下一个固定生成时间。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./rs_packet_format.png"
+                      width="500px" height="auto" alt="RS报文格式"
+                ><figcaption>RS报文格式</figcaption></figure>
+
+<p>源地址：接口的地址或者全0</p>
+<p>目的地址：全部路由器组播地址</p>
+<p>跳数：255</p>
+<p>ICMP6 TYPE：133</p>
+<p>ICMP6 CODE：0</p>
+<h4 id="路由告知"><a href="#路由告知" class="headerlink" title="路由告知"></a>路由告知</h4><p>路由器周期地用此消息通告它们的存在及各种链路参数和互联网参数，或响应Router Solicitation消息。Router Advertisements包括前缀，这些前缀用于确定是否另一个地址共享相同链路(on-link确认)和&#x2F;或地址配置，建议的跳数限制值，等等。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ra_packet_format.png"
+                      width="500px" height="auto" alt="RA报文格式"
+                ><figcaption>RA报文格式</figcaption></figure>
+
+<p><strong>当前跳数值</strong>（Current Hop Limit）字段，用法如下：链路上的结点发送IPv6报文时，会用该字段的值来填充IPv6报文头的跳数限制字段。如果该字段值为0，说明路由器并不确定该值为多少。</p>
+<p><strong>M位</strong>被称为管理地址配置（Managed Address Configuration）标志位，当该位被置1时，说明DHCPv6可用于结点地址配置。</p>
+<p><strong>O位</strong>被称为其它有状态配置（Other Stateful Configuration）标志位，当该位被置1时，说明DHCPv6可用于获得非地址相关的配置信息，如DNS名称服务器的IPv6地址。</p>
+<p><strong>路由器生命期</strong>字段是一个16位无符号数，计量单位为秒，它指示链路上的结点把该路由器做为默认路由器的时间为多长，最大值为18.2小时。该字段为0表示发送该报文的路由器不做为默认路由器，这时，结点在发送报文时，不会选择该路由器做为下一跳路由器。</p>
+<p><strong>可达时间</strong>字段是一个32位无符号数，计量单位为毫秒，它指示链路上的结点在收到一个邻居可达的确认报文后，认为该邻居仍然可达的时间。在这段时间内，如果结点没有再收到邻居可达的确认报文，结点会执行邻居不可达检测以确认邻居是否可达。该字段为0表示路由器不指定该参数。</p>
+<p><strong>重传时间</strong>字段是一个32位无符号数，计量单位为毫秒，它指示链路上的结点在执行邻居不可达检测或者地址解析时，连续发送邻居请求报文中间的时间间隔。该字段为0表示路由器不指定该参数。</p>
+<p><strong>前缀</strong>选项，通过该选项，路由器向链路上通告本链路所有可达的前缀，并且通过标志位指出哪些前缀可用于结点的地址自动配置。</p>
+<p>源地址：接口的本地链路地址</p>
+<p>目的地址：发送路由器请求的主机的源地址或者全部节点组播地址</p>
+<p>跳数：255</p>
+<p>ICMP6 TYPE：134</p>
+<p>ICMP6 CODE：0</p>
+<h4 id="邻居请求"><a href="#邻居请求" class="headerlink" title="邻居请求"></a>邻居请求</h4><p>节点发送该消息以确定某个邻居的链路层地址，或者用来验证通过缓存里的链路层地址是否依然能够到达该邻居。也经常用来做地址重复检测。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ns_packet_format.png"
+                      width="500px" height="auto" alt="NS报文格式"
+                ><figcaption>NS报文格式</figcaption></figure>
+
+<p><strong>目标地址</strong>字段是一个IPv6地址，一般与目的地址相同，填的是请求的地址，该字段不能是多播地址。</p>
+<p><strong>源链路层地址</strong>选项，协议建议携带，一般为源MAC</p>
+<p>源地址：接口的地址或者未指定地址</p>
+<p>目的地址：目标地址或者目标地址对应的请求节点组播地址</p>
+<p>跳数：255</p>
+<p>ICMP6 TYPE：135</p>
+<p>ICMP6 CODE：0</p>
+<h4 id="邻居告知"><a href="#邻居告知" class="headerlink" title="邻居告知"></a>邻居告知</h4><p>邻居请求消息的回应。节点也可以发送非请求的Neighbor Advertisements，通知链路层地址改变。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./na_packet_format.png"
+                      width="500px" height="auto" alt="NA报文格式"
+                ><figcaption>NA报文格式</figcaption></figure>
+
+<p><strong>R位</strong>是路由器（IsRouter）标志位，当这个标志位置1时，说明发送者是路由器。</p>
+<p><strong>S位</strong>是被请求（Solicited）标志位，当这个标志位置1时，说明发送者发送邻居通告报文是因为接收到一个邻居请求报文，这个邻居通告报文的目的地址是单播地址；如果邻居通告报文目的地址是多播地址，则该位置0。</p>
+<p><strong>O位</strong>是覆盖（Override）标志位，当这个标志位置1时，接收到该报文的结点查看邻居缓存，如果缓存中有发送该邻居通告报文结点的链路层地址，则更新之。否则忽略该邻居通告报文。</p>
+<p><strong>目标地址</strong>字段是一个IPv6地址，如果邻居通告报文是由邻居请求报文触发的，则该地址是邻居请求报文中的目标地址。如果邻居通告报文是因为链路层地址变化触发的，则该地址是和变化的链路层地址相关的IPv6地址。该字段不能包含一个多播地址。</p>
+<p><strong>目标链路层地址</strong>选项。如果邻居通告报文目的地址是多播地址，必须包含目标链路层地址选项。</p>
+<p>源地址：接口的地址</p>
+<p>目的地址：发送邻居请求节点的源地址或者全部节点组播地址</p>
+<p>跳数：255</p>
+<p>ICMP6 TYPE：136</p>
+<p>ICMP6 CODE：0</p>
+<h4 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h4><p>由路由器使用，用于通知主机有到目的地的较好的第一跳。路由器收到一个报文后，如果发现报文的目的地址和源地址是同一个链路的，或者到目的地址有一个更优的路由器，都会发送重定向报文。重定向报文的源地址必须使用链路本地地址。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./redirect_packet_format.png"
+                      width="500px" height="auto" alt="重定向报文格式"
+                ><figcaption>重定向报文格式</figcaption></figure>
+
+<p><strong>重定向报文头</strong>选项包含了引发重定向报文的原始报文的内容。</p>
+<p>源地址：接口的链路本地地址</p>
+<p>目的地址：触发重定向的数据包的源地址</p>
+<p>跳数：255</p>
+<p>ICMP6 TYPE：137</p>
+<p>ICMP6 CODE：0</p>
+<blockquote>
+<p>主机不能发送路由器通告，路由器不能发送路由器请求。</p>
+<p>主机不能发送重定向报文，路由器不能处理重定向报文。</p>
+</blockquote>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ul>
+<li><a href="#%E8%A7%A3%E6%9E%90%E9%82%BB%E5%B1%85%E7%9A%84%E9%93%BE%E8%B7%AF%E5%B1%82%E5%9C%B0%E5%9D%80">解析邻居的链路层地址</a></li>
+<li><a href="#%E5%9C%B0%E5%9D%80%E5%86%B2%E7%AA%81%E6%A3%80%E6%B5%8B%EF%BC%88DAD%EF%BC%89">地址冲突检测（DAD）</a></li>
+<li><a href="#%E9%82%BB%E5%B1%85%E4%B8%8D%E5%8F%AF%E8%BE%BE%E6%A3%80%E6%B5%8B%EF%BC%88NUD%EF%BC%89">邻居不可达检测（NUD）</a></li>
+<li><a href="#%E8%B7%AF%E7%94%B1%E5%99%A8%E5%92%8C%E5%89%8D%E7%BC%80%E5%8F%91%E7%8E%B0">路由器和前缀发现</a></li>
+<li><a href="#%E8%B7%AF%E7%94%B1%E9%87%8D%E5%AE%9A%E5%90%91">路由重定向</a></li>
+</ul>
+<h3 id="解析邻居的链路层地址"><a href="#解析邻居的链路层地址" class="headerlink" title="解析邻居的链路层地址"></a>解析邻居的链路层地址</h3><p>IPv6取消ARP协议，通过邻居请求（NS）和邻居通告（NA）报文来解析三层地址对应的链路层地址。</p>
+<p>邻居请求NS使用组播，比ARP效率高，邻居公告NA返回则直接使用单播。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ipv6_address_resolution.png"
+                      width="650px" height="auto" alt="IPv6地址解析"
+                ><figcaption>IPv6地址解析</figcaption></figure>
+
+<p>一整个ping的过程跟ARP一样相当于两个来回：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ipv6_ping_wireshark.png"
+                      width="800px" height="auto" alt="ping(Wireshark)"
+                ><figcaption>ping(Wireshark)</figcaption></figure>
+
+<p>通过我开发的show ipv6 nd-packet history命令也可以看到整个过程：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./show_ipv6_nd_packet_history.png"
+                      width="100%" height="auto" alt="show ipv6 nd-packet history"
+                ><figcaption>show ipv6 nd-packet history</figcaption></figure>
+
+<h3 id="地址冲突检测（DAD）"><a href="#地址冲突检测（DAD）" class="headerlink" title="地址冲突检测（DAD）"></a>地址冲突检测（DAD）</h3><p>DAD首先发送源地址为未分配地址，目的地址为要进行DAD检测的地址所对应被请求节点的组播地址，然后目标IP携带要进行DAD检测的地址的NS报文，若有冲突，则被请求节点发送源地址为DAD检测的地址，目的地址为全局组播地址，并目标IP携带DAD检测的地址，以及源链路层选项附上自己的链路层地址的NA报文。</p>
+<h3 id="邻居不可达检测（NUD）"><a href="#邻居不可达检测（NUD）" class="headerlink" title="邻居不可达检测（NUD）"></a>邻居不可达检测（NUD）</h3><p>NUD首先发送源地址为接口的链路本地地址，目的地址为要进行NUD检测的单播地址，然后目标IP携带要进行NUD检测的单播地址的NS报文，若可达，则被请求节点发送源地址为NUD检测的地址，目的地址为NS的源地址，并目标IP携带NUD检测的地址，并将S位置为1的NA报文。</p>
+<h3 id="路由器和前缀发现"><a href="#路由器和前缀发现" class="headerlink" title="路由器和前缀发现"></a>路由器和前缀发现</h3><p>当主机未配置单播地址时，就会发送RS，路由器和本地链路节点会发送RA，以使主机进行自动地址配置。</p>
+<p>当主机接收到RA后，使用其中的前缀信息和本地接口ID自动形成IPV6地址，还可根据其中的路由器信息设置默认路由器。</p>
+<p>RS可定位邻居路由器，同时学习和自动配置有关的前缀和配置参数。</p>
+<h3 id="路由重定向"><a href="#路由重定向" class="headerlink" title="路由重定向"></a>路由重定向</h3><p>假设链路上一个结点发送一个报文，源地址是A，目的地址是B，路由器收到该报文后，发送一个重定向报文，重定向报文中目标地址字段是C，该地址是告诉结点更好的下一跳地址，目的地址字段是B，该地址是结点发出去报文的目的地址，和上面的B是同一个地址。如果C和B不同，说明C地址是一个更优的路由器地址，如果C和B相同，说明B地址是同一个链路上结点的地址。</p>
+<h2 id="表项状态"><a href="#表项状态" class="headerlink" title="表项状态"></a>表项状态</h2><p>ND表项有五种状态：</p>
+<p><strong>INCOMPLETE</strong>（未完成的）地址解析在进行中，邻居的链路层地址还没有被确定。</p>
+<p><strong>REACHABLE</strong>（可到达的）粗略讲，已知邻居最近(几十秒前)是可达的。</p>
+<p><strong>STALE</strong>（陈旧的）邻居不再被认为是可达的，但是直到流量发送给该邻居时，不应当尝试改变它的可达性。</p>
+<p><strong>DELAY</strong>（延时）邻居不再被认为是可达的，最近流量已经发送到该邻居。然而，不立即探测该邻居的可达性，延时一段时间发送探测消息，以便给上层协议一个机会提供可达性确认。</p>
+<p><strong>PROBE</strong>（探测）邻居不再被认为是可达的，并且发送了单播NS探测消息以便验证可达性。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./nd_entry_state.png"
+                      width="700px" height="auto" alt="ND表项状态机"
+                ><figcaption>ND表项状态机</figcaption></figure>
+
+<p><strong>EMPTY</strong>状态代表邻居表项不存在或者被删除。发送IPv6报文时，如果下一跳不在邻居表中，那么创建一条状态为INCOMPLETE的邻居表项，发送多播邻居请求报文，每隔1秒钟发一次，连发3次，直到收到应答为止。如果连发3次邻居请求报文都没有收到应答，那么删除邻居表项。如果收到应答，邻居表项的状态迁移到REACHABLE。</p>
+<p><strong>REACHABLE</strong>状态的持续时间缺省值是30秒，即在30秒钟内认为邻居可到达，30秒以后，迁移到STALE状态。如果在REACHABLE状态，收到邻居请求或者公告，发现MAC地址变化了，表项迁移到STALE状态。</p>
+<p>处于<strong>STALE</strong>状态，如果发送报文时命中这条邻居表项，那么迁移到DELAY状态，准备进行邻居不可达检测。对于STALE状态的持续时间，RFC没有规定。</p>
+<p>处于<strong>DELAY</strong>状态，5秒钟以后进入PROBE状态。</p>
+<p>处于<strong>PROBE</strong>状态，开始进行邻居不可达检测，发单播邻居请求，每秒发一次，连发3次，直到收到应答为止。如果收到应答，迁移到REACHABLE状态。如果连发3次仍然没有收到应答，就认为邻居不可达，删除邻居表项。</p>
+<p>收到邻居请求，创建新的邻居表项，状态必须是STALE，因为收到邻居请求只能证明对方发送的报文可到达自己，而不能确定自己发送的报文能到达对方。</p>
+<p>在进行邻居不可达检测时，结点发送的邻居请求报文可以包含源链路层地址选项，也可以不包含。如果邻居请求报文中没有包含源链路层地址选项。接收结点在发送邻居通告报文时，可能还需要执行地址解析操作。所以RFC2461建议邻居请求报文发送者包含源链路层地址选项。</p>
 ]]></content>
       <categories>
-        <category>随笔</category>
+        <category>通信</category>
       </categories>
+      <tags>
+        <tag>通信</tag>
+        <tag>ND</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>再识MyBatis-Plus</title>
+    <url>/2024/03/23/%E5%86%8D%E8%AF%86MyBatis-Plus/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本人之前学习过 MyBatis-Plus，但实际自己开发还是用的 MyBatis，基本就是简单 sql，因此用注解进行开发，手写 sql 也还好，故并未采用 MyBatis-Plus进行开发，但新入职的公司需要用到，于是进行重温，才有了这篇简略的记录。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>正如<a class="link"   href="https://mybatis.plus/" >官网 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>所说的愿景：成为 MyBatis 最好的搭档，就像魂斗罗中的 1P、2P，基友搭配，效率翻倍。MyBatis-Plus 相当于 MyBatis 的增强版插件，可以一起使用，事半功倍，省去编写简单 sql 的功夫，具体介绍可自行去官网查看。</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><h3 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h3><ol>
+<li><p>@TableName</p>
+<p>标识实体类对应的数据库表。</p>
+</li>
+<li><p>@TableId</p>
+<p>标识主键属性。</p>
+</li>
+<li><p>@TableField</p>
+<p>标识对应数据库字段。</p>
+</li>
+<li><p>@TableLogic</p>
+<p>标识删除类型。</p>
+</li>
+</ol>
+<h3 id="基本crud"><a href="#基本crud" class="headerlink" title="基本crud"></a>基本crud</h3><p>所有的基本 crud 都在 BaseMapper 接口中定义，只需要继承并指定具体实体类即可。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;User&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>BaseMapper 接口如下：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BaseMapper</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Mapper</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="comment">// 新增数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">insert</span><span class="params">(T entity)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 删除</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">delete</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 更新</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">updateById</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity)</span>;</span><br><span class="line">	<span class="comment">// 更新数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">update</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; updateWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 查询</span></span><br><span class="line">    T <span class="title function_">selectById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量查询</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 查询数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 查询一条数据</span></span><br><span class="line">    T <span class="title function_">selectOne</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询记录总数</span></span><br><span class="line">    Integer <span class="title function_">selectCount</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectList</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">selectMaps</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Object&gt; <span class="title function_">selectObjs</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;T&gt;&gt; E <span class="title function_">selectPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;Map&lt;String, Object&gt;&gt;&gt; E <span class="title function_">selectMapsPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="增"><a href="#增" class="headerlink" title="增"></a>增</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setName(<span class="string">&quot;奕凰轩祭侍&quot;</span>);</span><br><span class="line">user.setAge(<span class="number">18</span>);</span><br><span class="line">userMapper.insert(user);</span><br><span class="line"><span class="comment">// 获取插入数据的主键 ID</span></span><br><span class="line"><span class="type">Long</span> <span class="variable">id</span> <span class="operator">=</span> user.getId();</span><br></pre></td></tr></table></figure></div>
+
+<p>一般使用@TableId(type &#x3D; IdType.AUTO)来指定数据库主键，然后数据库还存在另外一个唯一标识符，一般由后端进行UUID或者雪花算法生成，该标识符相当于业务中使用的主键。</p>
+<h4 id="删"><a href="#删" class="headerlink" title="删"></a>删</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.deleteById(<span class="number">10059249854L</span>); <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
+
+<p>根据主键删除，也可以直接传入对象，会根据标识的主键属性进行删除，以及可以根据其他条件删除，条件构造在<a href="#%E6%9F%A5">查询</a>中介绍。</p>
+<h4 id="改"><a href="#改" class="headerlink" title="改"></a>改</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setId(<span class="number">10059249854L</span>);</span><br><span class="line">user.setGender(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 实际执行的 SQL : UPDATE user SET gender=1 WHERE id=10059249854;</span></span><br><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.updateById(user);  <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="查"><a href="#查" class="headerlink" title="查"></a>查</h4><p>在使用前需要进行 sql 条件语句的构建，有三种条件构建格式：</p>
+<ol>
+<li>常规条件构建格式</li>
+</ol>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapperr&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapperr</span>&lt;User&gt;();</span><br><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//今年刚满18岁~</span></span><br></pre></td></tr></table></figure></div>
+
+<ol start="2">
+<li>lamda格式条件构建格式</li>
+</ol>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lambda().eq(User::getName,<span class="string">&quot;劳大&quot;</span>); <span class="comment">//see you again（</span></span><br></pre></td></tr></table></figure></div>
+
+<ol start="3">
+<li>lambda格式条件构建格式</li>
+</ol>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">LambdaQueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">LambdaQueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lt(User::getPlay, <span class="string">&quot;Genshin Impact&quot;</span>); <span class="comment">//原神启动！</span></span><br></pre></td></tr></table></figure></div>
+
+<h5 id="常见的单条件查询"><a href="#常见的单条件查询" class="headerlink" title="常见的单条件查询"></a>常见的单条件查询</h5><h6 id="lt匹配"><a href="#lt匹配" class="headerlink" title="lt匹配"></a>lt匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="le匹配"><a href="#le匹配" class="headerlink" title="le匹配"></a>le匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.le(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;=18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="eq匹配"><a href="#eq匹配" class="headerlink" title="eq匹配"></a>eq匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//等同于=18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="gt匹配"><a href="#gt匹配" class="headerlink" title="gt匹配"></a>gt匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="ge匹配"><a href="#ge匹配" class="headerlink" title="ge匹配"></a>ge匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ge(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;=18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="ne匹配"><a href="#ne匹配" class="headerlink" title="ne匹配"></a>ne匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ne(User::getAge,<span class="number">18</span>); <span class="comment">//等同于!=18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="between匹配"><a href="#between匹配" class="headerlink" title="between匹配"></a>between匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.between(User::getAge, <span class="number">17</span>, <span class="number">19</span>); <span class="comment">//等同于&gt;=17 &amp;&amp; &lt;= 19</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="like匹配"><a href="#like匹配" class="headerlink" title="like匹配"></a>like匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.likeLeft(User::getName, <span class="string">&quot;奕&quot;</span>); <span class="comment">//相当于like %奕，还有like对应like %奕%、likeRight对应like 奕%</span></span><br></pre></td></tr></table></figure></div>
+
+<p>还有其他的一些条件，例如orderByAsc对应升序等，具体可以自己操作看看。</p>
+<h5 id="多条件查询"><a href="#多条件查询" class="headerlink" title="多条件查询"></a>多条件查询</h5><p>且</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">17</span>).lt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>或</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">17</span>).or().gt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="动态查询"><a href="#动态查询" class="headerlink" title="动态查询"></a>动态查询</h5><p>可以通过 condition 参数动态拼接条件，例如：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(minAge != <span class="literal">null</span>, User::getAge, minAge);</span><br><span class="line">userWrapper.lt(maxAge != <span class="literal">null</span>, User::getAge, maxAge);</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="查询投影"><a href="#查询投影" class="headerlink" title="查询投影"></a>查询投影</h5><h6 id="查询部分属性"><a href="#查询部分属性" class="headerlink" title="查询部分属性"></a>查询部分属性</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(User::getName, User::getAge);</span><br></pre></td></tr></table></figure></div>
+
+<h6 id="查询未定义属性"><a href="#查询未定义属性" class="headerlink" title="查询未定义属性"></a>查询未定义属性</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(<span class="string">&quot;count(*) as count&quot;</span>,<span class="string">&quot;age&quot;</span>)</span><br><span class="line">		   .groupBy(<span class="string">&quot;age&quot;</span>)  <span class="comment">//分组字段</span></span><br><span class="line">           .having(<span class="string">&quot;COUNT(*)&gt;5&quot;</span>); <span class="comment">// 添加having筛选条件</span></span><br></pre></td></tr></table></figure></div>
+
+<h5 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h5><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 子查询 select id from user where id &lt;= 10059249854</span></span><br><span class="line">userWrapper.inSql(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;select id from user where id &lt;= 10059249854&quot;</span>);</span><br><span class="line">userWrapper.select(<span class="string">&quot;name&quot;</span>,<span class="string">&quot;age&quot;</span>);</span><br><span class="line">userWrapper.last(<span class="string">&quot;LIMIT 10&quot;</span>);</span><br><span class="line"><span class="comment">// 实际执行 SQL : SELECT name,age FROM user WHERE (id IN (select id from user where id &lt;= 10059249854)) LIMIT 10;</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>ps:然而调到了另一个小组，没用到（</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>MyBatis-Plus</tag>
+      </tags>
   </entry>
   <entry>
     <title>关于上云故障转移方案</title>
@@ -895,6 +885,16 @@
         <tag>上云</tag>
         <tag>故障转移</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>告别高中</title>
+    <url>/2019/06/28/%E5%91%8A%E5%88%AB%E9%AB%98%E4%B8%AD/</url>
+    <content><![CDATA[<p>回想高中三年，有许多说不清道不明的意味，就好像天边的云彩，随着风飘动变得灵动万分，随着太阳的映射变得多姿多彩，但云终究是由液滴组成的，在不断的变化过程中，化为泡影，虽大气是不断循环的，但我就好比是其中的一个不起眼的水滴，终究会脱离这个大群体，融入另一个集体之中，这是必然性的结果。</p>
+<p>来不及说声告别，就恍如昨天，梦幻一般，煽情的话语已是不及我内心情感的激荡，一切尽在不言中，虽说这三年，我说实话并未真正了解任何一个人，但尽管如此，我们还是共度了高中，经历了高考的洗礼，有的人收获了喜悦，有的人却不尽人意，不论如何，我们必定拥有了属于自己的那一份悸动，愿今后我们能朝着前方，秉持信仰，一路披荆斩棘，这就是我的所感所想，一个在路上的准大一学生。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
   </entry>
   <entry>
     <title>呐喊</title>
@@ -935,41 +935,6 @@
       <tags>
         <tag>学习路线</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>我</title>
-    <url>/2018/05/06/%E6%88%91/</url>
-    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
-<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
-<p>也许<br>来来往往<br>你已老去</p>
-<p>但是<br>往复之间<br>越发真切</p>
-<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
-<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
-<p>我也知道<br>你<br>曾多少次暗自神伤</p>
-<p>我亦知道<br>你<br>曾多少次触景生情</p>
-<p>因为<br>我知道<br>我便是你</p>
-<p style="text-align:right;">写于2018-5-6</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>小丑</title>
-    <url>/2021/08/16/%E5%B0%8F%E4%B8%91/</url>
-    <content><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p>
-<p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p>
-<p>哀嚎着，<br>究竟是人是鬼？</p>
-<p style="text-align:right;">写于2021-8-16</p>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./joker.jpg"
-                      width="500px" height="auto" alt="小丑"
-                ><figcaption>小丑</figcaption></figure>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
   </entry>
   <entry>
     <title>基于Docker和k8s的部署方案</title>
@@ -1158,17 +1123,36 @@
       </tags>
   </entry>
   <entry>
-    <title>把握</title>
-    <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
-    <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
-<p style="text-align:right;">写于2016-5-14</p>
+    <title>我</title>
+    <url>/2018/05/06/%E6%88%91/</url>
+    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
+<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
+<p>也许<br>来来往往<br>你已老去</p>
+<p>但是<br>往复之间<br>越发真切</p>
+<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
+<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
+<p>我也知道<br>你<br>曾多少次暗自神伤</p>
+<p>我亦知道<br>你<br>曾多少次触景生情</p>
+<p>因为<br>我知道<br>我便是你</p>
+<p style="text-align:right;">写于2018-5-6</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>小丑</title>
+    <url>/2021/08/16/%E5%B0%8F%E4%B8%91/</url>
+    <content><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p>
+<p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p>
+<p>哀嚎着，<br>究竟是人是鬼？</p>
+<p style="text-align:right;">写于2021-8-16</p>
 
 <figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="./elapse.jpg"
-                      width="400px" height="auto" alt="流逝"
-                ><figcaption>流逝</figcaption></figure>]]></content>
+                     data-src="./joker.jpg"
+                      width="500px" height="auto" alt="小丑"
+                ><figcaption>小丑</figcaption></figure>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -1181,6 +1165,22 @@
 <p>曾几何时，可笑的认为这世间如此美好，却在一瞬之间，破灭了，一点点消散在内心深处，化为一道道无法修复的伤痕，触目惊心，却又蕴含着对从前的回忆，不禁交杂着一种复杂的情感，在笑的时候，眼角却冒出了眼泪，内心痛苦，牵动着神经，身体做出抗拒的表现，想要发泄，却又不能，只能任由它肆意破坏曾经美好的感受，剩下一片废墟，慢慢沙化，渴望雨水将其冲刷干净，却只有几滴眼泪。</p>
 <p>无言，岁月流逝，也许废墟会重建，但一切早已不是原来的模样，只有那面目全非的痕迹才能证明这曾经存在过，只能独自缅怀逝去的青春，却无人能懂，烦闷瞬间爆炸，将我炸得血肉横飞。一次又一次地隐忍，早已受不了那倦怠，我只想逃离，逃离这一切。</p>
 <p style="text-align:right;">写于高中某天</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>把握</title>
+    <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
+    <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
+<p style="text-align:right;">写于2016-5-14</p>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./elapse.jpg"
+                      width="400px" height="auto" alt="流逝"
+                ><figcaption>流逝</figcaption></figure>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
