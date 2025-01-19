@@ -1,90 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hexo配置</title>
-    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
-<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
-
-<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
-
-  <div class="note p-4 mb-4 rounded-small success">
-    <figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
-                      class="" alt="hexo -v"
-                ><figcaption>hexo -v</figcaption></figure>
-  </div>
-
-<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./creat_repository.png"
-                      width="600px" height="auto" alt="创建个人页仓库"
-                ><figcaption>创建个人页仓库</figcaption></figure>
-
-<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
-
-<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
-
-<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
-<p>Hexo 程序目录：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./directory_structure.png"
-                      width="400px" height="auto" alt="目录结构"
-                ><figcaption>目录结构</figcaption></figure>
-
-<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
-
-<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
-<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
-
-<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
-<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，挑选一个心仪的主题并进行下载。</p>
-<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，用该主题介绍如何进行安装。</p>
-<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
-
-<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
-<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
-
-<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
-<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
-<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 挑选，甚至可以自己开发一个。</p>
-<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
-<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>使用时可以直接像下面这样：</p>
-<div class="highlight-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./bilibili_url.png"
-                      width="700px" height="auto" alt="修改哔哩哔哩url"
-                ><figcaption>修改哔哩哔哩url</figcaption></figure>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>配置</tag>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ARP协议</title>
     <url>/2024/03/05/ARP%E5%8D%8F%E8%AE%AE/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ARP即地址解析协议，将IP地址解析为MAC地址。数据要在以太网中传输，需要完成以太网封装，这项工作由网络层负责。要完成以太网的数据封装，需要知道目的设备的MAC地址。</p>
@@ -252,92 +168,87 @@
       </tags>
   </entry>
   <entry>
-    <title>IOC和AOP原理</title>
-    <url>/2024/08/06/IOC%E5%92%8CAOP%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p>通过对<a class="link"   href="https://github.com/DerekYRC/mini-spring" >mini-spring <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 代码的阅读，对IoC和AOP的原理有了进一步认识，二者都为构成Spring的基础概念，是框架底层的实现原理。</p>
-<blockquote>
-<p>mini-spring是对Spring IOC和AOP部分的简单实现，仅保留最基础的部分。</p>
-</blockquote>
-<h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Ioc即控制反转，指的是容器控制程序对象之间的关系，而不是传统实现中，由程序代码直接控制，控制权由应用代码中转到了外部容器，控制权的转移即所谓的反转。</p>
-<p>对于Spring而言，就是由Spring来控制对象的生命周期和对象之间的关系，因此，Ioc还有另一个名字——依赖注入，即组件之间的依赖关系由容器在运行期间决定，由容器动态地将某种依赖关系注入到组件之间。</p>
-<p>所有的类都会在Spring容器中登记，告诉Spring这是个什么东西，然后当某个类需要什么东西，Spring就会在系统运行到适当的时候，将这个类要的东西主动赋予，同时对于其他类也是如此。所有的类的创建、销毁都由Spring来控制，也就是说控制对象生存周期的不再是引用它的对象，而是Spring。对于某个具体的对象而言，以前是它控制其他对象，现在是所有对象都被Spring控制，所以这叫控制反转。</p>
-<p>依赖注入的思想是通过反射机制实现的，在实例化一个类时，它通过反射调用类中set方法将事先保存在HashMap中的类属性注入到类中。总而言之，在传统的对象创建方式中，通常由调用者来创建被调用者的实例，而在Spring中创建被调用者的工作由Spring来完成，然后注入调用者，即所谓的依赖注入or控制反转。</p>
-<p>IoC的优点：降低了组件之间的耦合，降低了业务对象之间替换的复杂性，使之能够灵活的管理对象。</p>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>见 <a href="#bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">bean的生命周期</a></p>
-<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><p>AOP面向切面编程基于IoC，是对OOP的有益补充，AOP利用一种称为“横切”的技术，剖解开封装的对象内部，并将那些影响了多个类的公共行为封装到一个可重用模块，并将其名为“Aspect”，即切面。</p>
-<p>所谓“切面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，比如日志记录，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可操作性和可维护性。</p>
-<p>AOP代表的是一个横向的关系，将“对象”比作一个空心的立体，其中封装的是对象的属性和行为，则面向切面编程的方法，就是将这个立体以切面形式剖开，选择性地提供业务逻辑，而剖开的切面，也就是所谓的“切面”了。</p>
-<p>实现AOP的技术，主要分为两大类：一是采用动态代理技术，利用截取消息的方式，对该消息进行装饰，以取代原有对象行为的执行，二是采用静态织入的方式，引入特定的语法创建“切面”，从而使得编译器可以在编译期间织入有关“切面”的代码。</p>
-<p>Spring实现AOP：JDK动态代理和CGLIB代理。</p>
-<ul>
-<li>JDK动态代理：其代理对象必须是某个接口的实现，它是通过在运行期间创建一个接口的实现类来完成对目标对象的代理，其核心的两个类是InvocationHandler和Proxy。</li>
-<li>CGLIB代理：实现原理类似于JDK动态代理，只是它在运行期间生成的代理对象是针对目标类扩展的子类。CGLIB是高效的代码生成包，底层是依靠ASM（开源的java字节码编辑类库）操作字节码实现的，性能比JDK强，需要引入包asm.jar和cglib.jar。</li>
-</ul>
-<p>使用AspectJ注入式切面和@AspectJ注解驱动的切面实际上底层也是通过动态代理实现的。</p>
-<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>ProxyFactory是动态代理工厂，用来决定使用JDK动态代理还是CGLIB动态代理。</p>
-<p>获取BeanFactory所有的AspectJExpressionPointcutAdvisor继承类，常用的有BeforeAdvice、AfterAdvice、AfterReturningAdvice等，当bean的类型与Advice的Pointcut规定的类型匹配时，则创建代理对象。</p>
-<p>当方法执行时，获取拦截器链（首先获取全部切面，再判断当前代理对象是否匹配该Advisor，是否匹配当前调用method），依据拦截器链依次执行，执行过程相当于是一个递归的过程。</p>
-<h2 id="bean的生命周期"><a href="#bean的生命周期" class="headerlink" title="bean的生命周期"></a>bean的生命周期</h2><figure class="image-caption"><img  
+    <title>Hexo配置</title>
+    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
+<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
+
+  <div class="note p-4 mb-4 rounded-small success">
+    <figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="./bean的生命周期.png"
-                      width="700px" height="auto" alt="bean的生命周期"
-                ><figcaption>bean的生命周期</figcaption></figure>
+                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
+                      class="" alt="hexo -v"
+                ><figcaption>hexo -v</figcaption></figure>
+  </div>
 
-<ol>
-<li>创建BeanFactory并读取XML文件，将定义的bean读取出来，将每个bean的属性参数解析到PropertyValues，当存在依赖其他的bean时，会新建一个BeanReference，然后封装为封装为一个BeanDefinition，通过beanFactory进行注册，而如果配置了包扫描，则会对配置的包下进行扫描，扫描出@Component的类同样封装为一个BeanDefinition进行注册，并注册internalAutowiredAnnotationProcessor以便实例化时对自动注入进行处理。</li>
-<li>添加ApplicationContextAwareProcessor，让继承自ApplicationContextAware的bean能感知bean。</li>
-<li>在bean实例化之前，执行注册的BeanFactoryPostProcessor，修改相关的BeanDefinition。</li>
-<li>注册BeanPostProcessor。</li>
-<li>初始化事件发布者和注册事件监听器。</li>
-<li>注册类型转换器和提前实例化单例bean，只有当bean是单例且不为懒加载才会被创建。<ul>
-<li>先从缓存中获取，如果获取到且为FactoryBean则从FactoryBean#getObject中创建bean。</li>
-<li>否则获取BeanDefinition，并根据此创建bean<ul>
-<li>如果bean需要代理，则直接返回代理对象，遍历BeanPostProcessor，对InstantiationAwareBeanPostProcessor的实现类进行处理，调用其postProcessBeforeInstantiation，若返回值不为null，即生成了被代理对象，再调用postProcessAfterInitialization即可生成最终的代理对象。</li>
-<li>接下来就是未被代理的bean，首先调用类的无参构造方法，生成实例，为解决<strong>循环依赖</strong>问题，将实例化后的bean放进缓存中提前暴露，执行InstantiationAwareBeanPostProcessor，此时@Autowired等就会自动注入属性，然后通过反射设置属性，如果继承了BeanFactoryAware，则执行setBeanFactory，执行BeanPostProcessor的前置处理，调用初始化方法init，执行BeanPostProcessor的后置处理，注册有销毁方法的bean，最后，如果有代理对象，则会进行覆盖。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>发布容器刷新完成事件</li>
-</ol>
-<h2 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h2><p>Spring为了解决单例的循环依赖问题，使用了三级缓存。</p>
-<h3 id="三级缓存"><a href="#三级缓存" class="headerlink" title="三级缓存"></a>三级缓存</h3><p>这三个缓存都是定义在DefaultSingletonBeanRegistry类中的：</p>
-<p>bean name –&gt; bean instance</p>
-<p>单例对象的cache：一级缓存</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;(<span class="number">64</span>);</span><br></pre></td></tr></table></figure></div>
+<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./creat_repository.png"
+                      width="600px" height="auto" alt="创建个人页仓库"
+                ><figcaption>创建个人页仓库</figcaption></figure>
 
-<p>bean name –&gt; bean instance</p>
-<p>提前暴光的单例对象的Cache：二级缓存</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
+<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
 
-<p>bean name –&gt; ObjectFactory</p>
-<p>单例对象工厂的cache：三级缓存</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, ObjectFactory&lt;?&gt;&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
+<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
 
-<p>循环依赖主要的三级缓存分别是：</p>
-<ol>
-<li>singletonObbjects：一级缓存单例池，主要存放最终形态的单例bean，一般获取一个bean都是从这个缓存中获取，需要说明的是并不是所有单例bean都存在这个缓存当中，有些特殊的单例bean不存在这个缓存当中。</li>
-<li>earlySingletonObjects：二级缓存，主要存放的是过渡bean（原始对象&#x2F;原始对象的代理对象），也就是从三级缓存当中产生出来的对象，它的作用是防止在多级循环依赖的情况下重复从三级缓存当中创建对象，其他对象都可以直接从二级缓存中获取到原始对象&#x2F;原始对象的代理对象，因为三级缓存当中创建对象是需要牺牲一定得性能，有了这个缓存可以一定程度上提高效率（但是提高的效率并不明显）。只有在调用了三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象时，才会将原始对象&#x2F;原始对象的代理对象放入二级缓存，而调用三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象这种情况只会发生在有循环依赖的时候，所以，<strong>二级缓存在没有循环依赖的情况下不会被使用到</strong>。二级缓存是为了提前暴露Bean来解决循环依赖问题，此时的Bean可能还没有进行属性注入，只有等完成了属性注入、初始化后的Bean才会上移到一级缓存（单例池）中。</li>
-<li>singletonFactories三级缓存，用于存放原始对象对应的ObjectFactory，它的作用主要是为了产生一个对象，每生成一个原始对象，都会将这个原始对象对应的ObjectFactory放到三级缓存中，通过调用ObjectFactory的getObject()方法，就能够在需要动态代理的情况下为原始对象生成代理对象并返回，否则返回原始对象，以此来处理循环依赖时还需要动态代理的情况。</li>
-</ol>
-<p>简单来说：</p>
-<ol>
-<li>singletonObjects，一级缓存，存储的是所有创建好了的单例Bean。</li>
-<li>earlySingletonObjects，完成实例化，但是还未进行属性注入及初始化的对象。</li>
-<li>singletonFactories，提前暴露的一个单例工厂，二级缓存中存储的就是从这个工厂中获取到的对象。</li>
-</ol>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (beanDefinition.isSingleton()) &#123;</span><br><span class="line">	<span class="type">Object</span> <span class="variable">finalBean</span> <span class="operator">=</span> bean;</span><br><span class="line">	addSingletonFactory(beanName, <span class="keyword">new</span> <span class="title class_">ObjectFactory</span>&lt;Object&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="keyword">public</span> Object <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> BeansException &#123;</span><br><span class="line">			<span class="keyword">return</span> getEarlyBeanReference(beanName, beanDefinition, finalBean);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
+<p>Hexo 程序目录：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./directory_structure.png"
+                      width="400px" height="auto" alt="目录结构"
+                ><figcaption>目录结构</figcaption></figure>
 
-<p>第三级缓存就是坚决循环依赖问题的关键，而这个方法也是解决循环依赖的关键所在，这段代码发生在doCreateBean()方法中createBeanInstance之后，也就是说单例对象此时已经被实例化出来了。这个对象已经被生产出来了，虽然还未设置属性等其他操作，但是已经能被认出来了（根据对象引用能定位到堆中的对象），所以Spring此时将这个对象提前曝光出来，可以进行使用（此时为依赖注入）。</p>
-<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>当A的某个field或者setter依赖了B的实例对象，同时B的某个field或者setter依赖了A的实例对象，这种情况就为循环依赖。A首先完成了创建的第一步（完成实例化），并且将自己提前曝光到singletonFactories中，此时进行创建的第二步（属性注入），发现自己依赖对象B，此时就尝试去getBean(B)，发现B还没有被create，所以走createBean(B)的流程，B在创建第一步的时候发现自己依赖了对象A，于是尝试getBean(A)，尝试查询一级缓存singletonObjects（肯定没有，因为A还没初始化完全），尝试查询二级缓存earlySingletonObjects（也没有），尝试三级缓存singletonFactories，由于A通过ObjectFactory将自己提前曝光了，所以B能够通过ObjectFactory.getObject拿到A对象（即使A还没有初始化完全，但是因此解决了循环依赖的问题），B拿到A对象后顺利完成了创建过程，B完成创建后之后将自己放入到一级缓存singletonObjects中。此时返回A的创建流程中，A此时能拿到B的对象顺利完成自己的创建过程，最终A也完成了创建，将创建好的A添加到一级缓存singletonObjects中，而且需要说明的是，由于B拿到了A的对象引用，所以B现在持有的A对象也完成了最终的创建。<strong>简单来说，就是spring创造了一个循环依赖的结束点标识。</strong></p>
+<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
+
+<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
+<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，挑选一个心仪的主题并进行下载。</p>
+<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，用该主题介绍如何进行安装。</p>
+<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
+<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
+<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 挑选，甚至可以自己开发一个。</p>
+<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
+<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>使用时可以直接像下面这样：</p>
+<div class="highlight-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./bilibili_url.png"
+                      width="700px" height="auto" alt="修改哔哩哔哩url"
+                ><figcaption>修改哔哩哔哩url</figcaption></figure>
 ]]></content>
       <categories>
-        <category>后端</category>
+        <category>杂项</category>
       </categories>
       <tags>
-        <tag>Java</tag>
-        <tag>Spring</tag>
+        <tag>配置</tag>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -355,21 +266,6 @@
 <p>过去的人和事，<br>如若还在身边，<br>那么这形同陌路，<br>却不如不见。<br>可不见，<br>却又倍加思念，<br>不知该何去何从，<br>便只能做好如今的事。</p>
 <p>那么不如待我如初见——至逝去的三年（初中）</p>
 <p style="text-align:right;">写于2016-09-25</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>伤</title>
-    <url>/2022/06/29/%E4%BC%A4/</url>
-    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
-<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
-<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
-<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
-<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
-<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
-<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
-]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -568,127 +464,108 @@
       </tags>
   </entry>
   <entry>
-    <title>再识MyBatis-Plus</title>
-    <url>/2024/03/23/%E5%86%8D%E8%AF%86MyBatis-Plus/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本人之前学习过 MyBatis-Plus，但实际自己开发还是用的 MyBatis，基本就是简单 sql，因此用注解进行开发，手写 sql 也还好，故并未采用 MyBatis-Plus进行开发，但新入职的公司需要用到，于是进行重温，才有了这篇简略的记录。</p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>正如<a class="link"   href="https://mybatis.plus/" >官网 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>所说的愿景：成为 MyBatis 最好的搭档，就像魂斗罗中的 1P、2P，基友搭配，效率翻倍。MyBatis-Plus 相当于 MyBatis 的增强版插件，可以一起使用，事半功倍，省去编写简单 sql 的功夫，具体介绍可自行去官网查看。</p>
-<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><h3 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h3><ol>
-<li><p>@TableName</p>
-<p>标识实体类对应的数据库表。</p>
-</li>
-<li><p>@TableId</p>
-<p>标识主键属性。</p>
-</li>
-<li><p>@TableField</p>
-<p>标识对应数据库字段。</p>
-</li>
-<li><p>@TableLogic</p>
-<p>标识删除类型。</p>
-</li>
-</ol>
-<h3 id="基本crud"><a href="#基本crud" class="headerlink" title="基本crud"></a>基本crud</h3><p>所有的基本 crud 都在 BaseMapper 接口中定义，只需要继承并指定具体实体类即可。</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;User&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<p>BaseMapper 接口如下：</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BaseMapper</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Mapper</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="comment">// 新增数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">insert</span><span class="params">(T entity)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 删除</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">delete</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 更新</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">updateById</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity)</span>;</span><br><span class="line">	<span class="comment">// 更新数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">update</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; updateWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 查询</span></span><br><span class="line">    T <span class="title function_">selectById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量查询</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 查询数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 查询一条数据</span></span><br><span class="line">    T <span class="title function_">selectOne</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询记录总数</span></span><br><span class="line">    Integer <span class="title function_">selectCount</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectList</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">selectMaps</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Object&gt; <span class="title function_">selectObjs</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;T&gt;&gt; E <span class="title function_">selectPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;Map&lt;String, Object&gt;&gt;&gt; E <span class="title function_">selectMapsPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="增"><a href="#增" class="headerlink" title="增"></a>增</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setName(<span class="string">&quot;奕凰轩祭侍&quot;</span>);</span><br><span class="line">user.setAge(<span class="number">18</span>);</span><br><span class="line">userMapper.insert(user);</span><br><span class="line"><span class="comment">// 获取插入数据的主键 ID</span></span><br><span class="line"><span class="type">Long</span> <span class="variable">id</span> <span class="operator">=</span> user.getId();</span><br></pre></td></tr></table></figure></div>
-
-<p>一般使用@TableId(type &#x3D; IdType.AUTO)来指定数据库主键，然后数据库还存在另外一个唯一标识符，一般由后端进行UUID或者雪花算法生成，该标识符相当于业务中使用的主键。</p>
-<h4 id="删"><a href="#删" class="headerlink" title="删"></a>删</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.deleteById(<span class="number">10059249854L</span>); <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
-
-<p>根据主键删除，也可以直接传入对象，会根据标识的主键属性进行删除，以及可以根据其他条件删除，条件构造在<a href="#%E6%9F%A5">查询</a>中介绍。</p>
-<h4 id="改"><a href="#改" class="headerlink" title="改"></a>改</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setId(<span class="number">10059249854L</span>);</span><br><span class="line">user.setGender(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 实际执行的 SQL : UPDATE user SET gender=1 WHERE id=10059249854;</span></span><br><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.updateById(user);  <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
-
-<h4 id="查"><a href="#查" class="headerlink" title="查"></a>查</h4><p>在使用前需要进行 sql 条件语句的构建，有三种条件构建格式：</p>
-<ol>
-<li>常规条件构建格式</li>
-</ol>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapperr&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapperr</span>&lt;User&gt;();</span><br><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//今年刚满18岁~</span></span><br></pre></td></tr></table></figure></div>
-
-<ol start="2">
-<li>lamda格式条件构建格式</li>
-</ol>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lambda().eq(User::getName,<span class="string">&quot;劳大&quot;</span>); <span class="comment">//see you again（</span></span><br></pre></td></tr></table></figure></div>
-
-<ol start="3">
-<li>lambda格式条件构建格式</li>
-</ol>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">LambdaQueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">LambdaQueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lt(User::getPlay, <span class="string">&quot;Genshin Impact&quot;</span>); <span class="comment">//原神启动！</span></span><br></pre></td></tr></table></figure></div>
-
-<h5 id="常见的单条件查询"><a href="#常见的单条件查询" class="headerlink" title="常见的单条件查询"></a>常见的单条件查询</h5><h6 id="lt匹配"><a href="#lt匹配" class="headerlink" title="lt匹配"></a>lt匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="le匹配"><a href="#le匹配" class="headerlink" title="le匹配"></a>le匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.le(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="eq匹配"><a href="#eq匹配" class="headerlink" title="eq匹配"></a>eq匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//等同于=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="gt匹配"><a href="#gt匹配" class="headerlink" title="gt匹配"></a>gt匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="ge匹配"><a href="#ge匹配" class="headerlink" title="ge匹配"></a>ge匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ge(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="ne匹配"><a href="#ne匹配" class="headerlink" title="ne匹配"></a>ne匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ne(User::getAge,<span class="number">18</span>); <span class="comment">//等同于!=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="between匹配"><a href="#between匹配" class="headerlink" title="between匹配"></a>between匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.between(User::getAge, <span class="number">17</span>, <span class="number">19</span>); <span class="comment">//等同于&gt;=17 &amp;&amp; &lt;= 19</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="like匹配"><a href="#like匹配" class="headerlink" title="like匹配"></a>like匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.likeLeft(User::getName, <span class="string">&quot;奕&quot;</span>); <span class="comment">//相当于like %奕，还有like对应like %奕%、likeRight对应like 奕%</span></span><br></pre></td></tr></table></figure></div>
-
-<p>还有其他的一些条件，例如orderByAsc对应升序等，具体可以自己操作看看。</p>
-<h5 id="多条件查询"><a href="#多条件查询" class="headerlink" title="多条件查询"></a>多条件查询</h5><p>且</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">17</span>).lt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>或</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">17</span>).or().gt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
-
-<h5 id="动态查询"><a href="#动态查询" class="headerlink" title="动态查询"></a>动态查询</h5><p>可以通过 condition 参数动态拼接条件，例如：</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(minAge != <span class="literal">null</span>, User::getAge, minAge);</span><br><span class="line">userWrapper.lt(maxAge != <span class="literal">null</span>, User::getAge, maxAge);</span><br></pre></td></tr></table></figure></div>
-
-<h5 id="查询投影"><a href="#查询投影" class="headerlink" title="查询投影"></a>查询投影</h5><h6 id="查询部分属性"><a href="#查询部分属性" class="headerlink" title="查询部分属性"></a>查询部分属性</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(User::getName, User::getAge);</span><br></pre></td></tr></table></figure></div>
-
-<h6 id="查询未定义属性"><a href="#查询未定义属性" class="headerlink" title="查询未定义属性"></a>查询未定义属性</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(<span class="string">&quot;count(*) as count&quot;</span>,<span class="string">&quot;age&quot;</span>)</span><br><span class="line">		   .groupBy(<span class="string">&quot;age&quot;</span>)  <span class="comment">//分组字段</span></span><br><span class="line">           .having(<span class="string">&quot;COUNT(*)&gt;5&quot;</span>); <span class="comment">// 添加having筛选条件</span></span><br></pre></td></tr></table></figure></div>
-
-<h5 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h5><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 子查询 select id from user where id &lt;= 10059249854</span></span><br><span class="line">userWrapper.inSql(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;select id from user where id &lt;= 10059249854&quot;</span>);</span><br><span class="line">userWrapper.select(<span class="string">&quot;name&quot;</span>,<span class="string">&quot;age&quot;</span>);</span><br><span class="line">userWrapper.last(<span class="string">&quot;LIMIT 10&quot;</span>);</span><br><span class="line"><span class="comment">// 实际执行 SQL : SELECT name,age FROM user WHERE (id IN (select id from user where id &lt;= 10059249854)) LIMIT 10;</span></span><br></pre></td></tr></table></figure></div>
-
+    <title>IOC和AOP原理</title>
+    <url>/2024/08/06/IOC%E5%92%8CAOP%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p>通过对<a class="link"   href="https://github.com/DerekYRC/mini-spring" >mini-spring <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 代码的阅读，对IoC和AOP的原理有了进一步认识，二者都为构成Spring的基础概念，是框架底层的实现原理。</p>
 <blockquote>
-<p>ps:然而调到了另一个小组，没用到（</p>
+<p>mini-spring是对Spring IOC和AOP部分的简单实现，仅保留最基础的部分。</p>
 </blockquote>
+<h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Ioc即控制反转，指的是容器控制程序对象之间的关系，而不是传统实现中，由程序代码直接控制，控制权由应用代码中转到了外部容器，控制权的转移即所谓的反转。</p>
+<p>对于Spring而言，就是由Spring来控制对象的生命周期和对象之间的关系，因此，Ioc还有另一个名字——依赖注入，即组件之间的依赖关系由容器在运行期间决定，由容器动态地将某种依赖关系注入到组件之间。</p>
+<p>所有的类都会在Spring容器中登记，告诉Spring这是个什么东西，然后当某个类需要什么东西，Spring就会在系统运行到适当的时候，将这个类要的东西主动赋予，同时对于其他类也是如此。所有的类的创建、销毁都由Spring来控制，也就是说控制对象生存周期的不再是引用它的对象，而是Spring。对于某个具体的对象而言，以前是它控制其他对象，现在是所有对象都被Spring控制，所以这叫控制反转。</p>
+<p>依赖注入的思想是通过反射机制实现的，在实例化一个类时，它通过反射调用类中set方法将事先保存在HashMap中的类属性注入到类中。总而言之，在传统的对象创建方式中，通常由调用者来创建被调用者的实例，而在Spring中创建被调用者的工作由Spring来完成，然后注入调用者，即所谓的依赖注入or控制反转。</p>
+<p>IoC的优点：降低了组件之间的耦合，降低了业务对象之间替换的复杂性，使之能够灵活的管理对象。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>见 <a href="#bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">bean的生命周期</a></p>
+<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><p>AOP面向切面编程基于IoC，是对OOP的有益补充，AOP利用一种称为“横切”的技术，剖解开封装的对象内部，并将那些影响了多个类的公共行为封装到一个可重用模块，并将其名为“Aspect”，即切面。</p>
+<p>所谓“切面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，比如日志记录，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可操作性和可维护性。</p>
+<p>AOP代表的是一个横向的关系，将“对象”比作一个空心的立体，其中封装的是对象的属性和行为，则面向切面编程的方法，就是将这个立体以切面形式剖开，选择性地提供业务逻辑，而剖开的切面，也就是所谓的“切面”了。</p>
+<p>实现AOP的技术，主要分为两大类：一是采用动态代理技术，利用截取消息的方式，对该消息进行装饰，以取代原有对象行为的执行，二是采用静态织入的方式，引入特定的语法创建“切面”，从而使得编译器可以在编译期间织入有关“切面”的代码。</p>
+<p>Spring实现AOP：JDK动态代理和CGLIB代理。</p>
+<ul>
+<li>JDK动态代理：其代理对象必须是某个接口的实现，它是通过在运行期间创建一个接口的实现类来完成对目标对象的代理，其核心的两个类是InvocationHandler和Proxy。</li>
+<li>CGLIB代理：实现原理类似于JDK动态代理，只是它在运行期间生成的代理对象是针对目标类扩展的子类。CGLIB是高效的代码生成包，底层是依靠ASM（开源的java字节码编辑类库）操作字节码实现的，性能比JDK强，需要引入包asm.jar和cglib.jar。</li>
+</ul>
+<p>使用AspectJ注入式切面和@AspectJ注解驱动的切面实际上底层也是通过动态代理实现的。</p>
+<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>ProxyFactory是动态代理工厂，用来决定使用JDK动态代理还是CGLIB动态代理。</p>
+<p>获取BeanFactory所有的AspectJExpressionPointcutAdvisor继承类，常用的有BeforeAdvice、AfterAdvice、AfterReturningAdvice等，当bean的类型与Advice的Pointcut规定的类型匹配时，则创建代理对象。</p>
+<p>当方法执行时，获取拦截器链（首先获取全部切面，再判断当前代理对象是否匹配该Advisor，是否匹配当前调用method），依据拦截器链依次执行，执行过程相当于是一个递归的过程。</p>
+<h2 id="bean的生命周期"><a href="#bean的生命周期" class="headerlink" title="bean的生命周期"></a>bean的生命周期</h2><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./bean的生命周期.png"
+                      width="700px" height="auto" alt="bean的生命周期"
+                ><figcaption>bean的生命周期</figcaption></figure>
+
+<ol>
+<li>创建BeanFactory并读取XML文件，将定义的bean读取出来，将每个bean的属性参数解析到PropertyValues，当存在依赖其他的bean时，会新建一个BeanReference，然后封装为封装为一个BeanDefinition，通过beanFactory进行注册，而如果配置了包扫描，则会对配置的包下进行扫描，扫描出@Component的类同样封装为一个BeanDefinition进行注册，并注册internalAutowiredAnnotationProcessor以便实例化时对自动注入进行处理。</li>
+<li>添加ApplicationContextAwareProcessor，让继承自ApplicationContextAware的bean能感知bean。</li>
+<li>在bean实例化之前，执行注册的BeanFactoryPostProcessor，修改相关的BeanDefinition。</li>
+<li>注册BeanPostProcessor。</li>
+<li>初始化事件发布者和注册事件监听器。</li>
+<li>注册类型转换器和提前实例化单例bean，只有当bean是单例且不为懒加载才会被创建。<ul>
+<li>先从缓存中获取，如果获取到且为FactoryBean则从FactoryBean#getObject中创建bean。</li>
+<li>否则获取BeanDefinition，并根据此创建bean<ul>
+<li>如果bean需要代理，则直接返回代理对象，遍历BeanPostProcessor，对InstantiationAwareBeanPostProcessor的实现类进行处理，调用其postProcessBeforeInstantiation，若返回值不为null，即生成了被代理对象，再调用postProcessAfterInitialization即可生成最终的代理对象。</li>
+<li>接下来就是未被代理的bean，首先调用类的无参构造方法，生成实例，为解决<strong>循环依赖</strong>问题，将实例化后的bean放进缓存中提前暴露，执行InstantiationAwareBeanPostProcessor，此时@Autowired等就会自动注入属性，然后通过反射设置属性，如果继承了BeanFactoryAware，则执行setBeanFactory，执行BeanPostProcessor的前置处理，调用初始化方法init，执行BeanPostProcessor的后置处理，注册有销毁方法的bean，最后，如果有代理对象，则会进行覆盖。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>发布容器刷新完成事件</li>
+</ol>
+<h2 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h2><p>Spring为了解决单例的循环依赖问题，使用了三级缓存。</p>
+<h3 id="三级缓存"><a href="#三级缓存" class="headerlink" title="三级缓存"></a>三级缓存</h3><p>这三个缓存都是定义在DefaultSingletonBeanRegistry类中的：</p>
+<p>bean name –&gt; bean instance</p>
+<p>单例对象的cache：一级缓存</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;(<span class="number">64</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>bean name –&gt; bean instance</p>
+<p>提前暴光的单例对象的Cache：二级缓存</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>bean name –&gt; ObjectFactory</p>
+<p>单例对象工厂的cache：三级缓存</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, ObjectFactory&lt;?&gt;&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>循环依赖主要的三级缓存分别是：</p>
+<ol>
+<li>singletonObbjects：一级缓存单例池，主要存放最终形态的单例bean，一般获取一个bean都是从这个缓存中获取，需要说明的是并不是所有单例bean都存在这个缓存当中，有些特殊的单例bean不存在这个缓存当中。</li>
+<li>earlySingletonObjects：二级缓存，主要存放的是过渡bean（原始对象&#x2F;原始对象的代理对象），也就是从三级缓存当中产生出来的对象，它的作用是防止在多级循环依赖的情况下重复从三级缓存当中创建对象，其他对象都可以直接从二级缓存中获取到原始对象&#x2F;原始对象的代理对象，因为三级缓存当中创建对象是需要牺牲一定得性能，有了这个缓存可以一定程度上提高效率（但是提高的效率并不明显）。只有在调用了三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象时，才会将原始对象&#x2F;原始对象的代理对象放入二级缓存，而调用三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象这种情况只会发生在有循环依赖的时候，所以，<strong>二级缓存在没有循环依赖的情况下不会被使用到</strong>。二级缓存是为了提前暴露Bean来解决循环依赖问题，此时的Bean可能还没有进行属性注入，只有等完成了属性注入、初始化后的Bean才会上移到一级缓存（单例池）中。</li>
+<li>singletonFactories三级缓存，用于存放原始对象对应的ObjectFactory，它的作用主要是为了产生一个对象，每生成一个原始对象，都会将这个原始对象对应的ObjectFactory放到三级缓存中，通过调用ObjectFactory的getObject()方法，就能够在需要动态代理的情况下为原始对象生成代理对象并返回，否则返回原始对象，以此来处理循环依赖时还需要动态代理的情况。</li>
+</ol>
+<p>简单来说：</p>
+<ol>
+<li>singletonObjects，一级缓存，存储的是所有创建好了的单例Bean。</li>
+<li>earlySingletonObjects，完成实例化，但是还未进行属性注入及初始化的对象。</li>
+<li>singletonFactories，提前暴露的一个单例工厂，二级缓存中存储的就是从这个工厂中获取到的对象。</li>
+</ol>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (beanDefinition.isSingleton()) &#123;</span><br><span class="line">	<span class="type">Object</span> <span class="variable">finalBean</span> <span class="operator">=</span> bean;</span><br><span class="line">	addSingletonFactory(beanName, <span class="keyword">new</span> <span class="title class_">ObjectFactory</span>&lt;Object&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="keyword">public</span> Object <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> BeansException &#123;</span><br><span class="line">			<span class="keyword">return</span> getEarlyBeanReference(beanName, beanDefinition, finalBean);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>第三级缓存就是坚决循环依赖问题的关键，而这个方法也是解决循环依赖的关键所在，这段代码发生在doCreateBean()方法中createBeanInstance之后，也就是说单例对象此时已经被实例化出来了。这个对象已经被生产出来了，虽然还未设置属性等其他操作，但是已经能被认出来了（根据对象引用能定位到堆中的对象），所以Spring此时将这个对象提前曝光出来，可以进行使用（此时为依赖注入）。</p>
+<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>当A的某个field或者setter依赖了B的实例对象，同时B的某个field或者setter依赖了A的实例对象，这种情况就为循环依赖。A首先完成了创建的第一步（完成实例化），并且将自己提前曝光到singletonFactories中，此时进行创建的第二步（属性注入），发现自己依赖对象B，此时就尝试去getBean(B)，发现B还没有被create，所以走createBean(B)的流程，B在创建第一步的时候发现自己依赖了对象A，于是尝试getBean(A)，尝试查询一级缓存singletonObjects（肯定没有，因为A还没初始化完全），尝试查询二级缓存earlySingletonObjects（也没有），尝试三级缓存singletonFactories，由于A通过ObjectFactory将自己提前曝光了，所以B能够通过ObjectFactory.getObject拿到A对象（即使A还没有初始化完全，但是因此解决了循环依赖的问题），B拿到A对象后顺利完成了创建过程，B完成创建后之后将自己放入到一级缓存singletonObjects中。此时返回A的创建流程中，A此时能拿到B的对象顺利完成自己的创建过程，最终A也完成了创建，将创建好的A添加到一级缓存singletonObjects中，而且需要说明的是，由于B拿到了A的对象引用，所以B现在持有的A对象也完成了最终的创建。<strong>简单来说，就是spring创造了一个循环依赖的结束点标识。</strong></p>
 ]]></content>
       <categories>
         <category>后端</category>
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>MyBatis-Plus</tag>
+        <tag>Spring</tag>
       </tags>
   </entry>
   <entry>
-    <title>关于上云故障转移方案</title>
-    <url>/2024/11/01/%E5%85%B3%E4%BA%8E%E4%B8%8A%E4%BA%91%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h2 id="上云"><a href="#上云" class="headerlink" title="上云"></a>上云</h2><p>现代服务部署解决方案基本都为云部署，尤其是较大规模的应用，部署服务的方式一般有自建机房、IDC托管、云服务厂商，现如今以阿里云、腾讯云、华为云等为首的云服务厂商的份额日益增加，得益于上云后带来的最大好处——方便运维，变相提高了应用的可靠性，因为相较于部署在自建机房和IDC托管，云服务厂商会提供更加成熟的部署方案，不仅包括简单的部署，包括域名解析、数据备份、容灾等一系列完善的服务，使得服务部署不再困难，降低运维成本以及减少犯错的概率。</p>
-<p>不过，上云容易受到一些不可控的因素干扰，例如云服务厂商突然做出骚操作，之前就存在云服务厂商升级组件而未通知客户，而组件升级切换并不平滑，导致客户部署的服务出现短暂不可用，甚至出现更为糟糕的情况——光缆被挖断了，物理意义上的断你网线，如果没有做好多地容灾，那后果可想而知，服务完全down，无法恢复，当然，不仅云上有这个问题，云下同样如此，因为本质都是机房，只不过运维方式不同。</p>
-<p>而中间件出问题导致服务不可用的情况只能说挺少见的，至少我目前还未遇到过，但是做好应对方案也是必要的，因为谁也保不准什么时候会出问题，弄好预案就多一份保险，省的出问题时两眼一黑。</p>
-<h2 id="动态数据源"><a href="#动态数据源" class="headerlink" title="动态数据源"></a>动态数据源</h2><p>上云前需要弄清楚各个中间件如何动态设置数据源，从而实现热更新，即仅更改某处的配置即可对应用使用的数据源进行动态更新，而无需重启应用，可以使用Nacos进行配置的修改，而且Nacos支持动态刷新配置，天然支持配置监听，并且也可以不使用Nacos自带的配置监听类，可以使用定时器对配置的数据源进行比对，若发生变化则对数据源进行设置。</p>
-<p>当然，应用启动时是通过读取环境变量来设置初始可用的数据源，避免因为某个数据源不可用导致服务启动失败，由于是上云，因此为了稳妥起见，采用了云下——混合云——云上的渐进上云，混合云的中间件都还是连接的云下，而流量是按比例打到云上和云下，而为了做好上云的准备，各个中间件的数据需要从云下同步到云上，当上云时会将云下服务全量停止，云上服务中间件全量切入，并全量流量切入，为此需要准备两个配置文件，方便进行切换。</p>
-<h2 id="故障转移方案"><a href="#故障转移方案" class="headerlink" title="故障转移方案"></a>故障转移方案</h2><h3 id="废案"><a href="#废案" class="headerlink" title="废案"></a>废案</h3><p>在应用启动时同时初始化云上和云下的数据源bean，而在使用数据源时，通过当前配置的数据源标记进行匹配数据源，从而进行相关的数据源操作，这个存在致命的问题，就是当云上和云下其中一个数据源出现问题，服务会无法启动，所以才有后续的补充方案（仅是个想法，还未进行验证）。</p>
-<h4 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h4><p>通过继承AbstractRoutingDataSource这个jdbc动态数据源类，重写determineCurrentLookupKey方法，即可使用相应的数据源，正常场景是读写分离，写入使用主库，查询使用从库。</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;cloudDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource cloudDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;idcDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource idcDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 配置初始数据源信息</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;Object, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;CLOUD&quot;</span>, cloudDataSource);</span><br><span class="line">        map.put(<span class="string">&quot;IDC&quot;</span>, idcDataSource);</span><br><span class="line">        setTargetDataSources(map);</span><br><span class="line">        setDefaultTargetDataSource(idcDataSource);</span><br><span class="line">        <span class="built_in">super</span>.afterPropertiesSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 这个是主要的方法，根据key查找对应的数据源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;CLOUD&quot;</span>; <span class="comment">// 这里需要修改为返回动态的数据源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="Redis-Kafka"><a href="#Redis-Kafka" class="headerlink" title="Redis&#x2F;Kafka"></a>Redis&#x2F;Kafka</h4><p>Redis和Kafka一般都有工具类，因此在工具类中注入bean，并且通过map维护云上和云下对应的bean，执行相关操作时，通过数据源标记在map中获得相应的bean即可，无需额外操作。</p>
-<p>而以上最终成为了废案，因为不确定因素太多了，容易出现问题，所以采用了最稳妥的方案即终极方案。</p>
-<h3 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h3><p>直接改配置文件，然后重启服务，是的，你没看错，采用了最原始的方式，同样是最为可靠的方式，虽然服务不可用的时间会比较长，但是更为稳妥，不容易出现问题，且代码侵入性低，一个字，白学（bushi</p>
-<h3 id="补充方案（未验证）"><a href="#补充方案（未验证）" class="headerlink" title="补充方案（未验证）"></a>补充方案（未验证）</h3><p>由于废案中是同时初始化云上和云下两套数据源，那么在启动的时候指定其中某一套可用的数据源初始化不就行了，通过查询资料得知，貌似是可行的，通过方法在应用启动后还可以手动初始化数据源，从而实现动态切换数据源，而触发初始化数据源的就可以是之前所提到的使用定时器对配置的数据源进行比对，只不过不是设置数据源了，而是重新初始化数据源。</p>
-<h4 id="MySql-1"><a href="#MySql-1" class="headerlink" title="MySql"></a>MySql</h4><p>以Druid为例，DruidDataSource提供restart方法，可以在应用启动后重新初始化连接池，因此可以修改数据源配置后，由定时器进行调用，设置为需要切换的对应配置，如下：</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意，cloudDataSource需要为DruidDataSource类型</span></span><br><span class="line">cloudDataSource.setUrl(<span class="string">&quot;jdbc:mysql://***.***.***.***:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&quot;</span>);</span><br><span class="line">cloudDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">cloudDataSource.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">cloudDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">cloudDataSource.restart();</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>暂未找到相关方法，待补充。。。</p>
-<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>暂未找到相关方法，待补充。。。</p>
+    <title>伤</title>
+    <url>/2022/06/29/%E4%BC%A4/</url>
+    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
+<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
+<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
+<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
+<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
+<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
+<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
 ]]></content>
       <categories>
-        <category>后端</category>
+        <category>随笔</category>
       </categories>
-      <tags>
-        <tag>上云</tag>
-        <tag>故障转移</tag>
-      </tags>
   </entry>
   <entry>
     <title>函数式编程</title>
@@ -887,11 +764,151 @@
       </tags>
   </entry>
   <entry>
+    <title>再识MyBatis-Plus</title>
+    <url>/2024/03/23/%E5%86%8D%E8%AF%86MyBatis-Plus/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本人之前学习过 MyBatis-Plus，但实际自己开发还是用的 MyBatis，基本就是简单 sql，因此用注解进行开发，手写 sql 也还好，故并未采用 MyBatis-Plus进行开发，但新入职的公司需要用到，于是进行重温，才有了这篇简略的记录。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>正如<a class="link"   href="https://mybatis.plus/" >官网 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>所说的愿景：成为 MyBatis 最好的搭档，就像魂斗罗中的 1P、2P，基友搭配，效率翻倍。MyBatis-Plus 相当于 MyBatis 的增强版插件，可以一起使用，事半功倍，省去编写简单 sql 的功夫，具体介绍可自行去官网查看。</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><h3 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h3><ol>
+<li><p>@TableName</p>
+<p>标识实体类对应的数据库表。</p>
+</li>
+<li><p>@TableId</p>
+<p>标识主键属性。</p>
+</li>
+<li><p>@TableField</p>
+<p>标识对应数据库字段。</p>
+</li>
+<li><p>@TableLogic</p>
+<p>标识删除类型。</p>
+</li>
+</ol>
+<h3 id="基本crud"><a href="#基本crud" class="headerlink" title="基本crud"></a>基本crud</h3><p>所有的基本 crud 都在 BaseMapper 接口中定义，只需要继承并指定具体实体类即可。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;User&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>BaseMapper 接口如下：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BaseMapper</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Mapper</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="comment">// 新增数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">insert</span><span class="params">(T entity)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 删除</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">delete</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 更新</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">updateById</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity)</span>;</span><br><span class="line">	<span class="comment">// 更新数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">update</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; updateWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 查询</span></span><br><span class="line">    T <span class="title function_">selectById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量查询</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 查询数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 查询一条数据</span></span><br><span class="line">    T <span class="title function_">selectOne</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询记录总数</span></span><br><span class="line">    Integer <span class="title function_">selectCount</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectList</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">selectMaps</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Object&gt; <span class="title function_">selectObjs</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;T&gt;&gt; E <span class="title function_">selectPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;Map&lt;String, Object&gt;&gt;&gt; E <span class="title function_">selectMapsPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="增"><a href="#增" class="headerlink" title="增"></a>增</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setName(<span class="string">&quot;奕凰轩祭侍&quot;</span>);</span><br><span class="line">user.setAge(<span class="number">18</span>);</span><br><span class="line">userMapper.insert(user);</span><br><span class="line"><span class="comment">// 获取插入数据的主键 ID</span></span><br><span class="line"><span class="type">Long</span> <span class="variable">id</span> <span class="operator">=</span> user.getId();</span><br></pre></td></tr></table></figure></div>
+
+<p>一般使用@TableId(type &#x3D; IdType.AUTO)来指定数据库主键，然后数据库还存在另外一个唯一标识符，一般由后端进行UUID或者雪花算法生成，该标识符相当于业务中使用的主键。</p>
+<h4 id="删"><a href="#删" class="headerlink" title="删"></a>删</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.deleteById(<span class="number">10059249854L</span>); <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
+
+<p>根据主键删除，也可以直接传入对象，会根据标识的主键属性进行删除，以及可以根据其他条件删除，条件构造在<a href="#%E6%9F%A5">查询</a>中介绍。</p>
+<h4 id="改"><a href="#改" class="headerlink" title="改"></a>改</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setId(<span class="number">10059249854L</span>);</span><br><span class="line">user.setGender(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 实际执行的 SQL : UPDATE user SET gender=1 WHERE id=10059249854;</span></span><br><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.updateById(user);  <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="查"><a href="#查" class="headerlink" title="查"></a>查</h4><p>在使用前需要进行 sql 条件语句的构建，有三种条件构建格式：</p>
+<ol>
+<li>常规条件构建格式</li>
+</ol>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapperr&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapperr</span>&lt;User&gt;();</span><br><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//今年刚满18岁~</span></span><br></pre></td></tr></table></figure></div>
+
+<ol start="2">
+<li>lamda格式条件构建格式</li>
+</ol>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lambda().eq(User::getName,<span class="string">&quot;劳大&quot;</span>); <span class="comment">//see you again（</span></span><br></pre></td></tr></table></figure></div>
+
+<ol start="3">
+<li>lambda格式条件构建格式</li>
+</ol>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">LambdaQueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">LambdaQueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lt(User::getPlay, <span class="string">&quot;Genshin Impact&quot;</span>); <span class="comment">//原神启动！</span></span><br></pre></td></tr></table></figure></div>
+
+<h5 id="常见的单条件查询"><a href="#常见的单条件查询" class="headerlink" title="常见的单条件查询"></a>常见的单条件查询</h5><h6 id="lt匹配"><a href="#lt匹配" class="headerlink" title="lt匹配"></a>lt匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="le匹配"><a href="#le匹配" class="headerlink" title="le匹配"></a>le匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.le(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;=18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="eq匹配"><a href="#eq匹配" class="headerlink" title="eq匹配"></a>eq匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//等同于=18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="gt匹配"><a href="#gt匹配" class="headerlink" title="gt匹配"></a>gt匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="ge匹配"><a href="#ge匹配" class="headerlink" title="ge匹配"></a>ge匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ge(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;=18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="ne匹配"><a href="#ne匹配" class="headerlink" title="ne匹配"></a>ne匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ne(User::getAge,<span class="number">18</span>); <span class="comment">//等同于!=18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="between匹配"><a href="#between匹配" class="headerlink" title="between匹配"></a>between匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.between(User::getAge, <span class="number">17</span>, <span class="number">19</span>); <span class="comment">//等同于&gt;=17 &amp;&amp; &lt;= 19</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="like匹配"><a href="#like匹配" class="headerlink" title="like匹配"></a>like匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.likeLeft(User::getName, <span class="string">&quot;奕&quot;</span>); <span class="comment">//相当于like %奕，还有like对应like %奕%、likeRight对应like 奕%</span></span><br></pre></td></tr></table></figure></div>
+
+<p>还有其他的一些条件，例如orderByAsc对应升序等，具体可以自己操作看看。</p>
+<h5 id="多条件查询"><a href="#多条件查询" class="headerlink" title="多条件查询"></a>多条件查询</h5><p>且</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">17</span>).lt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>或</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">17</span>).or().gt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="动态查询"><a href="#动态查询" class="headerlink" title="动态查询"></a>动态查询</h5><p>可以通过 condition 参数动态拼接条件，例如：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(minAge != <span class="literal">null</span>, User::getAge, minAge);</span><br><span class="line">userWrapper.lt(maxAge != <span class="literal">null</span>, User::getAge, maxAge);</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="查询投影"><a href="#查询投影" class="headerlink" title="查询投影"></a>查询投影</h5><h6 id="查询部分属性"><a href="#查询部分属性" class="headerlink" title="查询部分属性"></a>查询部分属性</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(User::getName, User::getAge);</span><br></pre></td></tr></table></figure></div>
+
+<h6 id="查询未定义属性"><a href="#查询未定义属性" class="headerlink" title="查询未定义属性"></a>查询未定义属性</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(<span class="string">&quot;count(*) as count&quot;</span>,<span class="string">&quot;age&quot;</span>)</span><br><span class="line">		   .groupBy(<span class="string">&quot;age&quot;</span>)  <span class="comment">//分组字段</span></span><br><span class="line">           .having(<span class="string">&quot;COUNT(*)&gt;5&quot;</span>); <span class="comment">// 添加having筛选条件</span></span><br></pre></td></tr></table></figure></div>
+
+<h5 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h5><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 子查询 select id from user where id &lt;= 10059249854</span></span><br><span class="line">userWrapper.inSql(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;select id from user where id &lt;= 10059249854&quot;</span>);</span><br><span class="line">userWrapper.select(<span class="string">&quot;name&quot;</span>,<span class="string">&quot;age&quot;</span>);</span><br><span class="line">userWrapper.last(<span class="string">&quot;LIMIT 10&quot;</span>);</span><br><span class="line"><span class="comment">// 实际执行 SQL : SELECT name,age FROM user WHERE (id IN (select id from user where id &lt;= 10059249854)) LIMIT 10;</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>ps:然而调到了另一个小组，没用到（</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>MyBatis-Plus</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于上云故障转移方案</title>
+    <url>/2024/11/01/%E5%85%B3%E4%BA%8E%E4%B8%8A%E4%BA%91%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h2 id="上云"><a href="#上云" class="headerlink" title="上云"></a>上云</h2><p>现代服务部署解决方案基本都为云部署，尤其是较大规模的应用，部署服务的方式一般有自建机房、IDC托管、云服务厂商，现如今以阿里云、腾讯云、华为云等为首的云服务厂商的份额日益增加，得益于上云后带来的最大好处——方便运维，变相提高了应用的可靠性，因为相较于部署在自建机房和IDC托管，云服务厂商会提供更加成熟的部署方案，不仅包括简单的部署，包括域名解析、数据备份、容灾等一系列完善的服务，使得服务部署不再困难，降低运维成本以及减少犯错的概率。</p>
+<p>不过，上云容易受到一些不可控的因素干扰，例如云服务厂商突然做出骚操作，之前就存在云服务厂商升级组件而未通知客户，而组件升级切换并不平滑，导致客户部署的服务出现短暂不可用，甚至出现更为糟糕的情况——光缆被挖断了，物理意义上的断你网线，如果没有做好多地容灾，那后果可想而知，服务完全down，无法恢复，当然，不仅云上有这个问题，云下同样如此，因为本质都是机房，只不过运维方式不同。</p>
+<p>而中间件出问题导致服务不可用的情况只能说挺少见的，至少我目前还未遇到过，但是做好应对方案也是必要的，因为谁也保不准什么时候会出问题，弄好预案就多一份保险，省的出问题时两眼一黑。</p>
+<h2 id="动态数据源"><a href="#动态数据源" class="headerlink" title="动态数据源"></a>动态数据源</h2><p>上云前需要弄清楚各个中间件如何动态设置数据源，从而实现热更新，即仅更改某处的配置即可对应用使用的数据源进行动态更新，而无需重启应用，可以使用Nacos进行配置的修改，而且Nacos支持动态刷新配置，天然支持配置监听，并且也可以不使用Nacos自带的配置监听类，可以使用定时器对配置的数据源进行比对，若发生变化则对数据源进行设置。</p>
+<p>当然，应用启动时是通过读取环境变量来设置初始可用的数据源，避免因为某个数据源不可用导致服务启动失败，由于是上云，因此为了稳妥起见，采用了云下——混合云——云上的渐进上云，混合云的中间件都还是连接的云下，而流量是按比例打到云上和云下，而为了做好上云的准备，各个中间件的数据需要从云下同步到云上，当上云时会将云下服务全量停止，云上服务中间件全量切入，并全量流量切入，为此需要准备两个配置文件，方便进行切换。</p>
+<h2 id="故障转移方案"><a href="#故障转移方案" class="headerlink" title="故障转移方案"></a>故障转移方案</h2><h3 id="废案"><a href="#废案" class="headerlink" title="废案"></a>废案</h3><p>在应用启动时同时初始化云上和云下的数据源bean，而在使用数据源时，通过当前配置的数据源标记进行匹配数据源，从而进行相关的数据源操作，这个存在致命的问题，就是当云上和云下其中一个数据源出现问题，服务会无法启动，所以才有后续的补充方案（仅是个想法，还未进行验证）。</p>
+<h4 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h4><p>通过继承AbstractRoutingDataSource这个jdbc动态数据源类，重写determineCurrentLookupKey方法，即可使用相应的数据源，正常场景是读写分离，写入使用主库，查询使用从库。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;cloudDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource cloudDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;idcDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource idcDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 配置初始数据源信息</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;Object, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;CLOUD&quot;</span>, cloudDataSource);</span><br><span class="line">        map.put(<span class="string">&quot;IDC&quot;</span>, idcDataSource);</span><br><span class="line">        setTargetDataSources(map);</span><br><span class="line">        setDefaultTargetDataSource(idcDataSource);</span><br><span class="line">        <span class="built_in">super</span>.afterPropertiesSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 这个是主要的方法，根据key查找对应的数据源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;CLOUD&quot;</span>; <span class="comment">// 这里需要修改为返回动态的数据源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Redis-Kafka"><a href="#Redis-Kafka" class="headerlink" title="Redis&#x2F;Kafka"></a>Redis&#x2F;Kafka</h4><p>Redis和Kafka一般都有工具类，因此在工具类中注入bean，并且通过map维护云上和云下对应的bean，执行相关操作时，通过数据源标记在map中获得相应的bean即可，无需额外操作。</p>
+<p>而以上最终成为了废案，因为不确定因素太多了，容易出现问题，所以采用了最稳妥的方案即终极方案。</p>
+<h3 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h3><p>直接改配置文件，然后重启服务，是的，你没看错，采用了最原始的方式，同样是最为可靠的方式，虽然服务不可用的时间会比较长，但是更为稳妥，不容易出现问题，且代码侵入性低，一个字，白学（bushi</p>
+<h3 id="补充方案（未验证）"><a href="#补充方案（未验证）" class="headerlink" title="补充方案（未验证）"></a>补充方案（未验证）</h3><p>由于废案中是同时初始化云上和云下两套数据源，那么在启动的时候指定其中某一套可用的数据源初始化不就行了，通过查询资料得知，貌似是可行的，通过方法在应用启动后还可以手动初始化数据源，从而实现动态切换数据源，而触发初始化数据源的就可以是之前所提到的使用定时器对配置的数据源进行比对，只不过不是设置数据源了，而是重新初始化数据源。</p>
+<h4 id="MySql-1"><a href="#MySql-1" class="headerlink" title="MySql"></a>MySql</h4><p>以Druid为例，DruidDataSource提供restart方法，可以在应用启动后重新初始化连接池，因此可以修改数据源配置后，由定时器进行调用，设置为需要切换的对应配置，如下：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意，cloudDataSource需要为DruidDataSource类型</span></span><br><span class="line">cloudDataSource.setUrl(<span class="string">&quot;jdbc:mysql://***.***.***.***:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&quot;</span>);</span><br><span class="line">cloudDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">cloudDataSource.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">cloudDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">cloudDataSource.restart();</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>暂未找到相关方法，待补充。。。</p>
+<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>暂未找到相关方法，待补充。。。</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>上云</tag>
+        <tag>故障转移</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>告别高中</title>
     <url>/2019/06/28/%E5%91%8A%E5%88%AB%E9%AB%98%E4%B8%AD/</url>
     <content><![CDATA[<p>回想高中三年，有许多说不清道不明的意味，就好像天边的云彩，随着风飘动变得灵动万分，随着太阳的映射变得多姿多彩，但云终究是由液滴组成的，在不断的变化过程中，化为泡影，虽大气是不断循环的，但我就好比是其中的一个不起眼的水滴，终究会脱离这个大群体，融入另一个集体之中，这是必然性的结果。</p>
 <p>来不及说声告别，就恍如昨天，梦幻一般，煽情的话语已是不及我内心情感的激荡，一切尽在不言中，虽说这三年，我说实话并未真正了解任何一个人，但尽管如此，我们还是共度了高中，经历了高考的洗礼，有的人收获了喜悦，有的人却不尽人意，不论如何，我们必定拥有了属于自己的那一份悸动，愿今后我们能朝着前方，秉持信仰，一路披荆斩棘，这就是我的所感所想，一个在路上的准大一学生。</p>
 ]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>呐喊</title>
+    <url>/2016/10/30/%E5%91%90%E5%96%8A/</url>
+    <content><![CDATA[<p>回想过去，多么怀念曾经的美好时光，但却早已只剩下那渐行渐远的一个个瞬间仍然徘徊，转瞬即逝。深入骨髓的孤独感慢慢侵蚀着我，迷失在人海中，与自己的影子为伍，不时躲闪来往的行人，我只想躲到阴暗的角落，回想过去的点点滴滴，仅此而已，但外在虚伪的皮囊早已机械麻木，与这繁华世界格格不入。此刻，我只想呐喊。<br>内心的苦楚遍布在每一个角落，想呐喊，却不行，就像一个异类，不被人所正视，即便有，那也是不长久的，顷刻间，可能往昔的情分早已烟消云散，不复存在，只剩下那充斥着虚伪笑容的脸仍留在脑中，久久挥之不去，仿佛在讥讽，嘲笑，我想这是不能呐喊的原因吧，因为它无时无刻不在压抑你，让你无法置身事外，世间种种皆是如此，想要逃离这一切，却发现自己早已被捆绑住了，无法挣脱，甚至无法发声，身边的人诧异地看着你，你的那些看似有些另类的行为不被人所接受，因为人们习惯于司空见惯，而当一些不正常的东西出现的时候，他们会质疑它，甚至去摧残它。</p>
+<p>呐喊，我只想呐喊，在广袤无垠的田野中肆意呐喊，在这里，没有人去讥讽、嘲笑你，似乎很畅意，但我不能，虽然世间的种种把我压得喘不过气来，但在这一片黑暗中还有零星的灯火——真正爱你的人，回到他们的身边，种种不安、惶恐都消失了，尽管只有一段段短暂的时间，但内心却是如此光明。也许将来你们会离开我的身边，但我还是会挺住这苦楚的肆虐，在这万象丛生的世界活下去，去为了寻找一个能够陪伴我走下去的挚爱。</p>
+<p>在这之前，我只想呐喊，当我渐渐长大，亦或是变老，头发渐渐苍白，如今炽热的心也许会随之降温，但我仍有信念，仍有为之一生的目标，这便足够了。哪怕世人无法理解，但我保持自我，我还是我，放纵着我，在这世界中茫茫一点，不奢求改变什么，但求初心不变，这便足够了。</p>
+<p>在这世界，有许多不公平，但这往往是表象，许多人想逃离这种不公平的现象，转而追求那些看似公平的选择，这本没有错，但这些人为了公平，将不公平强加于他人，只为了一时的利益，并不能说人心险恶，这只是人们为了自我保护和那万恶的欲望作的祟，这可能会毁了一个人的一生，但人们却不管不顾，仍旧如此，只有当其波及家人或自我的时候，这才会看清本质，停止那愚蠢的行为，但有些人仍旧被蒙蔽，做出无法挽回的事，这充斥在人世间，几乎每时每刻都在发生，我厌倦了这种选择和拒绝的过程，而结果也不再那么重要了，无非是为了欲望，还有那可笑的自我保护，所以，我只想呐喊。</p>
+<p>生活中的某些事物会将我们置之于一处险地，在这里，只有你自己，周围黑漆漆的一片，这强烈的压抑感会使人喘不过气，但又不得不去面对它，独自地，将它打败，你才能走出去，这时，你的心境会变得更加强韧，但往往会有许多事物会影响你的心智，妨碍甚至阻止你做出关键的选择，如果你放弃了，那么你将沦为它的奴隶，自此难以自拔，只能任由它侵蚀你，肆虐你，直到你的最后一道防线被攻破，那么，你早已不是你，你将会被改变，变得麻木，没有丝毫情感，一切都将无法阻止你的决定，你的选择，你的一切，因为你已不是人，只是机械动物，我怕，会成为这样的存在，所以，我只想呐喊。</p>
+<p>啊——这一切究竟是为了什么？也许究其一生都不会知道，只能默默、平凡地活着，让尸骨腐烂在地底，让世界遗忘我曾经存在过，而这一切，都将成为消失那一点。</p>
+<p>我真的只想呐喊。</p>
+<p style="text-align:right;">写于2016-10-30</p>
+
+<p align="right" style="text-align:right;text-indent:32.0pt"><span style="font-size:16.0pt;font-family:楷体;color:#215868">蚝油<span></span></span></p>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -1106,18 +1123,46 @@
       </tags>
   </entry>
   <entry>
-    <title>呐喊</title>
-    <url>/2016/10/30/%E5%91%90%E5%96%8A/</url>
-    <content><![CDATA[<p>回想过去，多么怀念曾经的美好时光，但却早已只剩下那渐行渐远的一个个瞬间仍然徘徊，转瞬即逝。深入骨髓的孤独感慢慢侵蚀着我，迷失在人海中，与自己的影子为伍，不时躲闪来往的行人，我只想躲到阴暗的角落，回想过去的点点滴滴，仅此而已，但外在虚伪的皮囊早已机械麻木，与这繁华世界格格不入。此刻，我只想呐喊。<br>内心的苦楚遍布在每一个角落，想呐喊，却不行，就像一个异类，不被人所正视，即便有，那也是不长久的，顷刻间，可能往昔的情分早已烟消云散，不复存在，只剩下那充斥着虚伪笑容的脸仍留在脑中，久久挥之不去，仿佛在讥讽，嘲笑，我想这是不能呐喊的原因吧，因为它无时无刻不在压抑你，让你无法置身事外，世间种种皆是如此，想要逃离这一切，却发现自己早已被捆绑住了，无法挣脱，甚至无法发声，身边的人诧异地看着你，你的那些看似有些另类的行为不被人所接受，因为人们习惯于司空见惯，而当一些不正常的东西出现的时候，他们会质疑它，甚至去摧残它。</p>
-<p>呐喊，我只想呐喊，在广袤无垠的田野中肆意呐喊，在这里，没有人去讥讽、嘲笑你，似乎很畅意，但我不能，虽然世间的种种把我压得喘不过气来，但在这一片黑暗中还有零星的灯火——真正爱你的人，回到他们的身边，种种不安、惶恐都消失了，尽管只有一段段短暂的时间，但内心却是如此光明。也许将来你们会离开我的身边，但我还是会挺住这苦楚的肆虐，在这万象丛生的世界活下去，去为了寻找一个能够陪伴我走下去的挚爱。</p>
-<p>在这之前，我只想呐喊，当我渐渐长大，亦或是变老，头发渐渐苍白，如今炽热的心也许会随之降温，但我仍有信念，仍有为之一生的目标，这便足够了。哪怕世人无法理解，但我保持自我，我还是我，放纵着我，在这世界中茫茫一点，不奢求改变什么，但求初心不变，这便足够了。</p>
-<p>在这世界，有许多不公平，但这往往是表象，许多人想逃离这种不公平的现象，转而追求那些看似公平的选择，这本没有错，但这些人为了公平，将不公平强加于他人，只为了一时的利益，并不能说人心险恶，这只是人们为了自我保护和那万恶的欲望作的祟，这可能会毁了一个人的一生，但人们却不管不顾，仍旧如此，只有当其波及家人或自我的时候，这才会看清本质，停止那愚蠢的行为，但有些人仍旧被蒙蔽，做出无法挽回的事，这充斥在人世间，几乎每时每刻都在发生，我厌倦了这种选择和拒绝的过程，而结果也不再那么重要了，无非是为了欲望，还有那可笑的自我保护，所以，我只想呐喊。</p>
-<p>生活中的某些事物会将我们置之于一处险地，在这里，只有你自己，周围黑漆漆的一片，这强烈的压抑感会使人喘不过气，但又不得不去面对它，独自地，将它打败，你才能走出去，这时，你的心境会变得更加强韧，但往往会有许多事物会影响你的心智，妨碍甚至阻止你做出关键的选择，如果你放弃了，那么你将沦为它的奴隶，自此难以自拔，只能任由它侵蚀你，肆虐你，直到你的最后一道防线被攻破，那么，你早已不是你，你将会被改变，变得麻木，没有丝毫情感，一切都将无法阻止你的决定，你的选择，你的一切，因为你已不是人，只是机械动物，我怕，会成为这样的存在，所以，我只想呐喊。</p>
-<p>啊——这一切究竟是为了什么？也许究其一生都不会知道，只能默默、平凡地活着，让尸骨腐烂在地底，让世界遗忘我曾经存在过，而这一切，都将成为消失那一点。</p>
-<p>我真的只想呐喊。</p>
-<p style="text-align:right;">写于2016-10-30</p>
+    <title>把握</title>
+    <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
+    <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
+<p style="text-align:right;">写于2016-5-14</p>
 
-<p align="right" style="text-align:right;text-indent:32.0pt"><span style="font-size:16.0pt;font-family:楷体;color:#215868">蚝油<span></span></span></p>]]></content>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./elapse.jpg"
+                      width="400px" height="auto" alt="流逝"
+                ><figcaption>流逝</figcaption></figure>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>沉默的大多数</title>
+    <url>/2017/01/14/%E6%B2%89%E9%BB%98%E7%9A%84%E5%A4%A7%E5%A4%9A%E6%95%B0/</url>
+    <content><![CDATA[<p>沉默，一切无言，对于世间的种种，我只能冷眼相对，不是冷漠，而是心力交瘁，感觉内心充满了黑暗，却装出一副无所谓、不在乎的样子，仅仅是为了更好地融入这个虚伪的世界，那又能怎么样呢？迷失了方向，只有家的光芒仍引导着我向前走，尽管前路茫茫，但，路在前方，坚持走下去，哪怕是为了自己的信念，也要咬牙坚持走下去。</p>
+<p>可是，却早已无力，瘫倒在冰冷的地上，看着天空，白茫茫的一片覆盖了蓝天，仅露出些空隙，光从中渗透出来，洒满了大地，也照到我的脸上，麻木的脸颊甚至感受不到丝毫暖意，此刻太阳仿佛冷焰一般，燃烧着，却冷到无感，这早已不是火，而是晃动着的光球，散发着寒人的光芒，世间这一切仿佛失色，在这天地间，仅剩我一人，自由地飞翔在冰冷的大地上，内心燃烧起一团火，双眼只剩下无尽的深邃，毫无感情，无奈化作脸上那唯一的标志——沉默，无尽的沉默。</p>
+<p>曾几何时，可笑的认为这世间如此美好，却在一瞬之间，破灭了，一点点消散在内心深处，化为一道道无法修复的伤痕，触目惊心，却又蕴含着对从前的回忆，不禁交杂着一种复杂的情感，在笑的时候，眼角却冒出了眼泪，内心痛苦，牵动着神经，身体做出抗拒的表现，想要发泄，却又不能，只能任由它肆意破坏曾经美好的感受，剩下一片废墟，慢慢沙化，渴望雨水将其冲刷干净，却只有几滴眼泪。</p>
+<p>无言，岁月流逝，也许废墟会重建，但一切早已不是原来的模样，只有那面目全非的痕迹才能证明这曾经存在过，只能独自缅怀逝去的青春，却无人能懂，烦闷瞬间爆炸，将我炸得血肉横飞。一次又一次地隐忍，早已受不了那倦怠，我只想逃离，逃离这一切。</p>
+<p style="text-align:right;">写于高中某天</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>我</title>
+    <url>/2018/05/06/%E6%88%91/</url>
+    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
+<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
+<p>也许<br>来来往往<br>你已老去</p>
+<p>但是<br>往复之间<br>越发真切</p>
+<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
+<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
+<p>我也知道<br>你<br>曾多少次暗自神伤</p>
+<p>我亦知道<br>你<br>曾多少次触景生情</p>
+<p>因为<br>我知道<br>我便是你</p>
+<p style="text-align:right;">写于2018-5-6</p>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -1141,45 +1186,10 @@
       </categories>
   </entry>
   <entry>
-    <title>我</title>
-    <url>/2018/05/06/%E6%88%91/</url>
-    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
-<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
-<p>也许<br>来来往往<br>你已老去</p>
-<p>但是<br>往复之间<br>越发真切</p>
-<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
-<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
-<p>我也知道<br>你<br>曾多少次暗自神伤</p>
-<p>我亦知道<br>你<br>曾多少次触景生情</p>
-<p>因为<br>我知道<br>我便是你</p>
-<p style="text-align:right;">写于2018-5-6</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>把握</title>
-    <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
-    <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
-<p style="text-align:right;">写于2016-5-14</p>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./elapse.jpg"
-                      width="400px" height="auto" alt="流逝"
-                ><figcaption>流逝</figcaption></figure>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>沉默的大多数</title>
-    <url>/2017/01/14/%E6%B2%89%E9%BB%98%E7%9A%84%E5%A4%A7%E5%A4%9A%E6%95%B0/</url>
-    <content><![CDATA[<p>沉默，一切无言，对于世间的种种，我只能冷眼相对，不是冷漠，而是心力交瘁，感觉内心充满了黑暗，却装出一副无所谓、不在乎的样子，仅仅是为了更好地融入这个虚伪的世界，那又能怎么样呢？迷失了方向，只有家的光芒仍引导着我向前走，尽管前路茫茫，但，路在前方，坚持走下去，哪怕是为了自己的信念，也要咬牙坚持走下去。</p>
-<p>可是，却早已无力，瘫倒在冰冷的地上，看着天空，白茫茫的一片覆盖了蓝天，仅露出些空隙，光从中渗透出来，洒满了大地，也照到我的脸上，麻木的脸颊甚至感受不到丝毫暖意，此刻太阳仿佛冷焰一般，燃烧着，却冷到无感，这早已不是火，而是晃动着的光球，散发着寒人的光芒，世间这一切仿佛失色，在这天地间，仅剩我一人，自由地飞翔在冰冷的大地上，内心燃烧起一团火，双眼只剩下无尽的深邃，毫无感情，无奈化作脸上那唯一的标志——沉默，无尽的沉默。</p>
-<p>曾几何时，可笑的认为这世间如此美好，却在一瞬之间，破灭了，一点点消散在内心深处，化为一道道无法修复的伤痕，触目惊心，却又蕴含着对从前的回忆，不禁交杂着一种复杂的情感，在笑的时候，眼角却冒出了眼泪，内心痛苦，牵动着神经，身体做出抗拒的表现，想要发泄，却又不能，只能任由它肆意破坏曾经美好的感受，剩下一片废墟，慢慢沙化，渴望雨水将其冲刷干净，却只有几滴眼泪。</p>
-<p>无言，岁月流逝，也许废墟会重建，但一切早已不是原来的模样，只有那面目全非的痕迹才能证明这曾经存在过，只能独自缅怀逝去的青春，却无人能懂，烦闷瞬间爆炸，将我炸得血肉横飞。一次又一次地隐忍，早已受不了那倦怠，我只想逃离，逃离这一切。</p>
+    <title>溺水</title>
+    <url>/2017/04/08/%E6%BA%BA%E6%B0%B4/</url>
+    <content><![CDATA[<p>渐渐丧失知觉，阳光仿佛随我一起消失在这河里，逐渐黯淡，岸上的呼喊声在耳边若隐若现。有那么几刻，我甚至怀疑这并不真实，仿佛做梦一般飘渺，它就那样将我拉入万丈深渊，我不禁想要挣扎，去挣脱它的控制，但毫无成效，反而使我越陷越深，我感到一丝无力与绝望，不甘就这么死去，世间的种种在眼前浮现，我不禁笑了笑，是啊，又有什么可怀念的呢？放弃挣扎的我慢慢下沉，我仿佛看到世间最美的景色，一切是那么安静，祥和，我闭上眼睛，想去感受死亡所带来的一丝不安与恐惧，但我感受到的只有无尽的黑暗和一片虚无。</p>
+<p>岸上的那人仿佛冷漠无比，事不关己地看着我，渐渐死去，于是，我便长眠于此，世间再无我的容身之地，我已不复存在，接管这个皮囊的是另一种存在，一种未知的存在，它就在那，就那么默默注视着我，看着我渐渐堕落，迷失自我，取代我的便是它，是我助长它的存在，使它慢慢腐蚀我的灵魂，侵入我的内心，但对此我一无所知，直至此刻，我死了，我才领悟，但也没有什么值得我去留念了，当初的信念早已覆灭，随着我一同消散在这世间。</p>
 <p style="text-align:right;">写于高中某天</p>]]></content>
       <categories>
         <category>随笔</category>
@@ -1215,101 +1225,6 @@
 <p style="text-align:right;">——致百日誓师的我</p>
 
 <p style="text-align:right;">写于2018-9-16</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>设计模式</title>
-    <url>/2023/11/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>设计模式提供了一套在特定问题场景下解决软件设计问题的标准化解决方案，能够帮助开发者避免重复造轮子，提高代码的可复用性、可维护性和可扩展性，并且能够使开发过程更加高效、有条理。</p>
-<p>在介绍之前先了解下三个原则：单一职责原则、开放-封闭原则和依赖倒转原则。</p>
-<blockquote>
-<p>单一职责原则</p>
-<p>如字面意思所示，对于一个类来说最好只有一个引起它变化的原因。如果一个类承担的职责过多，就相当于将这些职责耦合在一起，一个职责的变化可能会削弱或者抑制这个类完成其他职责的能力，这种耦合会导致脆弱的设计，当变化发生时，设计会遭受到意想不到的破坏。如果根据职责进行划分，即根据功能进行细化，后续的改动甚至是移植都会变得容易许多，可维护性大大提升，而不是一堆shit mountain摆在面前，不知道从何入手。当然，无需过度细分，实际上，在开发中一般是以功能模块进行划分，而模块内部的各个细节再进行具体划分，做到粗中有细。</p>
-</blockquote>
-<blockquote>
-<p>开放-封闭原则</p>
-<p>如字面意思所示，可以进行扩展，但不能进行修改。此处的不能修改并不绝对，而是需要开发者事先预知可能的变化，将这种变化进行抽象，从而实现隔离变化，当发生变化时，只需要增加新代码，而不是修改现有代码。当然，仅需要对频繁做出改变的部分进行抽象，而不是事无巨细，反而会导致过度修改。</p>
-</blockquote>
-<blockquote>
-<p>依赖倒转原则</p>
-<p>首先先了解里氏代换原则，即一个软件实体如果使用的是一个父类的话，那么一定适用于其子类，而且它察觉不到父类对象和子类对象的区别。也就是说，在软件里面，把父类都替换为它的子类，程序的行为并未发生变化，简单来说，就是子类型必须能够替换掉它们的父类型。</p>
-<p>抽象不应该依赖于细节，细节应该依赖于抽象，即针对接口编程，不要对实现编程，高层模块不应该依赖低层模块，两个都应该依赖抽象。由于子类型的可替换性才使得使用父类型的模块在无需修改的情况下就可以扩展。</p>
-</blockquote>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>设计模式主要分为三大类：<strong>创建型模式</strong>、<strong>结构型模式</strong>和<strong>行为型模式</strong>。以下是这三类设计模式的简要概述：</p>
-<h3 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h3><p>这类模式主要关注对象的创建方式，使系统独立于对象的创建、组合和表示方式。常见的创建型模式包括：</p>
-<h4 id="单例（Singleton）"><a href="#单例（Singleton）" class="headerlink" title="单例（Singleton）"></a>单例（Singleton）</h4><p>即确保一个类仅存在单个实例，并为该实例提供访问方法，当多线程时，需要提供锁来保证单实例。</p>
-<p>单例模式分为饿汉式和懒汉式，饿汉式即一开始就创建实例，而懒汉式则是用到时才构建实例。</p>
-<h4 id="原型（Prototype）"><a href="#原型（Prototype）" class="headerlink" title="原型（Prototype）"></a>原型（Prototype）</h4><p>即用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。实际上就是从一个对象再创建另外一个可定制的对象，而不需要知道任何创建的细节，将对象初始化为被克隆的对象，然后再根据需要修改部分属性，而不需要从头开始初始化。</p>
-<blockquote>
-<p>此处克隆分为浅拷贝和深拷贝，这是一个老生常谈的问题，浅拷贝只是引用传递，即拷贝对象只将对象的引用进行拷贝，而真正的数据并有拷贝，即数据只有一份，只要一个地方进行了修改，其他拷贝的地方也会跟着产生变化，如果不想这样，就需要值传递，实现深拷贝方法，重新创建一个跟被拷贝对象一样数据的对象，曾经在写Vue的时候遇到这个坑，直接用等于号赋值，结果临时变量的改变也导致了原本变量的改变，从而导致模版重新渲染，这里就不展开说了，感兴趣的可以搜搜看。对于Java、C#等等面向对象语言来说，都会提供一个Cloneable类，只需要继承该类即可调用clone方法来复制实例，不过此处的clone方法是浅拷贝，如果需要深拷贝，可以进行重写。</p>
-</blockquote>
-<h4 id="工厂方法（Factory-Method）"><a href="#工厂方法（Factory-Method）" class="headerlink" title="工厂方法（Factory Method）"></a>工厂方法（Factory Method）</h4><p>首先需要了解简单工厂模式，即运用多态，在构造时，构造工厂根据某个属性创建对应的类，这些类都继承于某个抽象类，实现某个公有方法，从而只需要调用该方法即可，不用关心方法是如何实现，当需要变动时，只需要改变对应类的实现，而不用关心其他类的实现。</p>
-<p>工厂方法模式将简单工厂模式进一步抽象，把工厂也分为一个个具体的工厂，将原先在工厂内判断的逻辑移动到外部，进一步加强了开放-封闭原则。定义了一个创建对象的接口，让子类决定实例化哪个类。</p>
-<h4 id="抽象工厂（Abstract-Factory）"><a href="#抽象工厂（Abstract-Factory）" class="headerlink" title="抽象工厂（Abstract Factory）"></a>抽象工厂（Abstract Factory）</h4><p>创建一系列相关或相互依赖的对象，而无需指定它们具体的类。常常和依赖注入和反射相结合，根据传入的依赖创建不同的实例，从而调用不同的方法，例如数据库连接池druid，它并不感知具体的数据库类型，不论是MySQL还是oracle，都有一套标准，即连接器，只需要方法一致即可。</p>
-<h4 id="建造者（Builder）"><a href="#建造者（Builder）" class="headerlink" title="建造者（Builder）"></a>建造者（Builder）</h4><p>即将一个复杂对象的构建和它的表示分离，使得同样的构建过程可以创建不同的表示。</p>
-<p>将构建流程标准化形成一个抽象类建造者，其中包含各个步骤，然后再去继承这个抽象类，然后必须实现其中的所有方法，因此不会有遗漏，而再抽象出一个流程类指挥者，传入建造者，调用各个步骤，从而形成具体的流程。部分定制化可以概括这个模式的特点，流程是定死的，但是步骤可定制化，经过不同的步骤，最后呈现的结果也是不同的，但万变不离其宗。</p>
-<h3 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h3><p>这类模式主要涉及到类和对象的组合，用于构建大型的对象结构，帮助确保系统的灵活性和高效性。常见的结构型模式包括：</p>
-<h4 id="适配器（Adapter）"><a href="#适配器（Adapter）" class="headerlink" title="适配器（Adapter）"></a>适配器（Adapter）</h4><p>即将一个类的接口转换为客户希望的另外一个接口，使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。</p>
-<p>适配器模式主要应用于希望复用一些现存的类，但是又与复用环境要求不一致的情况，字面意思，可以联想到电源适配器，将市电转化为直流电，供设备运行，一样的思想，适配，适配，适应配置，当存在复杂且繁杂的代码时，无法对其进行重构，或者重构成本过于昂贵，这时就可以运用适配器模式进行相应的适配，当然，还有第三方接口和自己的接口不匹配，此时也需要进行适配。</p>
-<h4 id="装饰者（Decorator）"><a href="#装饰者（Decorator）" class="headerlink" title="装饰者（Decorator）"></a>装饰者（Decorator）</h4><p>即将所需的功能按正确的顺序串联起来控制，动态地给一个对象添加一些额外的职责。</p>
-<p>可以理解为一种另类的递归，装饰对象的被装饰物其实还是其他对象的装饰对象，每次先执行之前“装饰”的方法，再执行自己的方法，串成一串，这样就实现了可装配的增强功能，当需要时，可按需进行串联，例如事先的数据校验，增加新的字段，新的逻辑等等。注意，装饰的顺序是很重要的，例如数据校验、加密，不能等到业务处理结束后才进行。装饰模式可以有效地将核心功能和装饰功能分离开来，按照需要进行必要的增强，而不修改核心功能。</p>
-<h4 id="代理（Proxy）"><a href="#代理（Proxy）" class="headerlink" title="代理（Proxy）"></a>代理（Proxy）</h4><p>即为其他对象提供一种代理以控制这个对象的访问。</p>
-<p>如果有部署过Nginx的应该不陌生，代理服务器，即将收到的请求发送到另一个服务器，收到应答后再将该应答返回，相当于多了一个代理人的概念，当然在传递期间可以做一些额外的事，甚至经过处理而不用继续传递直接返回，一般来说，代理能处理的事，就不用劳烦被请求的对象了。</p>
-<h4 id="外观（Facade）"><a href="#外观（Facade）" class="headerlink" title="外观（Facade）"></a>外观（Facade）</h4><p>即为子系统中的一组接口提供一个一致的界面，定义一个高层接口，这个接口使得这一子系统更加易用。</p>
-<p>在设计初期阶段，应该有意识的定义不同的层，每个层都有不同的职责，然后层与层之间通过接口访问，使得耦合大大降低，例如网络的TCPIP模型，再比如后端的数据访问层、业务逻辑层、表示层等等，各司其职，对外提供一组接口供其他层调用，只需要知道这个接口是干啥的，而无需过分关注其中的实现，只要功能没变，调用该接口的地方就无需变动。</p>
-<h4 id="桥接（Bridge）"><a href="#桥接（Bridge）" class="headerlink" title="桥接（Bridge）"></a>桥接（Bridge）</h4><p>即将抽象部分与它的实现部分分离，使它们都可以单独地变化，简单来说，就是将类的功能层次结构和类的实现层次结构连接起来。</p>
-<p>就像系统和软件之间存在的关系，软件在不同的系统中实现有所不同，但是功能是一样的，即仅需定义好功能，然后调用实现即可，功能侧无需关心具体实现。</p>
-<p>想要新增功能时，只需在功能侧添加功能类，不必对实现侧进行修改，增加后的功能能被所有实现使用。</p>
-<h4 id="组合（Composite）"><a href="#组合（Composite）" class="headerlink" title="组合（Composite）"></a>组合（Composite）</h4><p>即将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。</p>
-<p>文件树、窗口视图、权限管理等等，都可以采用组合模式，即可以进行嵌套，当然需要注意有没有嵌套自身，不然就会无限递归下去。</p>
-<h4 id="享元（Flyweight）"><a href="#享元（Flyweight）" class="headerlink" title="享元（Flyweight）"></a>享元（Flyweight）</h4><p>即运用共享技术有效地支持大量细粒度的对象。</p>
-<p>例如字符串常量就可以理解为是享元，相同的字符串常量实际上是在同一块内存，还有线程池、数据库连接池，其实也是享元，只不过是事先建立多个线程或者连接，然后共享，本质是一样的，C语言的文件描述符也是如此，可以事先进行创建，还能节省时间，因为创建比较耗费时间。</p>
-<h3 id="行为型模式"><a href="#行为型模式" class="headerlink" title="行为型模式"></a>行为型模式</h3><p>这类模式专注于对象之间的通信，用于增强对象之间的协作和职责分配。常见的行为型模式包括：</p>
-<h4 id="策略（Strategy）"><a href="#策略（Strategy）" class="headerlink" title="策略（Strategy）"></a>策略（Strategy）</h4><p>即将策略（算法）从单个类剥离出来，定义一个父类，然后分成不同的类继承该父类，这些类都实现对某个问题的处理方法，这样只需要在需要构造的类（上下文）中传入需要的策略，即可调用处理方法，而无需关注内部如何实现。</p>
-<p>策略类只需要实现必要的接口，具体的策略类需要实现策略类中定义的接口，而上下文类负责使用策略类，用多态传入不同的具体的策略类。</p>
-<p>策略模式有效地将算法和实际应用剥离开来，后续如果要新增策略或者修改策略对应的算法时，只需要对相应的部分进行新增或者修改即可，相当于是委托，是一种弱关联关系，可以很方便地进行替换。</p>
-<p>策略模式可以和简单工厂模式相结合，上下文构造时传入的可以是某个属性，再将该属性映射到具体的类。不同模式是可以进行嵌套的，最终境界就是看似没有应用模式，实际都是模式，不需要刻意使用，即化有形为无形。</p>
-<h4 id="观察者（Observer）"><a href="#观察者（Observer）" class="headerlink" title="观察者（Observer）"></a>观察者（Observer）</h4><p>又叫发布-订阅模式，即让多个观察者订阅某一个对象，当这个对象状态发生变化时，会通知所有观察者对象执行相应的动作。</p>
-<p>消息队列就是经典的观察者模式，以及基于事件驱动的websocket，都是根据“状态”变化来触发对应动作，也就是回调，并不关心是谁触发的，而是关注什么事件被触发了。</p>
-<h4 id="责任链（Chain-of-Responsibility）"><a href="#责任链（Chain-of-Responsibility）" class="headerlink" title="责任链（Chain of Responsibility）"></a>责任链（Chain of Responsibility）</h4><p>即使多个对象都有机会处理请求，从而避免请求的发送者和接收者之间的耦合关系。将这个对象连成一条链，并沿着这条链传递该请求，直到有一个对象处理它为止。</p>
-<p>相当于踢皮球一样，先看看自身能不能处理，不能就踢给下一个人，以此类推，直到有人进行处理，当然，最后必须保证能处理，不然就没有意义了，就像现实中无意义的互相甩锅（手动狗头</p>
-<h4 id="命令（Command）"><a href="#命令（Command）" class="headerlink" title="命令（Command）"></a>命令（Command）</h4><p>即将一个请求封装为一个对象，从而使你可用不同的请求对客户进行参数化，对请求排队或记录请求日志，以及支持可撤销的操作。</p>
-<p>可以理解为事件驱动，事件触发时将要做的操作加入队列中，或者将操作从队列中删除，当收到执行事件时，将队列中的操作一一执行。</p>
-<h4 id="状态（State）"><a href="#状态（State）" class="headerlink" title="状态（State）"></a>状态（State）</h4><p>即用状态决定对象的行为。</p>
-<p>将与特定状态相关的行为局部化，并且将不同状态的行为分割开来，用类表示状态，将冗长的判断切分为一个个状态，分而治之，可以将状态迁移交给各个状态，由自己判断什么时候迁移状态，也可以在外部进行迁移，通过有限状态机可以更好地理解各个状态之间的关系。</p>
-<h4 id="访问者（Visitor）"><a href="#访问者（Visitor）" class="headerlink" title="访问者（Visitor）"></a>访问者（Visitor）</h4><p>即将数据结构和处理分离开来，使得可以不改变各元素的类的前提下定义作用于这些元素的新操作。</p>
-<p>该模式适用于数据结构相对稳定的系统，这就使得它的优缺点都十分明显，优点就是操作解耦，增加新操作无需修改先前的代码，而缺点就是一旦数据结构变化，需要修改的地方就会分散到各个角落里，难以维护，因此只适用于稳定的数据结构。</p>
-<h4 id="中介者（Mediator）"><a href="#中介者（Mediator）" class="headerlink" title="中介者（Mediator）"></a>中介者（Mediator）</h4><p>即用一个中介对象来封装一系列的对象交互，使得对象不需要显式地相互引用，从而使其耦合松散，而且可以独立地改变它们之间的交互。</p>
-<p>相当于由一个路由器决定请求该发往哪里，在web应用中可以用Redis解决跨域问题，不同的网站请求同一个Redis即可，存的cookie可以很容易共享，跟发布&#x2F;订阅模式很像。</p>
-<h4 id="备忘录（Memento）"><a href="#备忘录（Memento）" class="headerlink" title="备忘录（Memento）"></a>备忘录（Memento）</h4><p>即将对象的状态保存起来，需要时可以进行恢复，就像游戏中的存档和读档。</p>
-<p>可以藉由该模式实现状态恢复、状态暂存，甚至还能覆盖保存的状态，可以将状态保存到Redis里，需要时进行取用，可以实现二阶段提交等功能。</p>
-<h4 id="迭代器（Iterator）"><a href="#迭代器（Iterator）" class="headerlink" title="迭代器（Iterator）"></a>迭代器（Iterator）</h4><p>即提供一种方式顺序访问一个聚合对象中各个元素，而又不暴露该对象的内部表示。</p>
-<p>该模式实际已经加入语言实现当中，iterator即迭代器，使用该元素即可对集合进行遍历然后进行相同的操作。</p>
-<h2 id="推荐书籍"><a href="#推荐书籍" class="headerlink" title="推荐书籍"></a>推荐书籍</h2><p><a class="link"   href="https://baike.baidu.com/item/Head%20First%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/7427270" >《Head First设计模式》 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><a class="link"   href="https://baike.baidu.com/item/%E5%A4%A7%E8%AF%9D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/85262" >《大话设计模式》 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>强烈推荐！！！以浅显易懂地方式介绍了各个模式，建议先阅读，挺有趣的</p>
-<p><a class="link"   href="https://baike.baidu.com/item/%E5%9B%BE%E8%A7%A3%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/22699708" >《图解设计模式》 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>具体案例可以看这本，加深理解</p>
-<h2 id="杂谈"><a href="#杂谈" class="headerlink" title="杂谈"></a>杂谈</h2><p>技术是在总结和否定中不断发展，设计模式就是总结前人惯用的一些思维模式，抽象出来具体的方法，让后来者可以借鉴，领略其中的精妙之处，但23个设计模式并不足以概括此前贡献者的智慧，在我看来，只是冰山一角，更多的奥妙，还需要在接下来的编码生涯中慢慢体会，仔细品味。</p>
-<p>不同的语言之间存在实现上的差异，但是处处可见设计模式的身影，这说明了设计模式的技巧被广泛运用，其实这是个先有鸡还是先有蛋的问题，是先有所谓的设计模式，还是先有的技巧，我觉得并不重要，重要的是如何运用所谓的设计模式，要融会贯通，而不仅仅是套用，虽然套用可以省去一些无谓的开销，但是结合具体场景需要对模版进行改进以适应需求。有的时候，套用模版并不是一件好事，这样容易将简单的事情复杂化，个人觉得，需要设计模式的时候，那么这个功能一定是繁杂的，不容易理清的，才需要设计模式的协助，减少出错的概率，就像C语言，并不是面向对象的语言，但是这并不影响面向对象思想的运用，这就要问问神奇的宏了，可以实现多态，进而实现各个设计模式，让我不由得感叹前人的智慧，精妙！</p>
-<p>集设计模式为大成的MVC模式，即模型-视图-控制器，最近貌似被DDD模式给创飞了，即领域驱动设计，我对于DDD的了解甚少，在前不久才知道有这么个模式，不过貌似这两个模式可以并存，DDD模式实际上是一种思想。</p>
-<p>MVC是一种常见的软件架构模式，用于组织和分离应用程序的逻辑层、表示层和用户交互层。模型负责表示和处理数据，视图负责显示用户界面，控制器负责处理用户交互和调度逻辑。MVC的核心目标是将应用程序的不同功能和职责解耦，使得各个组件可以独立变化，并且提高了应用程序的可维护性和可扩展性。</p>
-<p>DDD是一种面向复杂业务领域的软件设计方法，它将关注点放在领域模型的设计和开发上，强调领域专家和开发团队的紧密合作，以达到更好的业务理解和设计实现。它提倡通过领域模型来反映业务需求，将业务逻辑和业务概念抽象为领域对象、值对象、聚合等概念，通过领域模型来实现业务规则和业务流程的核心逻辑。它的核心思想包括战略设计和和战术设计，其中战略设计关注领域模型的整体结构和组织，战术设计则关注具体领域对象和业务逻辑的实现。</p>
-<p>二者都是软件开发中的设计模式和思想，它们的目标都是提高软件系统的可维护性、可扩展性和可理解性。二者可以结合使用，DDD的领域模型可以作为MVC模型中的模型部分，MVC模式提供了一种良好的架构和开发模式来组织和展现DDD的领域模型。</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>溺水</title>
-    <url>/2017/04/08/%E6%BA%BA%E6%B0%B4/</url>
-    <content><![CDATA[<p>渐渐丧失知觉，阳光仿佛随我一起消失在这河里，逐渐黯淡，岸上的呼喊声在耳边若隐若现。有那么几刻，我甚至怀疑这并不真实，仿佛做梦一般飘渺，它就那样将我拉入万丈深渊，我不禁想要挣扎，去挣脱它的控制，但毫无成效，反而使我越陷越深，我感到一丝无力与绝望，不甘就这么死去，世间的种种在眼前浮现，我不禁笑了笑，是啊，又有什么可怀念的呢？放弃挣扎的我慢慢下沉，我仿佛看到世间最美的景色，一切是那么安静，祥和，我闭上眼睛，想去感受死亡所带来的一丝不安与恐惧，但我感受到的只有无尽的黑暗和一片虚无。</p>
-<p>岸上的那人仿佛冷漠无比，事不关己地看着我，渐渐死去，于是，我便长眠于此，世间再无我的容身之地，我已不复存在，接管这个皮囊的是另一种存在，一种未知的存在，它就在那，就那么默默注视着我，看着我渐渐堕落，迷失自我，取代我的便是它，是我助长它的存在，使它慢慢腐蚀我的灵魂，侵入我的内心，但对此我一无所知，直至此刻，我死了，我才领悟，但也没有什么值得我去留念了，当初的信念早已覆灭，随着我一同消散在这世间。</p>
-<p style="text-align:right;">写于高中某天</p>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -1539,6 +1454,91 @@
       <tags>
         <tag>JUC</tag>
         <tag>多线程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>设计模式</title>
+    <url>/2023/11/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>设计模式提供了一套在特定问题场景下解决软件设计问题的标准化解决方案，能够帮助开发者避免重复造轮子，提高代码的可复用性、可维护性和可扩展性，并且能够使开发过程更加高效、有条理。</p>
+<p>在介绍之前先了解下三个原则：单一职责原则、开放-封闭原则和依赖倒转原则。</p>
+<blockquote>
+<p>单一职责原则</p>
+<p>如字面意思所示，对于一个类来说最好只有一个引起它变化的原因。如果一个类承担的职责过多，就相当于将这些职责耦合在一起，一个职责的变化可能会削弱或者抑制这个类完成其他职责的能力，这种耦合会导致脆弱的设计，当变化发生时，设计会遭受到意想不到的破坏。如果根据职责进行划分，即根据功能进行细化，后续的改动甚至是移植都会变得容易许多，可维护性大大提升，而不是一堆shit mountain摆在面前，不知道从何入手。当然，无需过度细分，实际上，在开发中一般是以功能模块进行划分，而模块内部的各个细节再进行具体划分，做到粗中有细。</p>
+</blockquote>
+<blockquote>
+<p>开放-封闭原则</p>
+<p>如字面意思所示，可以进行扩展，但不能进行修改。此处的不能修改并不绝对，而是需要开发者事先预知可能的变化，将这种变化进行抽象，从而实现隔离变化，当发生变化时，只需要增加新代码，而不是修改现有代码。当然，仅需要对频繁做出改变的部分进行抽象，而不是事无巨细，反而会导致过度修改。</p>
+</blockquote>
+<blockquote>
+<p>依赖倒转原则</p>
+<p>首先先了解里氏代换原则，即一个软件实体如果使用的是一个父类的话，那么一定适用于其子类，而且它察觉不到父类对象和子类对象的区别。也就是说，在软件里面，把父类都替换为它的子类，程序的行为并未发生变化，简单来说，就是子类型必须能够替换掉它们的父类型。</p>
+<p>抽象不应该依赖于细节，细节应该依赖于抽象，即针对接口编程，不要对实现编程，高层模块不应该依赖低层模块，两个都应该依赖抽象。由于子类型的可替换性才使得使用父类型的模块在无需修改的情况下就可以扩展。</p>
+</blockquote>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>设计模式主要分为三大类：<strong>创建型模式</strong>、<strong>结构型模式</strong>和<strong>行为型模式</strong>。以下是这三类设计模式的简要概述：</p>
+<h3 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h3><p>这类模式主要关注对象的创建方式，使系统独立于对象的创建、组合和表示方式。常见的创建型模式包括：</p>
+<h4 id="单例（Singleton）"><a href="#单例（Singleton）" class="headerlink" title="单例（Singleton）"></a>单例（Singleton）</h4><p>即确保一个类仅存在单个实例，并为该实例提供访问方法，当多线程时，需要提供锁来保证单实例。</p>
+<p>单例模式分为饿汉式和懒汉式，饿汉式即一开始就创建实例，而懒汉式则是用到时才构建实例。</p>
+<h4 id="原型（Prototype）"><a href="#原型（Prototype）" class="headerlink" title="原型（Prototype）"></a>原型（Prototype）</h4><p>即用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。实际上就是从一个对象再创建另外一个可定制的对象，而不需要知道任何创建的细节，将对象初始化为被克隆的对象，然后再根据需要修改部分属性，而不需要从头开始初始化。</p>
+<blockquote>
+<p>此处克隆分为浅拷贝和深拷贝，这是一个老生常谈的问题，浅拷贝只是引用传递，即拷贝对象只将对象的引用进行拷贝，而真正的数据并有拷贝，即数据只有一份，只要一个地方进行了修改，其他拷贝的地方也会跟着产生变化，如果不想这样，就需要值传递，实现深拷贝方法，重新创建一个跟被拷贝对象一样数据的对象，曾经在写Vue的时候遇到这个坑，直接用等于号赋值，结果临时变量的改变也导致了原本变量的改变，从而导致模版重新渲染，这里就不展开说了，感兴趣的可以搜搜看。对于Java、C#等等面向对象语言来说，都会提供一个Cloneable类，只需要继承该类即可调用clone方法来复制实例，不过此处的clone方法是浅拷贝，如果需要深拷贝，可以进行重写。</p>
+</blockquote>
+<h4 id="工厂方法（Factory-Method）"><a href="#工厂方法（Factory-Method）" class="headerlink" title="工厂方法（Factory Method）"></a>工厂方法（Factory Method）</h4><p>首先需要了解简单工厂模式，即运用多态，在构造时，构造工厂根据某个属性创建对应的类，这些类都继承于某个抽象类，实现某个公有方法，从而只需要调用该方法即可，不用关心方法是如何实现，当需要变动时，只需要改变对应类的实现，而不用关心其他类的实现。</p>
+<p>工厂方法模式将简单工厂模式进一步抽象，把工厂也分为一个个具体的工厂，将原先在工厂内判断的逻辑移动到外部，进一步加强了开放-封闭原则。定义了一个创建对象的接口，让子类决定实例化哪个类。</p>
+<h4 id="抽象工厂（Abstract-Factory）"><a href="#抽象工厂（Abstract-Factory）" class="headerlink" title="抽象工厂（Abstract Factory）"></a>抽象工厂（Abstract Factory）</h4><p>创建一系列相关或相互依赖的对象，而无需指定它们具体的类。常常和依赖注入和反射相结合，根据传入的依赖创建不同的实例，从而调用不同的方法，例如数据库连接池druid，它并不感知具体的数据库类型，不论是MySQL还是oracle，都有一套标准，即连接器，只需要方法一致即可。</p>
+<h4 id="建造者（Builder）"><a href="#建造者（Builder）" class="headerlink" title="建造者（Builder）"></a>建造者（Builder）</h4><p>即将一个复杂对象的构建和它的表示分离，使得同样的构建过程可以创建不同的表示。</p>
+<p>将构建流程标准化形成一个抽象类建造者，其中包含各个步骤，然后再去继承这个抽象类，然后必须实现其中的所有方法，因此不会有遗漏，而再抽象出一个流程类指挥者，传入建造者，调用各个步骤，从而形成具体的流程。部分定制化可以概括这个模式的特点，流程是定死的，但是步骤可定制化，经过不同的步骤，最后呈现的结果也是不同的，但万变不离其宗。</p>
+<h3 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h3><p>这类模式主要涉及到类和对象的组合，用于构建大型的对象结构，帮助确保系统的灵活性和高效性。常见的结构型模式包括：</p>
+<h4 id="适配器（Adapter）"><a href="#适配器（Adapter）" class="headerlink" title="适配器（Adapter）"></a>适配器（Adapter）</h4><p>即将一个类的接口转换为客户希望的另外一个接口，使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。</p>
+<p>适配器模式主要应用于希望复用一些现存的类，但是又与复用环境要求不一致的情况，字面意思，可以联想到电源适配器，将市电转化为直流电，供设备运行，一样的思想，适配，适配，适应配置，当存在复杂且繁杂的代码时，无法对其进行重构，或者重构成本过于昂贵，这时就可以运用适配器模式进行相应的适配，当然，还有第三方接口和自己的接口不匹配，此时也需要进行适配。</p>
+<h4 id="装饰者（Decorator）"><a href="#装饰者（Decorator）" class="headerlink" title="装饰者（Decorator）"></a>装饰者（Decorator）</h4><p>即将所需的功能按正确的顺序串联起来控制，动态地给一个对象添加一些额外的职责。</p>
+<p>可以理解为一种另类的递归，装饰对象的被装饰物其实还是其他对象的装饰对象，每次先执行之前“装饰”的方法，再执行自己的方法，串成一串，这样就实现了可装配的增强功能，当需要时，可按需进行串联，例如事先的数据校验，增加新的字段，新的逻辑等等。注意，装饰的顺序是很重要的，例如数据校验、加密，不能等到业务处理结束后才进行。装饰模式可以有效地将核心功能和装饰功能分离开来，按照需要进行必要的增强，而不修改核心功能。</p>
+<h4 id="代理（Proxy）"><a href="#代理（Proxy）" class="headerlink" title="代理（Proxy）"></a>代理（Proxy）</h4><p>即为其他对象提供一种代理以控制这个对象的访问。</p>
+<p>如果有部署过Nginx的应该不陌生，代理服务器，即将收到的请求发送到另一个服务器，收到应答后再将该应答返回，相当于多了一个代理人的概念，当然在传递期间可以做一些额外的事，甚至经过处理而不用继续传递直接返回，一般来说，代理能处理的事，就不用劳烦被请求的对象了。</p>
+<h4 id="外观（Facade）"><a href="#外观（Facade）" class="headerlink" title="外观（Facade）"></a>外观（Facade）</h4><p>即为子系统中的一组接口提供一个一致的界面，定义一个高层接口，这个接口使得这一子系统更加易用。</p>
+<p>在设计初期阶段，应该有意识的定义不同的层，每个层都有不同的职责，然后层与层之间通过接口访问，使得耦合大大降低，例如网络的TCPIP模型，再比如后端的数据访问层、业务逻辑层、表示层等等，各司其职，对外提供一组接口供其他层调用，只需要知道这个接口是干啥的，而无需过分关注其中的实现，只要功能没变，调用该接口的地方就无需变动。</p>
+<h4 id="桥接（Bridge）"><a href="#桥接（Bridge）" class="headerlink" title="桥接（Bridge）"></a>桥接（Bridge）</h4><p>即将抽象部分与它的实现部分分离，使它们都可以单独地变化，简单来说，就是将类的功能层次结构和类的实现层次结构连接起来。</p>
+<p>就像系统和软件之间存在的关系，软件在不同的系统中实现有所不同，但是功能是一样的，即仅需定义好功能，然后调用实现即可，功能侧无需关心具体实现。</p>
+<p>想要新增功能时，只需在功能侧添加功能类，不必对实现侧进行修改，增加后的功能能被所有实现使用。</p>
+<h4 id="组合（Composite）"><a href="#组合（Composite）" class="headerlink" title="组合（Composite）"></a>组合（Composite）</h4><p>即将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。</p>
+<p>文件树、窗口视图、权限管理等等，都可以采用组合模式，即可以进行嵌套，当然需要注意有没有嵌套自身，不然就会无限递归下去。</p>
+<h4 id="享元（Flyweight）"><a href="#享元（Flyweight）" class="headerlink" title="享元（Flyweight）"></a>享元（Flyweight）</h4><p>即运用共享技术有效地支持大量细粒度的对象。</p>
+<p>例如字符串常量就可以理解为是享元，相同的字符串常量实际上是在同一块内存，还有线程池、数据库连接池，其实也是享元，只不过是事先建立多个线程或者连接，然后共享，本质是一样的，C语言的文件描述符也是如此，可以事先进行创建，还能节省时间，因为创建比较耗费时间。</p>
+<h3 id="行为型模式"><a href="#行为型模式" class="headerlink" title="行为型模式"></a>行为型模式</h3><p>这类模式专注于对象之间的通信，用于增强对象之间的协作和职责分配。常见的行为型模式包括：</p>
+<h4 id="策略（Strategy）"><a href="#策略（Strategy）" class="headerlink" title="策略（Strategy）"></a>策略（Strategy）</h4><p>即将策略（算法）从单个类剥离出来，定义一个父类，然后分成不同的类继承该父类，这些类都实现对某个问题的处理方法，这样只需要在需要构造的类（上下文）中传入需要的策略，即可调用处理方法，而无需关注内部如何实现。</p>
+<p>策略类只需要实现必要的接口，具体的策略类需要实现策略类中定义的接口，而上下文类负责使用策略类，用多态传入不同的具体的策略类。</p>
+<p>策略模式有效地将算法和实际应用剥离开来，后续如果要新增策略或者修改策略对应的算法时，只需要对相应的部分进行新增或者修改即可，相当于是委托，是一种弱关联关系，可以很方便地进行替换。</p>
+<p>策略模式可以和简单工厂模式相结合，上下文构造时传入的可以是某个属性，再将该属性映射到具体的类。不同模式是可以进行嵌套的，最终境界就是看似没有应用模式，实际都是模式，不需要刻意使用，即化有形为无形。</p>
+<h4 id="观察者（Observer）"><a href="#观察者（Observer）" class="headerlink" title="观察者（Observer）"></a>观察者（Observer）</h4><p>又叫发布-订阅模式，即让多个观察者订阅某一个对象，当这个对象状态发生变化时，会通知所有观察者对象执行相应的动作。</p>
+<p>消息队列就是经典的观察者模式，以及基于事件驱动的websocket，都是根据“状态”变化来触发对应动作，也就是回调，并不关心是谁触发的，而是关注什么事件被触发了。</p>
+<h4 id="责任链（Chain-of-Responsibility）"><a href="#责任链（Chain-of-Responsibility）" class="headerlink" title="责任链（Chain of Responsibility）"></a>责任链（Chain of Responsibility）</h4><p>即使多个对象都有机会处理请求，从而避免请求的发送者和接收者之间的耦合关系。将这个对象连成一条链，并沿着这条链传递该请求，直到有一个对象处理它为止。</p>
+<p>相当于踢皮球一样，先看看自身能不能处理，不能就踢给下一个人，以此类推，直到有人进行处理，当然，最后必须保证能处理，不然就没有意义了，就像现实中无意义的互相甩锅（手动狗头</p>
+<h4 id="命令（Command）"><a href="#命令（Command）" class="headerlink" title="命令（Command）"></a>命令（Command）</h4><p>即将一个请求封装为一个对象，从而使你可用不同的请求对客户进行参数化，对请求排队或记录请求日志，以及支持可撤销的操作。</p>
+<p>可以理解为事件驱动，事件触发时将要做的操作加入队列中，或者将操作从队列中删除，当收到执行事件时，将队列中的操作一一执行。</p>
+<h4 id="状态（State）"><a href="#状态（State）" class="headerlink" title="状态（State）"></a>状态（State）</h4><p>即用状态决定对象的行为。</p>
+<p>将与特定状态相关的行为局部化，并且将不同状态的行为分割开来，用类表示状态，将冗长的判断切分为一个个状态，分而治之，可以将状态迁移交给各个状态，由自己判断什么时候迁移状态，也可以在外部进行迁移，通过有限状态机可以更好地理解各个状态之间的关系。</p>
+<h4 id="访问者（Visitor）"><a href="#访问者（Visitor）" class="headerlink" title="访问者（Visitor）"></a>访问者（Visitor）</h4><p>即将数据结构和处理分离开来，使得可以不改变各元素的类的前提下定义作用于这些元素的新操作。</p>
+<p>该模式适用于数据结构相对稳定的系统，这就使得它的优缺点都十分明显，优点就是操作解耦，增加新操作无需修改先前的代码，而缺点就是一旦数据结构变化，需要修改的地方就会分散到各个角落里，难以维护，因此只适用于稳定的数据结构。</p>
+<h4 id="中介者（Mediator）"><a href="#中介者（Mediator）" class="headerlink" title="中介者（Mediator）"></a>中介者（Mediator）</h4><p>即用一个中介对象来封装一系列的对象交互，使得对象不需要显式地相互引用，从而使其耦合松散，而且可以独立地改变它们之间的交互。</p>
+<p>相当于由一个路由器决定请求该发往哪里，在web应用中可以用Redis解决跨域问题，不同的网站请求同一个Redis即可，存的cookie可以很容易共享，跟发布&#x2F;订阅模式很像。</p>
+<h4 id="备忘录（Memento）"><a href="#备忘录（Memento）" class="headerlink" title="备忘录（Memento）"></a>备忘录（Memento）</h4><p>即将对象的状态保存起来，需要时可以进行恢复，就像游戏中的存档和读档。</p>
+<p>可以藉由该模式实现状态恢复、状态暂存，甚至还能覆盖保存的状态，可以将状态保存到Redis里，需要时进行取用，可以实现二阶段提交等功能。</p>
+<h4 id="迭代器（Iterator）"><a href="#迭代器（Iterator）" class="headerlink" title="迭代器（Iterator）"></a>迭代器（Iterator）</h4><p>即提供一种方式顺序访问一个聚合对象中各个元素，而又不暴露该对象的内部表示。</p>
+<p>该模式实际已经加入语言实现当中，iterator即迭代器，使用该元素即可对集合进行遍历然后进行相同的操作。</p>
+<h2 id="推荐书籍"><a href="#推荐书籍" class="headerlink" title="推荐书籍"></a>推荐书籍</h2><p><a class="link"   href="https://baike.baidu.com/item/Head%20First%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/7427270" >《Head First设计模式》 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link"   href="https://baike.baidu.com/item/%E5%A4%A7%E8%AF%9D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/85262" >《大话设计模式》 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>强烈推荐！！！以浅显易懂地方式介绍了各个模式，建议先阅读，挺有趣的</p>
+<p><a class="link"   href="https://baike.baidu.com/item/%E5%9B%BE%E8%A7%A3%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/22699708" >《图解设计模式》 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>具体案例可以看这本，加深理解</p>
+<h2 id="杂谈"><a href="#杂谈" class="headerlink" title="杂谈"></a>杂谈</h2><p>技术是在总结和否定中不断发展，设计模式就是总结前人惯用的一些思维模式，抽象出来具体的方法，让后来者可以借鉴，领略其中的精妙之处，但23个设计模式并不足以概括此前贡献者的智慧，在我看来，只是冰山一角，更多的奥妙，还需要在接下来的编码生涯中慢慢体会，仔细品味。</p>
+<p>不同的语言之间存在实现上的差异，但是处处可见设计模式的身影，这说明了设计模式的技巧被广泛运用，其实这是个先有鸡还是先有蛋的问题，是先有所谓的设计模式，还是先有的技巧，我觉得并不重要，重要的是如何运用所谓的设计模式，要融会贯通，而不仅仅是套用，虽然套用可以省去一些无谓的开销，但是结合具体场景需要对模版进行改进以适应需求。有的时候，套用模版并不是一件好事，这样容易将简单的事情复杂化，个人觉得，需要设计模式的时候，那么这个功能一定是繁杂的，不容易理清的，才需要设计模式的协助，减少出错的概率，就像C语言，并不是面向对象的语言，但是这并不影响面向对象思想的运用，这就要问问神奇的宏了，可以实现多态，进而实现各个设计模式，让我不由得感叹前人的智慧，精妙！</p>
+<p>集设计模式为大成的MVC模式，即模型-视图-控制器，最近貌似被DDD模式给创飞了，即领域驱动设计，我对于DDD的了解甚少，在前不久才知道有这么个模式，不过貌似这两个模式可以并存，DDD模式实际上是一种思想。</p>
+<p>MVC是一种常见的软件架构模式，用于组织和分离应用程序的逻辑层、表示层和用户交互层。模型负责表示和处理数据，视图负责显示用户界面，控制器负责处理用户交互和调度逻辑。MVC的核心目标是将应用程序的不同功能和职责解耦，使得各个组件可以独立变化，并且提高了应用程序的可维护性和可扩展性。</p>
+<p>DDD是一种面向复杂业务领域的软件设计方法，它将关注点放在领域模型的设计和开发上，强调领域专家和开发团队的紧密合作，以达到更好的业务理解和设计实现。它提倡通过领域模型来反映业务需求，将业务逻辑和业务概念抽象为领域对象、值对象、聚合等概念，通过领域模型来实现业务规则和业务流程的核心逻辑。它的核心思想包括战略设计和和战术设计，其中战略设计关注领域模型的整体结构和组织，战术设计则关注具体领域对象和业务逻辑的实现。</p>
+<p>二者都是软件开发中的设计模式和思想，它们的目标都是提高软件系统的可维护性、可扩展性和可理解性。二者可以结合使用，DDD的领域模型可以作为MVC模型中的模型部分，MVC模式提供了一种良好的架构和开发模式来组织和展现DDD的领域模型。</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
       </tags>
   </entry>
 </search>
