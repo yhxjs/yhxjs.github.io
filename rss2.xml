@@ -9,8 +9,31 @@
     <atom:link href="https://yhxjs.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>yhxjs的博客</description>
-    <pubDate>Thu, 07 Nov 2024 17:56:16 GMT</pubDate>
+    <pubDate>Tue, 04 Feb 2025 13:55:44 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>本地部署LLM</title>
+      <link>https://yhxjs.github.io/2025/02/04/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2LLM/</link>
+      <guid>https://yhxjs.github.io/2025/02/04/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2LLM/</guid>
+      <pubDate>Tue, 04 Feb 2025 11:25:20 GMT</pubDate>
+      
+      <description>使用LM Studio部署本地大模型。</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="安装LM-Studio"><a href="#安装LM-Studio" class="headerlink" title="安装LM Studio"></a>安装LM Studio</h2><p>LM Studio是一款本地LLM运行工具。</p><p>点击<a class="link"   href="https://lmstudio.ai/download" >LM Studio <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>进行下载，选择本系统版本。</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./lm_studio_download.png"                      width="500px" height="auto" alt="LM Studio下载"                ><figcaption>LM Studio下载</figcaption></figure><p>安装完毕后可以进入设置（右下角齿轮图标），将界面语言修改为中文，如下：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./language_setting.png"                      width="600px" height="auto" alt="设置语言"                ><figcaption>设置语言</figcaption></figure><h3 id="下载大模型"><a href="#下载大模型" class="headerlink" title="下载大模型"></a>下载大模型</h3><p>以最近爆火的deepseek-R1为例：</p><p>在下载前，先更改模型路径，否则会占用C盘空间，修改为需要的路径即可：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./llm_path.png"                      width="400px" height="auto" alt="设置模型路径"                ><figcaption>设置模型路径</figcaption></figure><p>点击左侧搜索图标，在搜索框中输入deepseek r1，就会出现相应的模型，作者的GPU为4070 super，下载14B模型（也是作者最常用的），32B虽然也可以运行，但是生成token速度太慢，无法真正使用。</p><p>找到需要下载的模型，点击右下角进行下载，由于作者已经下载，因此显示去使用。</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./llm_download.png"                      width="800px" height="auto" alt="下载界面"                ><figcaption>下载界面</figcaption></figure><blockquote><p>如果无法使用魔法，那么只需要将LM Studio中的下载地址修改为镜像地址即可，在软件中并未提供设置，因此需要手动将LM Studio的运行文件进行修改，操作步骤如下：</p><ol><li><p>关闭LM Studio</p></li><li><p>打开LM Studio安装路径，分别找到两个文件：</p><p>\resources\app.webpack\main\index.js</p><p>\resources\app.webpack\renderer\main_window.js</p></li><li><p>将文件中的huggingface.co替换为hf-mirror.com</p></li></ol></blockquote><h3 id="使用大模型"><a href="#使用大模型" class="headerlink" title="使用大模型"></a>使用大模型</h3><h4 id="选择大模型"><a href="#选择大模型" class="headerlink" title="选择大模型"></a>选择大模型</h4><p>下载完毕后，进入聊天界面，在顶部选择大模型：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./select_llm.png"                      width="600px" height="auto" alt="选择大模型"                ><figcaption>选择大模型</figcaption></figure><h4 id="参数配置"><a href="#参数配置" class="headerlink" title="参数配置"></a>参数配置</h4><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./llm_setting.png"                      width="500px" height="auto" alt="参数配置"                ><figcaption>参数配置</figcaption></figure><p>上下文长度：吃显存</p><p>GPU卸载：吃显存，作者使用14B对于4070 super可以拉满，不过拉满后显存也要告警了，将将能够完全加载。</p><p>CPU线程池大小：如果此时没有其他大应用运行的话，可以拉满，这里横条的大小是参考CPU核数的，实际上可以设置为实际CPU线程数，在输入框中自行输入即可。</p><p>保持模型在内存中：建议开启，否则CPU会读取硬盘上的模型，会大大降低token生成速度。</p><p>尝试mmap()：建议开启，加快模型加载速度。</p><p>快速注意力：可以开启，能够稍微加快一点速度，但不多。</p><h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>现在就能愉快的与AI进行对话了。</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./hello_world.png"                      width="600px" height="auto" alt="Hello World"                ><figcaption>Hello World</figcaption></figure><h4 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h4><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./other_setting.png"                      width="300px" height="auto" alt="其他配置"                ><figcaption>其他配置</figcaption></figure><p>系统提示：可以进行预设，使AI能够按照该预设提示词进行回答，例如你是一只喵娘。。。</p><p>温度：日常使用设置0.8即可，如果需要更有创造性，例如写小说等，可以修改为0.9。</p><p>其他配置保持默认即可。</p><h2 id="安装AnythingLLM"><a href="#安装AnythingLLM" class="headerlink" title="安装AnythingLLM"></a>安装AnythingLLM</h2><p>AnythingLLM提供了额外的功能，主要是为LLM提供知识库。</p><p>点击<a class="link"   href="https://anythingllm.com/desktop" >AnythingLLM <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>进行下载，同样选择本系统版本。</p><h3 id="运行LLM-API"><a href="#运行LLM-API" class="headerlink" title="运行LLM API"></a>运行LLM API</h3><p>在使用之前，先打开LM Studio，左侧第二个页签，同聊天时一样，在顶部选择加载的模型，加载完毕后点击左上角的开关，让API跑起来，跑起来后可以在日志中看到如下输出：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./deploy_api.png"                      width="700px" height="auto" alt="部署API"                ><figcaption>部署API</figcaption></figure><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>打开AnythingLLM，会进入教程配置，一步步配置即可，首先会让你选择LLM，选择LM Studio，此时会自动发现端口，选择一下模型然后下一步即可，接下来点击下一步，然后选择下方的Skip Survey，或者填写也可以，接着输入工作区的名称，点击下一步后就来到了AnythingLLM的主界面。</p><p>在设置（左下角扳手图标）中配置Embedder首选项，配置成text-embedding-nomic-embed-text-v1.5：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./embedder_setting.png"                      width="500px" height="auto" alt="配置embedder"                ><figcaption>配置embedder</figcaption></figure><p>返回主界面，接下来点击左侧工作区列表的对应工作区的上传图标，出现以下界面：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./upload_document.png"                      width="700px" height="auto" alt="上传文档"                ><figcaption>上传文档</figcaption></figure><p>按照提示，上传需要的文档，上传后左侧会出现，选择后点击Move to Workspace，就会出现在右侧，最后点击Save and Embed，稍等片刻（第一次会比较慢，需要几分钟），完成后，此时AI已经就“记住”了你上传的文档，这时聊天会首先参考上传的文档即知识库进行回答。</p><p>作者上传了一篇关于ARP协议的文档，问了ARP协议的相关问题，都能很好的从文档中进行总结回答：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./anythingllm_chat.png"                      width="800px" height="auto" alt="示例"                ><figcaption>示例</figcaption></figure><p>如果你不想AI不懂也乱回答，可以在工作区设置将聊天设置中的聊天模式修改为查询，这样，它只会根据你上传的文档进行回答，若查找不到答案，则会返回预设的错误提示。</p>]]></content:encoded>
+      
+      
+      <category domain="https://yhxjs.github.io/categories/%E6%9D%82%E9%A1%B9/">杂项</category>
+      
+      
+      <category domain="https://yhxjs.github.io/tags/LLM/">LLM</category>
+      
+      
+      <comments>https://yhxjs.github.io/2025/02/04/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2LLM/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>关于上云故障转移方案</title>
@@ -454,27 +477,6 @@
       
       
       <comments>https://yhxjs.github.io/2017/01/14/%E6%B2%89%E9%BB%98%E7%9A%84%E5%A4%A7%E5%A4%9A%E6%95%B0/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>呐喊</title>
-      <link>https://yhxjs.github.io/2016/10/30/%E5%91%90%E5%96%8A/</link>
-      <guid>https://yhxjs.github.io/2016/10/30/%E5%91%90%E5%96%8A/</guid>
-      <pubDate>Sun, 30 Oct 2016 13:29:05 GMT</pubDate>
-      
-      <description>我真的只想呐喊。</description>
-      
-      
-      
-      <content:encoded><![CDATA[<p>回想过去，多么怀念曾经的美好时光，但却早已只剩下那渐行渐远的一个个瞬间仍然徘徊，转瞬即逝。深入骨髓的孤独感慢慢侵蚀着我，迷失在人海中，与自己的影子为伍，不时躲闪来往的行人，我只想躲到阴暗的角落，回想过去的点点滴滴，仅此而已，但外在虚伪的皮囊早已机械麻木，与这繁华世界格格不入。此刻，我只想呐喊。<br>内心的苦楚遍布在每一个角落，想呐喊，却不行，就像一个异类，不被人所正视，即便有，那也是不长久的，顷刻间，可能往昔的情分早已烟消云散，不复存在，只剩下那充斥着虚伪笑容的脸仍留在脑中，久久挥之不去，仿佛在讥讽，嘲笑，我想这是不能呐喊的原因吧，因为它无时无刻不在压抑你，让你无法置身事外，世间种种皆是如此，想要逃离这一切，却发现自己早已被捆绑住了，无法挣脱，甚至无法发声，身边的人诧异地看着你，你的那些看似有些另类的行为不被人所接受，因为人们习惯于司空见惯，而当一些不正常的东西出现的时候，他们会质疑它，甚至去摧残它。</p><p>呐喊，我只想呐喊，在广袤无垠的田野中肆意呐喊，在这里，没有人去讥讽、嘲笑你，似乎很畅意，但我不能，虽然世间的种种把我压得喘不过气来，但在这一片黑暗中还有零星的灯火——真正爱你的人，回到他们的身边，种种不安、惶恐都消失了，尽管只有一段段短暂的时间，但内心却是如此光明。也许将来你们会离开我的身边，但我还是会挺住这苦楚的肆虐，在这万象丛生的世界活下去，去为了寻找一个能够陪伴我走下去的挚爱。</p><p>在这之前，我只想呐喊，当我渐渐长大，亦或是变老，头发渐渐苍白，如今炽热的心也许会随之降温，但我仍有信念，仍有为之一生的目标，这便足够了。哪怕世人无法理解，但我保持自我，我还是我，放纵着我，在这世界中茫茫一点，不奢求改变什么，但求初心不变，这便足够了。</p><p>在这世界，有许多不公平，但这往往是表象，许多人想逃离这种不公平的现象，转而追求那些看似公平的选择，这本没有错，但这些人为了公平，将不公平强加于他人，只为了一时的利益，并不能说人心险恶，这只是人们为了自我保护和那万恶的欲望作的祟，这可能会毁了一个人的一生，但人们却不管不顾，仍旧如此，只有当其波及家人或自我的时候，这才会看清本质，停止那愚蠢的行为，但有些人仍旧被蒙蔽，做出无法挽回的事，这充斥在人世间，几乎每时每刻都在发生，我厌倦了这种选择和拒绝的过程，而结果也不再那么重要了，无非是为了欲望，还有那可笑的自我保护，所以，我只想呐喊。</p><p>生活中的某些事物会将我们置之于一处险地，在这里，只有你自己，周围黑漆漆的一片，这强烈的压抑感会使人喘不过气，但又不得不去面对它，独自地，将它打败，你才能走出去，这时，你的心境会变得更加强韧，但往往会有许多事物会影响你的心智，妨碍甚至阻止你做出关键的选择，如果你放弃了，那么你将沦为它的奴隶，自此难以自拔，只能任由它侵蚀你，肆虐你，直到你的最后一道防线被攻破，那么，你早已不是你，你将会被改变，变得麻木，没有丝毫情感，一切都将无法阻止你的决定，你的选择，你的一切，因为你已不是人，只是机械动物，我怕，会成为这样的存在，所以，我只想呐喊。</p><p>啊——这一切究竟是为了什么？也许究其一生都不会知道，只能默默、平凡地活着，让尸骨腐烂在地底，让世界遗忘我曾经存在过，而这一切，都将成为消失那一点。</p><p>我真的只想呐喊。</p><p style="text-align:right;">写于2016-10-30</p><p align="right" style="text-align:right;text-indent:32.0pt"><span style="font-size:16.0pt;font-family:楷体;color:#215868">蚝油<span></span></span></p>]]></content:encoded>
-      
-      
-      <category domain="https://yhxjs.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</category>
-      
-      
-      
-      <comments>https://yhxjs.github.io/2016/10/30/%E5%91%90%E5%96%8A/#disqus_thread</comments>
       
     </item>
     
