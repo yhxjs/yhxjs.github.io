@@ -1,90 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hexo配置</title>
-    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
-<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
-
-<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
-
-  <div class="note p-4 mb-4 rounded-small success">
-    <figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
-                      class="" alt="hexo -v"
-                ><figcaption>hexo -v</figcaption></figure>
-  </div>
-
-<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./creat_repository.png"
-                      width="600px" height="auto" alt="创建个人页仓库"
-                ><figcaption>创建个人页仓库</figcaption></figure>
-
-<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
-
-<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
-
-<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
-<p>Hexo 程序目录：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./directory_structure.png"
-                      width="400px" height="auto" alt="目录结构"
-                ><figcaption>目录结构</figcaption></figure>
-
-<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
-
-<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
-<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
-
-<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
-<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，挑选一个心仪的主题并进行下载。</p>
-<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，用该主题介绍如何进行安装。</p>
-<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
-
-<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
-<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
-
-<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
-<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
-<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 挑选，甚至可以自己开发一个。</p>
-<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
-<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>使用时可以直接像下面这样：</p>
-<div class="highlight-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./bilibili_url.png"
-                      width="700px" height="auto" alt="修改哔哩哔哩url"
-                ><figcaption>修改哔哩哔哩url</figcaption></figure>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>配置</tag>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ARP协议</title>
     <url>/2024/03/05/ARP%E5%8D%8F%E8%AE%AE/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ARP即地址解析协议，将IP地址解析为MAC地址。数据要在以太网中传输，需要完成以太网封装，这项工作由网络层负责。要完成以太网的数据封装，需要知道目的设备的MAC地址。</p>
@@ -249,6 +165,90 @@
       <tags>
         <tag>ARP</tag>
         <tag>通信</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo配置</title>
+    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
+<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
+
+  <div class="note p-4 mb-4 rounded-small success">
+    <figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
+                      class="" alt="hexo -v"
+                ><figcaption>hexo -v</figcaption></figure>
+  </div>
+
+<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./creat_repository.png"
+                      width="600px" height="auto" alt="创建个人页仓库"
+                ><figcaption>创建个人页仓库</figcaption></figure>
+
+<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
+
+<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
+
+<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
+<p>Hexo 程序目录：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./directory_structure.png"
+                      width="400px" height="auto" alt="目录结构"
+                ><figcaption>目录结构</figcaption></figure>
+
+<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
+
+<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
+<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，挑选一个心仪的主题并进行下载。</p>
+<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，用该主题介绍如何进行安装。</p>
+<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
+<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
+<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 挑选，甚至可以自己开发一个。</p>
+<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
+<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>使用时可以直接像下面这样：</p>
+<div class="highlight-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./bilibili_url.png"
+                      width="700px" height="auto" alt="修改哔哩哔哩url"
+                ><figcaption>修改哔哩哔哩url</figcaption></figure>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>配置</tag>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -661,6 +661,36 @@
       </tags>
   </entry>
   <entry>
+    <title>关于上云故障转移方案</title>
+    <url>/2024/11/01/%E5%85%B3%E4%BA%8E%E4%B8%8A%E4%BA%91%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h2 id="上云"><a href="#上云" class="headerlink" title="上云"></a>上云</h2><p>现代服务部署解决方案基本都为云部署，尤其是较大规模的应用，部署服务的方式一般有自建机房、IDC托管、云服务厂商，现如今以阿里云、腾讯云、华为云等为首的云服务厂商的份额日益增加，得益于上云后带来的最大好处——方便运维，变相提高了应用的可靠性，因为相较于部署在自建机房和IDC托管，云服务厂商会提供更加成熟的部署方案，不仅包括简单的部署，包括域名解析、数据备份、容灾等一系列完善的服务，使得服务部署不再困难，降低运维成本以及减少犯错的概率。</p>
+<p>不过，上云容易受到一些不可控的因素干扰，例如云服务厂商突然做出骚操作，之前就存在云服务厂商升级组件而未通知客户，而组件升级切换并不平滑，导致客户部署的服务出现短暂不可用，甚至出现更为糟糕的情况——光缆被挖断了，物理意义上的断你网线，如果没有做好多地容灾，那后果可想而知，服务完全down，无法恢复，当然，不仅云上有这个问题，云下同样如此，因为本质都是机房，只不过运维方式不同。</p>
+<p>而中间件出问题导致服务不可用的情况只能说挺少见的，至少我目前还未遇到过，但是做好应对方案也是必要的，因为谁也保不准什么时候会出问题，弄好预案就多一份保险，省的出问题时两眼一黑。</p>
+<h2 id="动态数据源"><a href="#动态数据源" class="headerlink" title="动态数据源"></a>动态数据源</h2><p>上云前需要弄清楚各个中间件如何动态设置数据源，从而实现热更新，即仅更改某处的配置即可对应用使用的数据源进行动态更新，而无需重启应用，可以使用Nacos进行配置的修改，而且Nacos支持动态刷新配置，天然支持配置监听，并且也可以不使用Nacos自带的配置监听类，可以使用定时器对配置的数据源进行比对，若发生变化则对数据源进行设置。</p>
+<p>当然，应用启动时是通过读取环境变量来设置初始可用的数据源，避免因为某个数据源不可用导致服务启动失败，由于是上云，因此为了稳妥起见，采用了云下——混合云——云上的渐进上云，混合云的中间件都还是连接的云下，而流量是按比例打到云上和云下，而为了做好上云的准备，各个中间件的数据需要从云下同步到云上，当上云时会将云下服务全量停止，云上服务中间件全量切入，并全量流量切入，为此需要准备两个配置文件，方便进行切换。</p>
+<h2 id="故障转移方案"><a href="#故障转移方案" class="headerlink" title="故障转移方案"></a>故障转移方案</h2><h3 id="废案"><a href="#废案" class="headerlink" title="废案"></a>废案</h3><p>在应用启动时同时初始化云上和云下的数据源bean，而在使用数据源时，通过当前配置的数据源标记进行匹配数据源，从而进行相关的数据源操作，这个存在致命的问题，就是当云上和云下其中一个数据源出现问题，服务会无法启动，所以才有后续的补充方案（仅是个想法，还未进行验证）。</p>
+<h4 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h4><p>通过继承AbstractRoutingDataSource这个jdbc动态数据源类，重写determineCurrentLookupKey方法，即可使用相应的数据源，正常场景是读写分离，写入使用主库，查询使用从库。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;cloudDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource cloudDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;idcDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource idcDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 配置初始数据源信息</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;Object, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;CLOUD&quot;</span>, cloudDataSource);</span><br><span class="line">        map.put(<span class="string">&quot;IDC&quot;</span>, idcDataSource);</span><br><span class="line">        setTargetDataSources(map);</span><br><span class="line">        setDefaultTargetDataSource(idcDataSource);</span><br><span class="line">        <span class="built_in">super</span>.afterPropertiesSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 这个是主要的方法，根据key查找对应的数据源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;CLOUD&quot;</span>; <span class="comment">// 这里需要修改为返回动态的数据源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Redis-Kafka"><a href="#Redis-Kafka" class="headerlink" title="Redis&#x2F;Kafka"></a>Redis&#x2F;Kafka</h4><p>Redis和Kafka一般都有工具类，因此在工具类中注入bean，并且通过map维护云上和云下对应的bean，执行相关操作时，通过数据源标记在map中获得相应的bean即可，无需额外操作。</p>
+<p>而以上最终成为了废案，因为不确定因素太多了，容易出现问题，所以采用了最稳妥的方案即终极方案。</p>
+<h3 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h3><p>直接改配置文件，然后重启服务，是的，你没看错，采用了最原始的方式，同样是最为可靠的方式，虽然服务不可用的时间会比较长，但是更为稳妥，不容易出现问题，且代码侵入性低，一个字，白学（bushi</p>
+<h3 id="补充方案（未验证）"><a href="#补充方案（未验证）" class="headerlink" title="补充方案（未验证）"></a>补充方案（未验证）</h3><p>由于废案中是同时初始化云上和云下两套数据源，那么在启动的时候指定其中某一套可用的数据源初始化不就行了，通过查询资料得知，貌似是可行的，通过方法在应用启动后还可以手动初始化数据源，从而实现动态切换数据源，而触发初始化数据源的就可以是之前所提到的使用定时器对配置的数据源进行比对，只不过不是设置数据源了，而是重新初始化数据源。</p>
+<h4 id="MySql-1"><a href="#MySql-1" class="headerlink" title="MySql"></a>MySql</h4><p>以Druid为例，DruidDataSource提供restart方法，可以在应用启动后重新初始化连接池，因此可以修改数据源配置后，由定时器进行调用，设置为需要切换的对应配置，如下：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意，cloudDataSource需要为DruidDataSource类型</span></span><br><span class="line">cloudDataSource.setUrl(<span class="string">&quot;jdbc:mysql://***.***.***.***:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&quot;</span>);</span><br><span class="line">cloudDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">cloudDataSource.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">cloudDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">cloudDataSource.restart();</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>暂未找到相关方法，待补充。。。</p>
+<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>暂未找到相关方法，待补充。。。</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>上云</tag>
+        <tag>故障转移</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>函数式编程</title>
     <url>/2024/10/18/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/</url>
     <content><![CDATA[<h2 id="函数对象"><a href="#函数对象" class="headerlink" title="函数对象"></a>函数对象</h2><p>函数对象是函数指针引申出来的概念，可以定义一个只有方法而没有数据的类，然后把这个类的对象传递给别的方法，这时传递的这个对象就是一个函数对象。</p>
@@ -867,36 +897,6 @@
       </categories>
   </entry>
   <entry>
-    <title>关于上云故障转移方案</title>
-    <url>/2024/11/01/%E5%85%B3%E4%BA%8E%E4%B8%8A%E4%BA%91%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h2 id="上云"><a href="#上云" class="headerlink" title="上云"></a>上云</h2><p>现代服务部署解决方案基本都为云部署，尤其是较大规模的应用，部署服务的方式一般有自建机房、IDC托管、云服务厂商，现如今以阿里云、腾讯云、华为云等为首的云服务厂商的份额日益增加，得益于上云后带来的最大好处——方便运维，变相提高了应用的可靠性，因为相较于部署在自建机房和IDC托管，云服务厂商会提供更加成熟的部署方案，不仅包括简单的部署，包括域名解析、数据备份、容灾等一系列完善的服务，使得服务部署不再困难，降低运维成本以及减少犯错的概率。</p>
-<p>不过，上云容易受到一些不可控的因素干扰，例如云服务厂商突然做出骚操作，之前就存在云服务厂商升级组件而未通知客户，而组件升级切换并不平滑，导致客户部署的服务出现短暂不可用，甚至出现更为糟糕的情况——光缆被挖断了，物理意义上的断你网线，如果没有做好多地容灾，那后果可想而知，服务完全down，无法恢复，当然，不仅云上有这个问题，云下同样如此，因为本质都是机房，只不过运维方式不同。</p>
-<p>而中间件出问题导致服务不可用的情况只能说挺少见的，至少我目前还未遇到过，但是做好应对方案也是必要的，因为谁也保不准什么时候会出问题，弄好预案就多一份保险，省的出问题时两眼一黑。</p>
-<h2 id="动态数据源"><a href="#动态数据源" class="headerlink" title="动态数据源"></a>动态数据源</h2><p>上云前需要弄清楚各个中间件如何动态设置数据源，从而实现热更新，即仅更改某处的配置即可对应用使用的数据源进行动态更新，而无需重启应用，可以使用Nacos进行配置的修改，而且Nacos支持动态刷新配置，天然支持配置监听，并且也可以不使用Nacos自带的配置监听类，可以使用定时器对配置的数据源进行比对，若发生变化则对数据源进行设置。</p>
-<p>当然，应用启动时是通过读取环境变量来设置初始可用的数据源，避免因为某个数据源不可用导致服务启动失败，由于是上云，因此为了稳妥起见，采用了云下——混合云——云上的渐进上云，混合云的中间件都还是连接的云下，而流量是按比例打到云上和云下，而为了做好上云的准备，各个中间件的数据需要从云下同步到云上，当上云时会将云下服务全量停止，云上服务中间件全量切入，并全量流量切入，为此需要准备两个配置文件，方便进行切换。</p>
-<h2 id="故障转移方案"><a href="#故障转移方案" class="headerlink" title="故障转移方案"></a>故障转移方案</h2><h3 id="废案"><a href="#废案" class="headerlink" title="废案"></a>废案</h3><p>在应用启动时同时初始化云上和云下的数据源bean，而在使用数据源时，通过当前配置的数据源标记进行匹配数据源，从而进行相关的数据源操作，这个存在致命的问题，就是当云上和云下其中一个数据源出现问题，服务会无法启动，所以才有后续的补充方案（仅是个想法，还未进行验证）。</p>
-<h4 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h4><p>通过继承AbstractRoutingDataSource这个jdbc动态数据源类，重写determineCurrentLookupKey方法，即可使用相应的数据源，正常场景是读写分离，写入使用主库，查询使用从库。</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;cloudDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource cloudDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;idcDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource idcDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 配置初始数据源信息</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;Object, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;CLOUD&quot;</span>, cloudDataSource);</span><br><span class="line">        map.put(<span class="string">&quot;IDC&quot;</span>, idcDataSource);</span><br><span class="line">        setTargetDataSources(map);</span><br><span class="line">        setDefaultTargetDataSource(idcDataSource);</span><br><span class="line">        <span class="built_in">super</span>.afterPropertiesSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 这个是主要的方法，根据key查找对应的数据源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;CLOUD&quot;</span>; <span class="comment">// 这里需要修改为返回动态的数据源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="Redis-Kafka"><a href="#Redis-Kafka" class="headerlink" title="Redis&#x2F;Kafka"></a>Redis&#x2F;Kafka</h4><p>Redis和Kafka一般都有工具类，因此在工具类中注入bean，并且通过map维护云上和云下对应的bean，执行相关操作时，通过数据源标记在map中获得相应的bean即可，无需额外操作。</p>
-<p>而以上最终成为了废案，因为不确定因素太多了，容易出现问题，所以采用了最稳妥的方案即终极方案。</p>
-<h3 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h3><p>直接改配置文件，然后重启服务，是的，你没看错，采用了最原始的方式，同样是最为可靠的方式，虽然服务不可用的时间会比较长，但是更为稳妥，不容易出现问题，且代码侵入性低，一个字，白学（bushi</p>
-<h3 id="补充方案（未验证）"><a href="#补充方案（未验证）" class="headerlink" title="补充方案（未验证）"></a>补充方案（未验证）</h3><p>由于废案中是同时初始化云上和云下两套数据源，那么在启动的时候指定其中某一套可用的数据源初始化不就行了，通过查询资料得知，貌似是可行的，通过方法在应用启动后还可以手动初始化数据源，从而实现动态切换数据源，而触发初始化数据源的就可以是之前所提到的使用定时器对配置的数据源进行比对，只不过不是设置数据源了，而是重新初始化数据源。</p>
-<h4 id="MySql-1"><a href="#MySql-1" class="headerlink" title="MySql"></a>MySql</h4><p>以Druid为例，DruidDataSource提供restart方法，可以在应用启动后重新初始化连接池，因此可以修改数据源配置后，由定时器进行调用，设置为需要切换的对应配置，如下：</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意，cloudDataSource需要为DruidDataSource类型</span></span><br><span class="line">cloudDataSource.setUrl(<span class="string">&quot;jdbc:mysql://***.***.***.***:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&quot;</span>);</span><br><span class="line">cloudDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">cloudDataSource.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">cloudDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">cloudDataSource.restart();</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>暂未找到相关方法，待补充。。。</p>
-<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>暂未找到相关方法，待补充。。。</p>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>上云</tag>
-        <tag>故障转移</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>呐喊</title>
     <url>/2016/10/30/%E5%91%90%E5%96%8A/</url>
     <content><![CDATA[<p>回想过去，多么怀念曾经的美好时光，但却早已只剩下那渐行渐远的一个个瞬间仍然徘徊，转瞬即逝。深入骨髓的孤独感慢慢侵蚀着我，迷失在人海中，与自己的影子为伍，不时躲闪来往的行人，我只想躲到阴暗的角落，回想过去的点点滴滴，仅此而已，但外在虚伪的皮囊早已机械麻木，与这繁华世界格格不入。此刻，我只想呐喊。<br>内心的苦楚遍布在每一个角落，想呐喊，却不行，就像一个异类，不被人所正视，即便有，那也是不长久的，顷刻间，可能往昔的情分早已烟消云散，不复存在，只剩下那充斥着虚伪笑容的脸仍留在脑中，久久挥之不去，仿佛在讥讽，嘲笑，我想这是不能呐喊的原因吧，因为它无时无刻不在压抑你，让你无法置身事外，世间种种皆是如此，想要逃离这一切，却发现自己早已被捆绑住了，无法挣脱，甚至无法发声，身边的人诧异地看着你，你的那些看似有些另类的行为不被人所接受，因为人们习惯于司空见惯，而当一些不正常的东西出现的时候，他们会质疑它，甚至去摧残它。</p>
@@ -909,6 +909,24 @@
 <p style="text-align:right;">写于2016-10-30</p>
 
 <p align="right" style="text-align:right;text-indent:32.0pt"><span style="font-size:16.0pt;font-family:楷体;color:#215868">蚝油<span></span></span></p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>小丑</title>
+    <url>/2021/08/16/%E5%B0%8F%E4%B8%91/</url>
+    <content><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p>
+<p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p>
+<p>哀嚎着，<br>究竟是人是鬼？</p>
+<p style="text-align:right;">写于2021-8-16</p>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./joker.jpg"
+                      width="500px" height="auto" alt="小丑"
+                ><figcaption>小丑</figcaption></figure>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -935,23 +953,6 @@
       <tags>
         <tag>学习路线</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>我</title>
-    <url>/2018/05/06/%E6%88%91/</url>
-    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
-<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
-<p>也许<br>来来往往<br>你已老去</p>
-<p>但是<br>往复之间<br>越发真切</p>
-<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
-<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
-<p>我也知道<br>你<br>曾多少次暗自神伤</p>
-<p>我亦知道<br>你<br>曾多少次触景生情</p>
-<p>因为<br>我知道<br>我便是你</p>
-<p style="text-align:right;">写于2018-5-6</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
   </entry>
   <entry>
     <title>基于Docker和k8s的部署方案</title>
@@ -1140,19 +1141,34 @@
       </tags>
   </entry>
   <entry>
-    <title>小丑</title>
-    <url>/2021/08/16/%E5%B0%8F%E4%B8%91/</url>
-    <content><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p>
-<p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p>
-<p>哀嚎着，<br>究竟是人是鬼？</p>
-<p style="text-align:right;">写于2021-8-16</p>
+    <title>我</title>
+    <url>/2018/05/06/%E6%88%91/</url>
+    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
+<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
+<p>也许<br>来来往往<br>你已老去</p>
+<p>但是<br>往复之间<br>越发真切</p>
+<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
+<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
+<p>我也知道<br>你<br>曾多少次暗自神伤</p>
+<p>我亦知道<br>你<br>曾多少次触景生情</p>
+<p>因为<br>我知道<br>我便是你</p>
+<p style="text-align:right;">写于2018-5-6</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>把握</title>
+    <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
+    <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
+<p style="text-align:right;">写于2016-5-14</p>
 
 <figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="./joker.jpg"
-                      width="500px" height="auto" alt="小丑"
-                ><figcaption>小丑</figcaption></figure>]]></content>
+                     data-src="./elapse.jpg"
+                      width="400px" height="auto" alt="流逝"
+                ><figcaption>流逝</figcaption></figure>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -1293,17 +1309,11 @@
       </tags>
   </entry>
   <entry>
-    <title>把握</title>
-    <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
-    <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
-<p style="text-align:right;">写于2016-5-14</p>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./elapse.jpg"
-                      width="400px" height="auto" alt="流逝"
-                ><figcaption>流逝</figcaption></figure>]]></content>
+    <title>溺水</title>
+    <url>/2017/04/08/%E6%BA%BA%E6%B0%B4/</url>
+    <content><![CDATA[<p>渐渐丧失知觉，阳光仿佛随我一起消失在这河里，逐渐黯淡，岸上的呼喊声在耳边若隐若现。有那么几刻，我甚至怀疑这并不真实，仿佛做梦一般飘渺，它就那样将我拉入万丈深渊，我不禁想要挣扎，去挣脱它的控制，但毫无成效，反而使我越陷越深，我感到一丝无力与绝望，不甘就这么死去，世间的种种在眼前浮现，我不禁笑了笑，是啊，又有什么可怀念的呢？放弃挣扎的我慢慢下沉，我仿佛看到世间最美的景色，一切是那么安静，祥和，我闭上眼睛，想去感受死亡所带来的一丝不安与恐惧，但我感受到的只有无尽的黑暗和一片虚无。</p>
+<p>岸上的那人仿佛冷漠无比，事不关己地看着我，渐渐死去，于是，我便长眠于此，世间再无我的容身之地，我已不复存在，接管这个皮囊的是另一种存在，一种未知的存在，它就在那，就那么默默注视着我，看着我渐渐堕落，迷失自我，取代我的便是它，是我助长它的存在，使它慢慢腐蚀我的灵魂，侵入我的内心，但对此我一无所知，直至此刻，我死了，我才领悟，但也没有什么值得我去留念了，当初的信念早已覆灭，随着我一同消散在这世间。</p>
+<p style="text-align:right;">写于高中某天</p>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -1315,37 +1325,6 @@
 <p>可是，却早已无力，瘫倒在冰冷的地上，看着天空，白茫茫的一片覆盖了蓝天，仅露出些空隙，光从中渗透出来，洒满了大地，也照到我的脸上，麻木的脸颊甚至感受不到丝毫暖意，此刻太阳仿佛冷焰一般，燃烧着，却冷到无感，这早已不是火，而是晃动着的光球，散发着寒人的光芒，世间这一切仿佛失色，在这天地间，仅剩我一人，自由地飞翔在冰冷的大地上，内心燃烧起一团火，双眼只剩下无尽的深邃，毫无感情，无奈化作脸上那唯一的标志——沉默，无尽的沉默。</p>
 <p>曾几何时，可笑的认为这世间如此美好，却在一瞬之间，破灭了，一点点消散在内心深处，化为一道道无法修复的伤痕，触目惊心，却又蕴含着对从前的回忆，不禁交杂着一种复杂的情感，在笑的时候，眼角却冒出了眼泪，内心痛苦，牵动着神经，身体做出抗拒的表现，想要发泄，却又不能，只能任由它肆意破坏曾经美好的感受，剩下一片废墟，慢慢沙化，渴望雨水将其冲刷干净，却只有几滴眼泪。</p>
 <p>无言，岁月流逝，也许废墟会重建，但一切早已不是原来的模样，只有那面目全非的痕迹才能证明这曾经存在过，只能独自缅怀逝去的青春，却无人能懂，烦闷瞬间爆炸，将我炸得血肉横飞。一次又一次地隐忍，早已受不了那倦怠，我只想逃离，逃离这一切。</p>
-<p style="text-align:right;">写于高中某天</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>等着</title>
-    <url>/2016/09/25/%E7%AD%89%E7%9D%80/</url>
-    <content><![CDATA[<p>等<br>一盏明灯<br>照亮我的内心，<br>这样也许<br>就不会如此孤独。</p>
-<p>一切由自己面对，<br>哭过笑过，<br>都是独自承受。</p>
-<p>他人的眼光，<br>装作无所谓；<br>装作若无其事。<br>其实内心<br>早已千疮百孔。</p>
-<p>默默的，<br>多么希望<br>有人能分担一些，<br>但没有。</p>
-<p>这也许就是我。<br>也许放弃<br>向往自由，<br>但是被孤独<br>所囚禁了，<br>无法挣脱。<br>默默的。</p>
-<p>这也许就是我——至喜欢独自承受的自己（永远）</p>
-<p style="text-align:right;">写于2016-09-25</p>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./whalefall.jpg"
-                      width="500px" height="auto" alt="鲸落"
-                ><figcaption>鲸落</figcaption></figure>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>溺水</title>
-    <url>/2017/04/08/%E6%BA%BA%E6%B0%B4/</url>
-    <content><![CDATA[<p>渐渐丧失知觉，阳光仿佛随我一起消失在这河里，逐渐黯淡，岸上的呼喊声在耳边若隐若现。有那么几刻，我甚至怀疑这并不真实，仿佛做梦一般飘渺，它就那样将我拉入万丈深渊，我不禁想要挣扎，去挣脱它的控制，但毫无成效，反而使我越陷越深，我感到一丝无力与绝望，不甘就这么死去，世间的种种在眼前浮现，我不禁笑了笑，是啊，又有什么可怀念的呢？放弃挣扎的我慢慢下沉，我仿佛看到世间最美的景色，一切是那么安静，祥和，我闭上眼睛，想去感受死亡所带来的一丝不安与恐惧，但我感受到的只有无尽的黑暗和一片虚无。</p>
-<p>岸上的那人仿佛冷漠无比，事不关己地看着我，渐渐死去，于是，我便长眠于此，世间再无我的容身之地，我已不复存在，接管这个皮囊的是另一种存在，一种未知的存在，它就在那，就那么默默注视着我，看着我渐渐堕落，迷失自我，取代我的便是它，是我助长它的存在，使它慢慢腐蚀我的灵魂，侵入我的内心，但对此我一无所知，直至此刻，我死了，我才领悟，但也没有什么值得我去留念了，当初的信念早已覆灭，随着我一同消散在这世间。</p>
 <p style="text-align:right;">写于高中某天</p>]]></content>
       <categories>
         <category>随笔</category>
@@ -1447,23 +1426,6 @@
       </categories>
       <tags>
         <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>重构</title>
-    <url>/2023/11/06/%E9%87%8D%E6%9E%84/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>重构，即对程序内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。重构以增加程序的可维护性、可靠性，这是门学问，这与古老的谚语“程序能跑就不要动它”背道而驰，这句谚语也是屎山如何形成的最根本原因，没有定期地重构不合理的代码，使得埋下的坑越来越深，解bug就像探宝一样，时不时能发现其他宝藏：更难解的bug，这就是为什么bug越解越多。当然，重构总是与bug如影随形，这就要求以最小的步伐来进行重构，每一次重构完成时要进行详尽的测试，最好是提供统一稳定的测试环境，按照相同的方法进行测试，以免重构引入bug。</p>
-<p>重复的代码块IDE会进行提醒，如果有两个及以上重复就可以考虑抽象出一个函数了，这样当这块代码出错，就无需修改每处地方，仅需修改那个函数，这就是重构，其实我们每天都在进行重构，提炼、分析，从而选出最适合的数据结构，或者逻辑顺序。重构有许多种方法，其中按照既有模版进行重构是最简单的，因此了解设计模式以及类似的思想是很有必要的，可以减少编写代码出错的概率。重构就像是在梳理代码，只有理解了具体的逻辑，重构才成为可能，这就是代码可理解性的重要性，难以理解的设计非常不利于重构，因此，代码可读性优先于其他要义（如果不考虑性能的情况下，如果要进行性能优化，可能就会摒弃可读性，这是没办法的，不过也可以增加适当的注解来提高可读性，不要让别人揣测你代码的意思，而是浅显易懂，这才是好的设计）。讲个笑话，当有天回过头来看之前写的代码，会看不懂，惊呼一句卧槽这啥*玩意，那么就需要进行重构了，如果当初代码的作者都看不明白了，那么指望别人能快速理解代码意图是不太可能了。</p>
-<h2 id="设计大于编码"><a href="#设计大于编码" class="headerlink" title="设计大于编码"></a>设计大于编码</h2><p>良好的设计才是快速开发的秘诀，恶劣的设计会使得开发大半的时间都花在不断重复地调试当中，因为程序状况百出，不得不每每打断开发的进度，甚至因为修复bug而打上的补丁会影响后续的开发，使代码愈来愈臃肿，这是我们不希望看见的，因此，我再次强调设计思想的重要性，这是重构的前提。</p>
-<p>事先做好设计可以有效减少返工次数，即进行重构的次数，甚至无需进行重构，就能完美符合需求且代码结构清晰，维护容易，当然，不要过度设计，过于揣测之后的变化是不利于开发的，应该能够在满足需求的情况下，然后一定限度地对风险进行预测，考虑增加容错，而不是一上来就“疑神疑鬼”。掌握设计和编码难度的平衡性也是挺困难的，设计为需求而服务，但满足需求并不一定能够实际落地，需要切实考虑编码难度、时间花费、风险控制等等因素，而不是盲目地追求所谓好的设计。在设计前请务必理清需求和度量系统，不要臆测，想当然地以为那样就是那样，需要不断沟通以完善设计。</p>
-<h2 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h2><h3 id="重复代码"><a href="#重复代码" class="headerlink" title="重复代码"></a>重复代码</h3><p>这是再正常不过的坏味道了，当一段代码在多处出现，那就要考虑是否需要进行重构了，提炼出重复代码，然后封装到一个函数中，这样出问题只需改一处即可，而不是牵一发而动全身。</p>
-<h3 id="过长函数"><a href="#过长函数" class="headerlink" title="过长函数"></a>过长函数</h3><p>当一个函数过长，就要注意了，函数越长，逻辑就越难理清，也就越难维护，所谓屎山就是堆砌起来的，当一段冗长的代码摆在面前，且没有相应注释，我想是个人都会抗拒去阅读它，将这类代码分割成一小块一小块，每一块都是单独的一段逻辑，然后再串联起来，这样不仅能减少临时变量，且还能让逻辑变得清晰明了，最重要的是，复用性大大增加。</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>重构</tag>
       </tags>
   </entry>
   <entry>
@@ -1675,5 +1637,43 @@
         <tag>JUC</tag>
         <tag>多线程</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>重构</title>
+    <url>/2023/11/06/%E9%87%8D%E6%9E%84/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>重构，即对程序内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。重构以增加程序的可维护性、可靠性，这是门学问，这与古老的谚语“程序能跑就不要动它”背道而驰，这句谚语也是屎山如何形成的最根本原因，没有定期地重构不合理的代码，使得埋下的坑越来越深，解bug就像探宝一样，时不时能发现其他宝藏：更难解的bug，这就是为什么bug越解越多。当然，重构总是与bug如影随形，这就要求以最小的步伐来进行重构，每一次重构完成时要进行详尽的测试，最好是提供统一稳定的测试环境，按照相同的方法进行测试，以免重构引入bug。</p>
+<p>重复的代码块IDE会进行提醒，如果有两个及以上重复就可以考虑抽象出一个函数了，这样当这块代码出错，就无需修改每处地方，仅需修改那个函数，这就是重构，其实我们每天都在进行重构，提炼、分析，从而选出最适合的数据结构，或者逻辑顺序。重构有许多种方法，其中按照既有模版进行重构是最简单的，因此了解设计模式以及类似的思想是很有必要的，可以减少编写代码出错的概率。重构就像是在梳理代码，只有理解了具体的逻辑，重构才成为可能，这就是代码可理解性的重要性，难以理解的设计非常不利于重构，因此，代码可读性优先于其他要义（如果不考虑性能的情况下，如果要进行性能优化，可能就会摒弃可读性，这是没办法的，不过也可以增加适当的注解来提高可读性，不要让别人揣测你代码的意思，而是浅显易懂，这才是好的设计）。讲个笑话，当有天回过头来看之前写的代码，会看不懂，惊呼一句卧槽这啥*玩意，那么就需要进行重构了，如果当初代码的作者都看不明白了，那么指望别人能快速理解代码意图是不太可能了。</p>
+<h2 id="设计大于编码"><a href="#设计大于编码" class="headerlink" title="设计大于编码"></a>设计大于编码</h2><p>良好的设计才是快速开发的秘诀，恶劣的设计会使得开发大半的时间都花在不断重复地调试当中，因为程序状况百出，不得不每每打断开发的进度，甚至因为修复bug而打上的补丁会影响后续的开发，使代码愈来愈臃肿，这是我们不希望看见的，因此，我再次强调设计思想的重要性，这是重构的前提。</p>
+<p>事先做好设计可以有效减少返工次数，即进行重构的次数，甚至无需进行重构，就能完美符合需求且代码结构清晰，维护容易，当然，不要过度设计，过于揣测之后的变化是不利于开发的，应该能够在满足需求的情况下，然后一定限度地对风险进行预测，考虑增加容错，而不是一上来就“疑神疑鬼”。掌握设计和编码难度的平衡性也是挺困难的，设计为需求而服务，但满足需求并不一定能够实际落地，需要切实考虑编码难度、时间花费、风险控制等等因素，而不是盲目地追求所谓好的设计。在设计前请务必理清需求和度量系统，不要臆测，想当然地以为那样就是那样，需要不断沟通以完善设计。</p>
+<h2 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h2><h3 id="重复代码"><a href="#重复代码" class="headerlink" title="重复代码"></a>重复代码</h3><p>这是再正常不过的坏味道了，当一段代码在多处出现，那就要考虑是否需要进行重构了，提炼出重复代码，然后封装到一个函数中，这样出问题只需改一处即可，而不是牵一发而动全身。</p>
+<h3 id="过长函数"><a href="#过长函数" class="headerlink" title="过长函数"></a>过长函数</h3><p>当一个函数过长，就要注意了，函数越长，逻辑就越难理清，也就越难维护，所谓屎山就是堆砌起来的，当一段冗长的代码摆在面前，且没有相应注释，我想是个人都会抗拒去阅读它，将这类代码分割成一小块一小块，每一块都是单独的一段逻辑，然后再串联起来，这样不仅能减少临时变量，且还能让逻辑变得清晰明了，最重要的是，复用性大大增加。</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>重构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>等着</title>
+    <url>/2016/09/25/%E7%AD%89%E7%9D%80/</url>
+    <content><![CDATA[<p>等<br>一盏明灯<br>照亮我的内心，<br>这样也许<br>就不会如此孤独。</p>
+<p>一切由自己面对，<br>哭过笑过，<br>都是独自承受。</p>
+<p>他人的眼光，<br>装作无所谓；<br>装作若无其事。<br>其实内心<br>早已千疮百孔。</p>
+<p>默默的，<br>多么希望<br>有人能分担一些，<br>但没有。</p>
+<p>这也许就是我。<br>也许放弃<br>向往自由，<br>但是被孤独<br>所囚禁了，<br>无法挣脱。<br>默默的。</p>
+<p>这也许就是我——至喜欢独自承受的自己（永远）</p>
+<p style="text-align:right;">写于2016-09-25</p>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./whalefall.jpg"
+                      width="500px" height="auto" alt="鲸落"
+                ><figcaption>鲸落</figcaption></figure>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
   </entry>
 </search>
