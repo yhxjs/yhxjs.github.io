@@ -1,95 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>IOC和AOP原理</title>
-    <url>/2024/08/06/IOC%E5%92%8CAOP%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p>通过对<a class="link"   href="https://github.com/DerekYRC/mini-spring" >mini-spring <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 代码的阅读，对IoC和AOP的原理有了进一步认识，二者都为构成Spring的基础概念，是框架底层的实现原理。</p>
-<blockquote>
-<p>mini-spring是对Spring IOC和AOP部分的简单实现，仅保留最基础的部分。</p>
-</blockquote>
-<h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Ioc即控制反转，指的是容器控制程序对象之间的关系，而不是传统实现中，由程序代码直接控制，控制权由应用代码中转到了外部容器，控制权的转移即所谓的反转。</p>
-<p>对于Spring而言，就是由Spring来控制对象的生命周期和对象之间的关系，因此，Ioc还有另一个名字——依赖注入，即组件之间的依赖关系由容器在运行期间决定，由容器动态地将某种依赖关系注入到组件之间。</p>
-<p>所有的类都会在Spring容器中登记，告诉Spring这是个什么东西，然后当某个类需要什么东西，Spring就会在系统运行到适当的时候，将这个类要的东西主动赋予，同时对于其他类也是如此。所有的类的创建、销毁都由Spring来控制，也就是说控制对象生存周期的不再是引用它的对象，而是Spring。对于某个具体的对象而言，以前是它控制其他对象，现在是所有对象都被Spring控制，所以这叫控制反转。</p>
-<p>依赖注入的思想是通过反射机制实现的，在实例化一个类时，它通过反射调用类中set方法将事先保存在HashMap中的类属性注入到类中。总而言之，在传统的对象创建方式中，通常由调用者来创建被调用者的实例，而在Spring中创建被调用者的工作由Spring来完成，然后注入调用者，即所谓的依赖注入or控制反转。</p>
-<p>IoC的优点：降低了组件之间的耦合，降低了业务对象之间替换的复杂性，使之能够灵活的管理对象。</p>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>见 <a href="#bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">bean的生命周期</a></p>
-<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><p>AOP面向切面编程基于IoC，是对OOP的有益补充，AOP利用一种称为“横切”的技术，剖解开封装的对象内部，并将那些影响了多个类的公共行为封装到一个可重用模块，并将其名为“Aspect”，即切面。</p>
-<p>所谓“切面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，比如日志记录，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可操作性和可维护性。</p>
-<p>AOP代表的是一个横向的关系，将“对象”比作一个空心的立体，其中封装的是对象的属性和行为，则面向切面编程的方法，就是将这个立体以切面形式剖开，选择性地提供业务逻辑，而剖开的切面，也就是所谓的“切面”了。</p>
-<p>实现AOP的技术，主要分为两大类：一是采用动态代理技术，利用截取消息的方式，对该消息进行装饰，以取代原有对象行为的执行，二是采用静态织入的方式，引入特定的语法创建“切面”，从而使得编译器可以在编译期间织入有关“切面”的代码。</p>
-<p>Spring实现AOP：JDK动态代理和CGLIB代理。</p>
-<ul>
-<li>JDK动态代理：其代理对象必须是某个接口的实现，它是通过在运行期间创建一个接口的实现类来完成对目标对象的代理，其核心的两个类是InvocationHandler和Proxy。</li>
-<li>CGLIB代理：实现原理类似于JDK动态代理，只是它在运行期间生成的代理对象是针对目标类扩展的子类。CGLIB是高效的代码生成包，底层是依靠ASM（开源的java字节码编辑类库）操作字节码实现的，性能比JDK强，需要引入包asm.jar和cglib.jar。</li>
-</ul>
-<p>使用AspectJ注入式切面和@AspectJ注解驱动的切面实际上底层也是通过动态代理实现的。</p>
-<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>ProxyFactory是动态代理工厂，用来决定使用JDK动态代理还是CGLIB动态代理。</p>
-<p>获取BeanFactory所有的AspectJExpressionPointcutAdvisor继承类，常用的有BeforeAdvice、AfterAdvice、AfterReturningAdvice等，当bean的类型与Advice的Pointcut规定的类型匹配时，则创建代理对象。</p>
-<p>当方法执行时，获取拦截器链（首先获取全部切面，再判断当前代理对象是否匹配该Advisor，是否匹配当前调用method），依据拦截器链依次执行，执行过程相当于是一个递归的过程。</p>
-<h2 id="bean的生命周期"><a href="#bean的生命周期" class="headerlink" title="bean的生命周期"></a>bean的生命周期</h2><figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./bean的生命周期.png"
-                      width="700px" height="auto" alt="bean的生命周期"
-                ><figcaption>bean的生命周期</figcaption></figure>
-
-<ol>
-<li>创建BeanFactory并读取XML文件，将定义的bean读取出来，将每个bean的属性参数解析到PropertyValues，当存在依赖其他的bean时，会新建一个BeanReference，然后封装为封装为一个BeanDefinition，通过beanFactory进行注册，而如果配置了包扫描，则会对配置的包下进行扫描，扫描出@Component的类同样封装为一个BeanDefinition进行注册，并注册internalAutowiredAnnotationProcessor以便实例化时对自动注入进行处理。</li>
-<li>添加ApplicationContextAwareProcessor，让继承自ApplicationContextAware的bean能感知bean。</li>
-<li>在bean实例化之前，执行注册的BeanFactoryPostProcessor，修改相关的BeanDefinition。</li>
-<li>注册BeanPostProcessor。</li>
-<li>初始化事件发布者和注册事件监听器。</li>
-<li>注册类型转换器和提前实例化单例bean，只有当bean是单例且不为懒加载才会被创建。<ul>
-<li>先从缓存中获取，如果获取到且为FactoryBean则从FactoryBean#getObject中创建bean。</li>
-<li>否则获取BeanDefinition，并根据此创建bean<ul>
-<li>如果bean需要代理，则直接返回代理对象，遍历BeanPostProcessor，对InstantiationAwareBeanPostProcessor的实现类进行处理，调用其postProcessBeforeInstantiation，若返回值不为null，即生成了被代理对象，再调用postProcessAfterInitialization即可生成最终的代理对象。</li>
-<li>接下来就是未被代理的bean，首先调用类的无参构造方法，生成实例，为解决<strong>循环依赖</strong>问题，将实例化后的bean放进缓存中提前暴露，执行InstantiationAwareBeanPostProcessor，此时@Autowired等就会自动注入属性，然后通过反射设置属性，如果继承了BeanFactoryAware，则执行setBeanFactory，执行BeanPostProcessor的前置处理，调用初始化方法init，执行BeanPostProcessor的后置处理，注册有销毁方法的bean，最后，如果有代理对象，则会进行覆盖。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>发布容器刷新完成事件</li>
-</ol>
-<h2 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h2><p>Spring为了解决单例的循环依赖问题，使用了三级缓存。</p>
-<h3 id="三级缓存"><a href="#三级缓存" class="headerlink" title="三级缓存"></a>三级缓存</h3><p>这三个缓存都是定义在DefaultSingletonBeanRegistry类中的：</p>
-<p>bean name –&gt; bean instance</p>
-<p>单例对象的cache：一级缓存</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;(<span class="number">64</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>bean name –&gt; bean instance</p>
-<p>提前暴光的单例对象的Cache：二级缓存</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>bean name –&gt; ObjectFactory</p>
-<p>单例对象工厂的cache：三级缓存</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, ObjectFactory&lt;?&gt;&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>循环依赖主要的三级缓存分别是：</p>
-<ol>
-<li>singletonObbjects：一级缓存单例池，主要存放最终形态的单例bean，一般获取一个bean都是从这个缓存中获取，需要说明的是并不是所有单例bean都存在这个缓存当中，有些特殊的单例bean不存在这个缓存当中。</li>
-<li>earlySingletonObjects：二级缓存，主要存放的是过渡bean（原始对象&#x2F;原始对象的代理对象），也就是从三级缓存当中产生出来的对象，它的作用是防止在多级循环依赖的情况下重复从三级缓存当中创建对象，其他对象都可以直接从二级缓存中获取到原始对象&#x2F;原始对象的代理对象，因为三级缓存当中创建对象是需要牺牲一定得性能，有了这个缓存可以一定程度上提高效率（但是提高的效率并不明显）。只有在调用了三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象时，才会将原始对象&#x2F;原始对象的代理对象放入二级缓存，而调用三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象这种情况只会发生在有循环依赖的时候，所以，<strong>二级缓存在没有循环依赖的情况下不会被使用到</strong>。二级缓存是为了提前暴露Bean来解决循环依赖问题，此时的Bean可能还没有进行属性注入，只有等完成了属性注入、初始化后的Bean才会上移到一级缓存（单例池）中。</li>
-<li>singletonFactories三级缓存，用于存放原始对象对应的ObjectFactory，它的作用主要是为了产生一个对象，每生成一个原始对象，都会将这个原始对象对应的ObjectFactory放到三级缓存中，通过调用ObjectFactory的getObject()方法，就能够在需要动态代理的情况下为原始对象生成代理对象并返回，否则返回原始对象，以此来处理循环依赖时还需要动态代理的情况。</li>
-</ol>
-<p>简单来说：</p>
-<ol>
-<li>singletonObjects，一级缓存，存储的是所有创建好了的单例Bean。</li>
-<li>earlySingletonObjects，完成实例化，但是还未进行属性注入及初始化的对象。</li>
-<li>singletonFactories，提前暴露的一个单例工厂，二级缓存中存储的就是从这个工厂中获取到的对象。</li>
-</ol>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (beanDefinition.isSingleton()) &#123;</span><br><span class="line">	<span class="type">Object</span> <span class="variable">finalBean</span> <span class="operator">=</span> bean;</span><br><span class="line">	addSingletonFactory(beanName, <span class="keyword">new</span> <span class="title class_">ObjectFactory</span>&lt;Object&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="keyword">public</span> Object <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> BeansException &#123;</span><br><span class="line">			<span class="keyword">return</span> getEarlyBeanReference(beanName, beanDefinition, finalBean);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<p>第三级缓存就是坚决循环依赖问题的关键，而这个方法也是解决循环依赖的关键所在，这段代码发生在doCreateBean()方法中createBeanInstance之后，也就是说单例对象此时已经被实例化出来了。这个对象已经被生产出来了，虽然还未设置属性等其他操作，但是已经能被认出来了（根据对象引用能定位到堆中的对象），所以Spring此时将这个对象提前曝光出来，可以进行使用（此时为依赖注入）。</p>
-<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>当A的某个field或者setter依赖了B的实例对象，同时B的某个field或者setter依赖了A的实例对象，这种情况就为循环依赖。A首先完成了创建的第一步（完成实例化），并且将自己提前曝光到singletonFactories中，此时进行创建的第二步（属性注入），发现自己依赖对象B，此时就尝试去getBean(B)，发现B还没有被create，所以走createBean(B)的流程，B在创建第一步的时候发现自己依赖了对象A，于是尝试getBean(A)，尝试查询一级缓存singletonObjects（肯定没有，因为A还没初始化完全），尝试查询二级缓存earlySingletonObjects（也没有），尝试三级缓存singletonFactories，由于A通过ObjectFactory将自己提前曝光了，所以B能够通过ObjectFactory.getObject拿到A对象（即使A还没有初始化完全，但是因此解决了循环依赖的问题），B拿到A对象后顺利完成了创建过程，B完成创建后之后将自己放入到一级缓存singletonObjects中。此时返回A的创建流程中，A此时能拿到B的对象顺利完成自己的创建过程，最终A也完成了创建，将创建好的A添加到一级缓存singletonObjects中，而且需要说明的是，由于B拿到了A的对象引用，所以B现在持有的A对象也完成了最终的创建。<strong>简单来说，就是spring创造了一个循环依赖的结束点标识。</strong></p>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ARP协议</title>
     <url>/2024/03/05/ARP%E5%8D%8F%E8%AE%AE/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ARP即地址解析协议，将IP地址解析为MAC地址。数据要在以太网中传输，需要完成以太网封装，这项工作由网络层负责。要完成以太网的数据封装，需要知道目的设备的MAC地址。</p>
@@ -257,87 +168,92 @@
       </tags>
   </entry>
   <entry>
-    <title>Hexo配置</title>
-    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
-<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
-
-<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
-
-  <div class="note p-4 mb-4 rounded-small success">
-    <figure class="image-caption"><img  
+    <title>IOC和AOP原理</title>
+    <url>/2024/08/06/IOC%E5%92%8CAOP%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p>通过对<a class="link"   href="https://github.com/DerekYRC/mini-spring" >mini-spring <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 代码的阅读，对IoC和AOP的原理有了进一步认识，二者都为构成Spring的基础概念，是框架底层的实现原理。</p>
+<blockquote>
+<p>mini-spring是对Spring IOC和AOP部分的简单实现，仅保留最基础的部分。</p>
+</blockquote>
+<h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Ioc即控制反转，指的是容器控制程序对象之间的关系，而不是传统实现中，由程序代码直接控制，控制权由应用代码中转到了外部容器，控制权的转移即所谓的反转。</p>
+<p>对于Spring而言，就是由Spring来控制对象的生命周期和对象之间的关系，因此，Ioc还有另一个名字——依赖注入，即组件之间的依赖关系由容器在运行期间决定，由容器动态地将某种依赖关系注入到组件之间。</p>
+<p>所有的类都会在Spring容器中登记，告诉Spring这是个什么东西，然后当某个类需要什么东西，Spring就会在系统运行到适当的时候，将这个类要的东西主动赋予，同时对于其他类也是如此。所有的类的创建、销毁都由Spring来控制，也就是说控制对象生存周期的不再是引用它的对象，而是Spring。对于某个具体的对象而言，以前是它控制其他对象，现在是所有对象都被Spring控制，所以这叫控制反转。</p>
+<p>依赖注入的思想是通过反射机制实现的，在实例化一个类时，它通过反射调用类中set方法将事先保存在HashMap中的类属性注入到类中。总而言之，在传统的对象创建方式中，通常由调用者来创建被调用者的实例，而在Spring中创建被调用者的工作由Spring来完成，然后注入调用者，即所谓的依赖注入or控制反转。</p>
+<p>IoC的优点：降低了组件之间的耦合，降低了业务对象之间替换的复杂性，使之能够灵活的管理对象。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>见 <a href="#bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">bean的生命周期</a></p>
+<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><p>AOP面向切面编程基于IoC，是对OOP的有益补充，AOP利用一种称为“横切”的技术，剖解开封装的对象内部，并将那些影响了多个类的公共行为封装到一个可重用模块，并将其名为“Aspect”，即切面。</p>
+<p>所谓“切面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，比如日志记录，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可操作性和可维护性。</p>
+<p>AOP代表的是一个横向的关系，将“对象”比作一个空心的立体，其中封装的是对象的属性和行为，则面向切面编程的方法，就是将这个立体以切面形式剖开，选择性地提供业务逻辑，而剖开的切面，也就是所谓的“切面”了。</p>
+<p>实现AOP的技术，主要分为两大类：一是采用动态代理技术，利用截取消息的方式，对该消息进行装饰，以取代原有对象行为的执行，二是采用静态织入的方式，引入特定的语法创建“切面”，从而使得编译器可以在编译期间织入有关“切面”的代码。</p>
+<p>Spring实现AOP：JDK动态代理和CGLIB代理。</p>
+<ul>
+<li>JDK动态代理：其代理对象必须是某个接口的实现，它是通过在运行期间创建一个接口的实现类来完成对目标对象的代理，其核心的两个类是InvocationHandler和Proxy。</li>
+<li>CGLIB代理：实现原理类似于JDK动态代理，只是它在运行期间生成的代理对象是针对目标类扩展的子类。CGLIB是高效的代码生成包，底层是依靠ASM（开源的java字节码编辑类库）操作字节码实现的，性能比JDK强，需要引入包asm.jar和cglib.jar。</li>
+</ul>
+<p>使用AspectJ注入式切面和@AspectJ注解驱动的切面实际上底层也是通过动态代理实现的。</p>
+<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>ProxyFactory是动态代理工厂，用来决定使用JDK动态代理还是CGLIB动态代理。</p>
+<p>获取BeanFactory所有的AspectJExpressionPointcutAdvisor继承类，常用的有BeforeAdvice、AfterAdvice、AfterReturningAdvice等，当bean的类型与Advice的Pointcut规定的类型匹配时，则创建代理对象。</p>
+<p>当方法执行时，获取拦截器链（首先获取全部切面，再判断当前代理对象是否匹配该Advisor，是否匹配当前调用method），依据拦截器链依次执行，执行过程相当于是一个递归的过程。</p>
+<h2 id="bean的生命周期"><a href="#bean的生命周期" class="headerlink" title="bean的生命周期"></a>bean的生命周期</h2><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
-                      class="" alt="hexo -v"
-                ><figcaption>hexo -v</figcaption></figure>
-  </div>
+                     data-src="./bean的生命周期.png"
+                      width="700px" height="auto" alt="bean的生命周期"
+                ><figcaption>bean的生命周期</figcaption></figure>
 
-<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./creat_repository.png"
-                      width="600px" height="auto" alt="创建个人页仓库"
-                ><figcaption>创建个人页仓库</figcaption></figure>
+<ol>
+<li>创建BeanFactory并读取XML文件，将定义的bean读取出来，将每个bean的属性参数解析到PropertyValues，当存在依赖其他的bean时，会新建一个BeanReference，然后封装为封装为一个BeanDefinition，通过beanFactory进行注册，而如果配置了包扫描，则会对配置的包下进行扫描，扫描出@Component的类同样封装为一个BeanDefinition进行注册，并注册internalAutowiredAnnotationProcessor以便实例化时对自动注入进行处理。</li>
+<li>添加ApplicationContextAwareProcessor，让继承自ApplicationContextAware的bean能感知bean。</li>
+<li>在bean实例化之前，执行注册的BeanFactoryPostProcessor，修改相关的BeanDefinition。</li>
+<li>注册BeanPostProcessor。</li>
+<li>初始化事件发布者和注册事件监听器。</li>
+<li>注册类型转换器和提前实例化单例bean，只有当bean是单例且不为懒加载才会被创建。<ul>
+<li>先从缓存中获取，如果获取到且为FactoryBean则从FactoryBean#getObject中创建bean。</li>
+<li>否则获取BeanDefinition，并根据此创建bean<ul>
+<li>如果bean需要代理，则直接返回代理对象，遍历BeanPostProcessor，对InstantiationAwareBeanPostProcessor的实现类进行处理，调用其postProcessBeforeInstantiation，若返回值不为null，即生成了被代理对象，再调用postProcessAfterInitialization即可生成最终的代理对象。</li>
+<li>接下来就是未被代理的bean，首先调用类的无参构造方法，生成实例，为解决<strong>循环依赖</strong>问题，将实例化后的bean放进缓存中提前暴露，执行InstantiationAwareBeanPostProcessor，此时@Autowired等就会自动注入属性，然后通过反射设置属性，如果继承了BeanFactoryAware，则执行setBeanFactory，执行BeanPostProcessor的前置处理，调用初始化方法init，执行BeanPostProcessor的后置处理，注册有销毁方法的bean，最后，如果有代理对象，则会进行覆盖。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>发布容器刷新完成事件</li>
+</ol>
+<h2 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h2><p>Spring为了解决单例的循环依赖问题，使用了三级缓存。</p>
+<h3 id="三级缓存"><a href="#三级缓存" class="headerlink" title="三级缓存"></a>三级缓存</h3><p>这三个缓存都是定义在DefaultSingletonBeanRegistry类中的：</p>
+<p>bean name –&gt; bean instance</p>
+<p>单例对象的cache：一级缓存</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;(<span class="number">64</span>);</span><br></pre></td></tr></table></figure></div>
 
-<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
+<p>bean name –&gt; bean instance</p>
+<p>提前暴光的单例对象的Cache：二级缓存</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
 
-<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
+<p>bean name –&gt; ObjectFactory</p>
+<p>单例对象工厂的cache：三级缓存</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, ObjectFactory&lt;?&gt;&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
 
-<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
-<p>Hexo 程序目录：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./directory_structure.png"
-                      width="400px" height="auto" alt="目录结构"
-                ><figcaption>目录结构</figcaption></figure>
+<p>循环依赖主要的三级缓存分别是：</p>
+<ol>
+<li>singletonObbjects：一级缓存单例池，主要存放最终形态的单例bean，一般获取一个bean都是从这个缓存中获取，需要说明的是并不是所有单例bean都存在这个缓存当中，有些特殊的单例bean不存在这个缓存当中。</li>
+<li>earlySingletonObjects：二级缓存，主要存放的是过渡bean（原始对象&#x2F;原始对象的代理对象），也就是从三级缓存当中产生出来的对象，它的作用是防止在多级循环依赖的情况下重复从三级缓存当中创建对象，其他对象都可以直接从二级缓存中获取到原始对象&#x2F;原始对象的代理对象，因为三级缓存当中创建对象是需要牺牲一定得性能，有了这个缓存可以一定程度上提高效率（但是提高的效率并不明显）。只有在调用了三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象时，才会将原始对象&#x2F;原始对象的代理对象放入二级缓存，而调用三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象这种情况只会发生在有循环依赖的时候，所以，<strong>二级缓存在没有循环依赖的情况下不会被使用到</strong>。二级缓存是为了提前暴露Bean来解决循环依赖问题，此时的Bean可能还没有进行属性注入，只有等完成了属性注入、初始化后的Bean才会上移到一级缓存（单例池）中。</li>
+<li>singletonFactories三级缓存，用于存放原始对象对应的ObjectFactory，它的作用主要是为了产生一个对象，每生成一个原始对象，都会将这个原始对象对应的ObjectFactory放到三级缓存中，通过调用ObjectFactory的getObject()方法，就能够在需要动态代理的情况下为原始对象生成代理对象并返回，否则返回原始对象，以此来处理循环依赖时还需要动态代理的情况。</li>
+</ol>
+<p>简单来说：</p>
+<ol>
+<li>singletonObjects，一级缓存，存储的是所有创建好了的单例Bean。</li>
+<li>earlySingletonObjects，完成实例化，但是还未进行属性注入及初始化的对象。</li>
+<li>singletonFactories，提前暴露的一个单例工厂，二级缓存中存储的就是从这个工厂中获取到的对象。</li>
+</ol>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (beanDefinition.isSingleton()) &#123;</span><br><span class="line">	<span class="type">Object</span> <span class="variable">finalBean</span> <span class="operator">=</span> bean;</span><br><span class="line">	addSingletonFactory(beanName, <span class="keyword">new</span> <span class="title class_">ObjectFactory</span>&lt;Object&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="keyword">public</span> Object <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> BeansException &#123;</span><br><span class="line">			<span class="keyword">return</span> getEarlyBeanReference(beanName, beanDefinition, finalBean);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
-<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
-
-<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
-<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
-
-<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
-<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，挑选一个心仪的主题并进行下载。</p>
-<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，用该主题介绍如何进行安装。</p>
-<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
-<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
-
-<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
-<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
-
-<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
-<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
-<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 挑选，甚至可以自己开发一个。</p>
-<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
-<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>使用时可以直接像下面这样：</p>
-<div class="highlight-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./bilibili_url.png"
-                      width="700px" height="auto" alt="修改哔哩哔哩url"
-                ><figcaption>修改哔哩哔哩url</figcaption></figure>
+<p>第三级缓存就是坚决循环依赖问题的关键，而这个方法也是解决循环依赖的关键所在，这段代码发生在doCreateBean()方法中createBeanInstance之后，也就是说单例对象此时已经被实例化出来了。这个对象已经被生产出来了，虽然还未设置属性等其他操作，但是已经能被认出来了（根据对象引用能定位到堆中的对象），所以Spring此时将这个对象提前曝光出来，可以进行使用（此时为依赖注入）。</p>
+<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>当A的某个field或者setter依赖了B的实例对象，同时B的某个field或者setter依赖了A的实例对象，这种情况就为循环依赖。A首先完成了创建的第一步（完成实例化），并且将自己提前曝光到singletonFactories中，此时进行创建的第二步（属性注入），发现自己依赖对象B，此时就尝试去getBean(B)，发现B还没有被create，所以走createBean(B)的流程，B在创建第一步的时候发现自己依赖了对象A，于是尝试getBean(A)，尝试查询一级缓存singletonObjects（肯定没有，因为A还没初始化完全），尝试查询二级缓存earlySingletonObjects（也没有），尝试三级缓存singletonFactories，由于A通过ObjectFactory将自己提前曝光了，所以B能够通过ObjectFactory.getObject拿到A对象（即使A还没有初始化完全，但是因此解决了循环依赖的问题），B拿到A对象后顺利完成了创建过程，B完成创建后之后将自己放入到一级缓存singletonObjects中。此时返回A的创建流程中，A此时能拿到B的对象顺利完成自己的创建过程，最终A也完成了创建，将创建好的A添加到一级缓存singletonObjects中，而且需要说明的是，由于B拿到了A的对象引用，所以B现在持有的A对象也完成了最终的创建。<strong>简单来说，就是spring创造了一个循环依赖的结束点标识。</strong></p>
 ]]></content>
       <categories>
-        <category>杂项</category>
+        <category>后端</category>
       </categories>
       <tags>
-        <tag>配置</tag>
-        <tag>Hexo</tag>
+        <tag>Java</tag>
+        <tag>Spring</tag>
       </tags>
   </entry>
   <entry>
@@ -534,6 +450,90 @@
       </tags>
   </entry>
   <entry>
+    <title>Hexo配置</title>
+    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
+<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
+
+  <div class="note p-4 mb-4 rounded-small success">
+    <figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
+                      class="" alt="hexo -v"
+                ><figcaption>hexo -v</figcaption></figure>
+  </div>
+
+<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./creat_repository.png"
+                      width="600px" height="auto" alt="创建个人页仓库"
+                ><figcaption>创建个人页仓库</figcaption></figure>
+
+<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
+
+<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
+
+<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
+<p>Hexo 程序目录：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./directory_structure.png"
+                      width="400px" height="auto" alt="目录结构"
+                ><figcaption>目录结构</figcaption></figure>
+
+<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
+
+<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
+<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，挑选一个心仪的主题并进行下载。</p>
+<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ，用该主题介绍如何进行安装。</p>
+<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
+<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
+<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 挑选，甚至可以自己开发一个。</p>
+<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
+<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>使用时可以直接像下面这样：</p>
+<div class="highlight-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./bilibili_url.png"
+                      width="700px" height="auto" alt="修改哔哩哔哩url"
+                ><figcaption>修改哔哩哔哩url</figcaption></figure>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>配置</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>也许那么...</title>
     <url>/2016/09/25/%E4%B9%9F%E8%AE%B8%E9%82%A3%E4%B9%88/</url>
     <content><![CDATA[<figure class="image-caption"><img  
@@ -548,6 +548,21 @@
 <p>过去的人和事，<br>如若还在身边，<br>那么这形同陌路，<br>却不如不见。<br>可不见，<br>却又倍加思念，<br>不知该何去何从，<br>便只能做好如今的事。</p>
 <p>那么不如待我如初见——至逝去的三年（初中）</p>
 <p style="text-align:right;">写于2016-09-25</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>伤</title>
+    <url>/2022/06/29/%E4%BC%A4/</url>
+    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
+<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
+<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
+<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
+<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
+<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
+<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
+]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -583,19 +598,97 @@
       </tags>
   </entry>
   <entry>
-    <title>伤</title>
-    <url>/2022/06/29/%E4%BC%A4/</url>
-    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
-<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
-<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
-<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
-<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
-<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
-<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
+    <title>再识MyBatis-Plus</title>
+    <url>/2024/03/23/%E5%86%8D%E8%AF%86MyBatis-Plus/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本人之前学习过 MyBatis-Plus，但实际自己开发还是用的 MyBatis，基本就是简单 sql，因此用注解进行开发，手写 sql 也还好，故并未采用 MyBatis-Plus进行开发，但新入职的公司需要用到，于是进行重温，才有了这篇简略的记录。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>正如<a class="link"   href="https://mybatis.plus/" >官网 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>所说的愿景：成为 MyBatis 最好的搭档，就像魂斗罗中的 1P、2P，基友搭配，效率翻倍。MyBatis-Plus 相当于 MyBatis 的增强版插件，可以一起使用，事半功倍，省去编写简单 sql 的功夫，具体介绍可自行去官网查看。</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><h3 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h3><ol>
+<li><p>@TableName</p>
+<p>标识实体类对应的数据库表。</p>
+</li>
+<li><p>@TableId</p>
+<p>标识主键属性。</p>
+</li>
+<li><p>@TableField</p>
+<p>标识对应数据库字段。</p>
+</li>
+<li><p>@TableLogic</p>
+<p>标识删除类型。</p>
+</li>
+</ol>
+<h3 id="基本crud"><a href="#基本crud" class="headerlink" title="基本crud"></a>基本crud</h3><p>所有的基本 crud 都在 BaseMapper 接口中定义，只需要继承并指定具体实体类即可。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;User&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>BaseMapper 接口如下：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BaseMapper</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Mapper</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="comment">// 新增数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">insert</span><span class="params">(T entity)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 删除</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">delete</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 更新</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">updateById</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity)</span>;</span><br><span class="line">	<span class="comment">// 更新数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">update</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; updateWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 查询</span></span><br><span class="line">    T <span class="title function_">selectById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量查询</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 查询数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 查询一条数据</span></span><br><span class="line">    T <span class="title function_">selectOne</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询记录总数</span></span><br><span class="line">    Integer <span class="title function_">selectCount</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectList</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">selectMaps</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Object&gt; <span class="title function_">selectObjs</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;T&gt;&gt; E <span class="title function_">selectPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;Map&lt;String, Object&gt;&gt;&gt; E <span class="title function_">selectMapsPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="增"><a href="#增" class="headerlink" title="增"></a>增</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setName(<span class="string">&quot;奕凰轩祭侍&quot;</span>);</span><br><span class="line">user.setAge(<span class="number">18</span>);</span><br><span class="line">userMapper.insert(user);</span><br><span class="line"><span class="comment">// 获取插入数据的主键 ID</span></span><br><span class="line"><span class="type">Long</span> <span class="variable">id</span> <span class="operator">=</span> user.getId();</span><br></pre></td></tr></table></figure></div>
+
+<p>一般使用@TableId(type &#x3D; IdType.AUTO)来指定数据库主键，然后数据库还存在另外一个唯一标识符，一般由后端进行UUID或者雪花算法生成，该标识符相当于业务中使用的主键。</p>
+<h4 id="删"><a href="#删" class="headerlink" title="删"></a>删</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.deleteById(<span class="number">10059249854L</span>); <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
+
+<p>根据主键删除，也可以直接传入对象，会根据标识的主键属性进行删除，以及可以根据其他条件删除，条件构造在<a href="#%E6%9F%A5">查询</a>中介绍。</p>
+<h4 id="改"><a href="#改" class="headerlink" title="改"></a>改</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setId(<span class="number">10059249854L</span>);</span><br><span class="line">user.setGender(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 实际执行的 SQL : UPDATE user SET gender=1 WHERE id=10059249854;</span></span><br><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.updateById(user);  <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="查"><a href="#查" class="headerlink" title="查"></a>查</h4><p>在使用前需要进行 sql 条件语句的构建，有三种条件构建格式：</p>
+<ol>
+<li>常规条件构建格式</li>
+</ol>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapperr&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapperr</span>&lt;User&gt;();</span><br><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//今年刚满18岁~</span></span><br></pre></td></tr></table></figure></div>
+
+<ol start="2">
+<li>lamda格式条件构建格式</li>
+</ol>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lambda().eq(User::getName,<span class="string">&quot;劳大&quot;</span>); <span class="comment">//see you again（</span></span><br></pre></td></tr></table></figure></div>
+
+<ol start="3">
+<li>lambda格式条件构建格式</li>
+</ol>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">LambdaQueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">LambdaQueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lt(User::getPlay, <span class="string">&quot;Genshin Impact&quot;</span>); <span class="comment">//原神启动！</span></span><br></pre></td></tr></table></figure></div>
+
+<h5 id="常见的单条件查询"><a href="#常见的单条件查询" class="headerlink" title="常见的单条件查询"></a>常见的单条件查询</h5><h6 id="lt匹配"><a href="#lt匹配" class="headerlink" title="lt匹配"></a>lt匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="le匹配"><a href="#le匹配" class="headerlink" title="le匹配"></a>le匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.le(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;=18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="eq匹配"><a href="#eq匹配" class="headerlink" title="eq匹配"></a>eq匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//等同于=18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="gt匹配"><a href="#gt匹配" class="headerlink" title="gt匹配"></a>gt匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="ge匹配"><a href="#ge匹配" class="headerlink" title="ge匹配"></a>ge匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ge(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;=18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="ne匹配"><a href="#ne匹配" class="headerlink" title="ne匹配"></a>ne匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ne(User::getAge,<span class="number">18</span>); <span class="comment">//等同于!=18</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="between匹配"><a href="#between匹配" class="headerlink" title="between匹配"></a>between匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.between(User::getAge, <span class="number">17</span>, <span class="number">19</span>); <span class="comment">//等同于&gt;=17 &amp;&amp; &lt;= 19</span></span><br></pre></td></tr></table></figure></div>
+
+<h6 id="like匹配"><a href="#like匹配" class="headerlink" title="like匹配"></a>like匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.likeLeft(User::getName, <span class="string">&quot;奕&quot;</span>); <span class="comment">//相当于like %奕，还有like对应like %奕%、likeRight对应like 奕%</span></span><br></pre></td></tr></table></figure></div>
+
+<p>还有其他的一些条件，例如orderByAsc对应升序等，具体可以自己操作看看。</p>
+<h5 id="多条件查询"><a href="#多条件查询" class="headerlink" title="多条件查询"></a>多条件查询</h5><p>且</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">17</span>).lt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>或</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">17</span>).or().gt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="动态查询"><a href="#动态查询" class="headerlink" title="动态查询"></a>动态查询</h5><p>可以通过 condition 参数动态拼接条件，例如：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(minAge != <span class="literal">null</span>, User::getAge, minAge);</span><br><span class="line">userWrapper.lt(maxAge != <span class="literal">null</span>, User::getAge, maxAge);</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="查询投影"><a href="#查询投影" class="headerlink" title="查询投影"></a>查询投影</h5><h6 id="查询部分属性"><a href="#查询部分属性" class="headerlink" title="查询部分属性"></a>查询部分属性</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(User::getName, User::getAge);</span><br></pre></td></tr></table></figure></div>
+
+<h6 id="查询未定义属性"><a href="#查询未定义属性" class="headerlink" title="查询未定义属性"></a>查询未定义属性</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(<span class="string">&quot;count(*) as count&quot;</span>,<span class="string">&quot;age&quot;</span>)</span><br><span class="line">		   .groupBy(<span class="string">&quot;age&quot;</span>)  <span class="comment">//分组字段</span></span><br><span class="line">           .having(<span class="string">&quot;COUNT(*)&gt;5&quot;</span>); <span class="comment">// 添加having筛选条件</span></span><br></pre></td></tr></table></figure></div>
+
+<h5 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h5><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 子查询 select id from user where id &lt;= 10059249854</span></span><br><span class="line">userWrapper.inSql(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;select id from user where id &lt;= 10059249854&quot;</span>);</span><br><span class="line">userWrapper.select(<span class="string">&quot;name&quot;</span>,<span class="string">&quot;age&quot;</span>);</span><br><span class="line">userWrapper.last(<span class="string">&quot;LIMIT 10&quot;</span>);</span><br><span class="line"><span class="comment">// 实际执行 SQL : SELECT name,age FROM user WHERE (id IN (select id from user where id &lt;= 10059249854)) LIMIT 10;</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>ps:然而调到了另一个小组，没用到（</p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>随笔</category>
+        <category>后端</category>
       </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>MyBatis-Plus</tag>
+      </tags>
   </entry>
   <entry>
     <title>函数式编程</title>
@@ -792,109 +885,6 @@
         <tag>函数式</tag>
         <tag>Stream API</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>再识MyBatis-Plus</title>
-    <url>/2024/03/23/%E5%86%8D%E8%AF%86MyBatis-Plus/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本人之前学习过 MyBatis-Plus，但实际自己开发还是用的 MyBatis，基本就是简单 sql，因此用注解进行开发，手写 sql 也还好，故并未采用 MyBatis-Plus进行开发，但新入职的公司需要用到，于是进行重温，才有了这篇简略的记录。</p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>正如<a class="link"   href="https://mybatis.plus/" >官网 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>所说的愿景：成为 MyBatis 最好的搭档，就像魂斗罗中的 1P、2P，基友搭配，效率翻倍。MyBatis-Plus 相当于 MyBatis 的增强版插件，可以一起使用，事半功倍，省去编写简单 sql 的功夫，具体介绍可自行去官网查看。</p>
-<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><h3 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h3><ol>
-<li><p>@TableName</p>
-<p>标识实体类对应的数据库表。</p>
-</li>
-<li><p>@TableId</p>
-<p>标识主键属性。</p>
-</li>
-<li><p>@TableField</p>
-<p>标识对应数据库字段。</p>
-</li>
-<li><p>@TableLogic</p>
-<p>标识删除类型。</p>
-</li>
-</ol>
-<h3 id="基本crud"><a href="#基本crud" class="headerlink" title="基本crud"></a>基本crud</h3><p>所有的基本 crud 都在 BaseMapper 接口中定义，只需要继承并指定具体实体类即可。</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;User&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<p>BaseMapper 接口如下：</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BaseMapper</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Mapper</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="comment">// 新增数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">insert</span><span class="params">(T entity)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 删除</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">delete</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 更新</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">updateById</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity)</span>;</span><br><span class="line">	<span class="comment">// 更新数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">update</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; updateWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 查询</span></span><br><span class="line">    T <span class="title function_">selectById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量查询</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 查询数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 查询一条数据</span></span><br><span class="line">    T <span class="title function_">selectOne</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询记录总数</span></span><br><span class="line">    Integer <span class="title function_">selectCount</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectList</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">selectMaps</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Object&gt; <span class="title function_">selectObjs</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;T&gt;&gt; E <span class="title function_">selectPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;Map&lt;String, Object&gt;&gt;&gt; E <span class="title function_">selectMapsPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="增"><a href="#增" class="headerlink" title="增"></a>增</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setName(<span class="string">&quot;奕凰轩祭侍&quot;</span>);</span><br><span class="line">user.setAge(<span class="number">18</span>);</span><br><span class="line">userMapper.insert(user);</span><br><span class="line"><span class="comment">// 获取插入数据的主键 ID</span></span><br><span class="line"><span class="type">Long</span> <span class="variable">id</span> <span class="operator">=</span> user.getId();</span><br></pre></td></tr></table></figure></div>
-
-<p>一般使用@TableId(type &#x3D; IdType.AUTO)来指定数据库主键，然后数据库还存在另外一个唯一标识符，一般由后端进行UUID或者雪花算法生成，该标识符相当于业务中使用的主键。</p>
-<h4 id="删"><a href="#删" class="headerlink" title="删"></a>删</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.deleteById(<span class="number">10059249854L</span>); <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
-
-<p>根据主键删除，也可以直接传入对象，会根据标识的主键属性进行删除，以及可以根据其他条件删除，条件构造在<a href="#%E6%9F%A5">查询</a>中介绍。</p>
-<h4 id="改"><a href="#改" class="headerlink" title="改"></a>改</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setId(<span class="number">10059249854L</span>);</span><br><span class="line">user.setGender(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 实际执行的 SQL : UPDATE user SET gender=1 WHERE id=10059249854;</span></span><br><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.updateById(user);  <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
-
-<h4 id="查"><a href="#查" class="headerlink" title="查"></a>查</h4><p>在使用前需要进行 sql 条件语句的构建，有三种条件构建格式：</p>
-<ol>
-<li>常规条件构建格式</li>
-</ol>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapperr&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapperr</span>&lt;User&gt;();</span><br><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//今年刚满18岁~</span></span><br></pre></td></tr></table></figure></div>
-
-<ol start="2">
-<li>lamda格式条件构建格式</li>
-</ol>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lambda().eq(User::getName,<span class="string">&quot;劳大&quot;</span>); <span class="comment">//see you again（</span></span><br></pre></td></tr></table></figure></div>
-
-<ol start="3">
-<li>lambda格式条件构建格式</li>
-</ol>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">LambdaQueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">LambdaQueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lt(User::getPlay, <span class="string">&quot;Genshin Impact&quot;</span>); <span class="comment">//原神启动！</span></span><br></pre></td></tr></table></figure></div>
-
-<h5 id="常见的单条件查询"><a href="#常见的单条件查询" class="headerlink" title="常见的单条件查询"></a>常见的单条件查询</h5><h6 id="lt匹配"><a href="#lt匹配" class="headerlink" title="lt匹配"></a>lt匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="le匹配"><a href="#le匹配" class="headerlink" title="le匹配"></a>le匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.le(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="eq匹配"><a href="#eq匹配" class="headerlink" title="eq匹配"></a>eq匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//等同于=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="gt匹配"><a href="#gt匹配" class="headerlink" title="gt匹配"></a>gt匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="ge匹配"><a href="#ge匹配" class="headerlink" title="ge匹配"></a>ge匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ge(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="ne匹配"><a href="#ne匹配" class="headerlink" title="ne匹配"></a>ne匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ne(User::getAge,<span class="number">18</span>); <span class="comment">//等同于!=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="between匹配"><a href="#between匹配" class="headerlink" title="between匹配"></a>between匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.between(User::getAge, <span class="number">17</span>, <span class="number">19</span>); <span class="comment">//等同于&gt;=17 &amp;&amp; &lt;= 19</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="like匹配"><a href="#like匹配" class="headerlink" title="like匹配"></a>like匹配</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.likeLeft(User::getName, <span class="string">&quot;奕&quot;</span>); <span class="comment">//相当于like %奕，还有like对应like %奕%、likeRight对应like 奕%</span></span><br></pre></td></tr></table></figure></div>
-
-<p>还有其他的一些条件，例如orderByAsc对应升序等，具体可以自己操作看看。</p>
-<h5 id="多条件查询"><a href="#多条件查询" class="headerlink" title="多条件查询"></a>多条件查询</h5><p>且</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">17</span>).lt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>或</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">17</span>).or().gt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
-
-<h5 id="动态查询"><a href="#动态查询" class="headerlink" title="动态查询"></a>动态查询</h5><p>可以通过 condition 参数动态拼接条件，例如：</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(minAge != <span class="literal">null</span>, User::getAge, minAge);</span><br><span class="line">userWrapper.lt(maxAge != <span class="literal">null</span>, User::getAge, maxAge);</span><br></pre></td></tr></table></figure></div>
-
-<h5 id="查询投影"><a href="#查询投影" class="headerlink" title="查询投影"></a>查询投影</h5><h6 id="查询部分属性"><a href="#查询部分属性" class="headerlink" title="查询部分属性"></a>查询部分属性</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(User::getName, User::getAge);</span><br></pre></td></tr></table></figure></div>
-
-<h6 id="查询未定义属性"><a href="#查询未定义属性" class="headerlink" title="查询未定义属性"></a>查询未定义属性</h6><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(<span class="string">&quot;count(*) as count&quot;</span>,<span class="string">&quot;age&quot;</span>)</span><br><span class="line">		   .groupBy(<span class="string">&quot;age&quot;</span>)  <span class="comment">//分组字段</span></span><br><span class="line">           .having(<span class="string">&quot;COUNT(*)&gt;5&quot;</span>); <span class="comment">// 添加having筛选条件</span></span><br></pre></td></tr></table></figure></div>
-
-<h5 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h5><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 子查询 select id from user where id &lt;= 10059249854</span></span><br><span class="line">userWrapper.inSql(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;select id from user where id &lt;= 10059249854&quot;</span>);</span><br><span class="line">userWrapper.select(<span class="string">&quot;name&quot;</span>,<span class="string">&quot;age&quot;</span>);</span><br><span class="line">userWrapper.last(<span class="string">&quot;LIMIT 10&quot;</span>);</span><br><span class="line"><span class="comment">// 实际执行 SQL : SELECT name,age FROM user WHERE (id IN (select id from user where id &lt;= 10059249854)) LIMIT 10;</span></span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>ps:然而调到了另一个小组，没用到（</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>MyBatis-Plus</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>告别高中</title>
-    <url>/2019/06/28/%E5%91%8A%E5%88%AB%E9%AB%98%E4%B8%AD/</url>
-    <content><![CDATA[<p>回想高中三年，有许多说不清道不明的意味，就好像天边的云彩，随着风飘动变得灵动万分，随着太阳的映射变得多姿多彩，但云终究是由液滴组成的，在不断的变化过程中，化为泡影，虽大气是不断循环的，但我就好比是其中的一个不起眼的水滴，终究会脱离这个大群体，融入另一个集体之中，这是必然性的结果。</p>
-<p>来不及说声告别，就恍如昨天，梦幻一般，煽情的话语已是不及我内心情感的激荡，一切尽在不言中，虽说这三年，我说实话并未真正了解任何一个人，但尽管如此，我们还是共度了高中，经历了高考的洗礼，有的人收获了喜悦，有的人却不尽人意，不论如何，我们必定拥有了属于自己的那一份悸动，愿今后我们能朝着前方，秉持信仰，一路披荆斩棘，这就是我的所感所想，一个在路上的准大一学生。</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
   </entry>
   <entry>
     <title>呐喊</title>
@@ -1100,6 +1090,33 @@
       </tags>
   </entry>
   <entry>
+    <title>告别高中</title>
+    <url>/2019/06/28/%E5%91%8A%E5%88%AB%E9%AB%98%E4%B8%AD/</url>
+    <content><![CDATA[<p>回想高中三年，有许多说不清道不明的意味，就好像天边的云彩，随着风飘动变得灵动万分，随着太阳的映射变得多姿多彩，但云终究是由液滴组成的，在不断的变化过程中，化为泡影，虽大气是不断循环的，但我就好比是其中的一个不起眼的水滴，终究会脱离这个大群体，融入另一个集体之中，这是必然性的结果。</p>
+<p>来不及说声告别，就恍如昨天，梦幻一般，煽情的话语已是不及我内心情感的激荡，一切尽在不言中，虽说这三年，我说实话并未真正了解任何一个人，但尽管如此，我们还是共度了高中，经历了高考的洗礼，有的人收获了喜悦，有的人却不尽人意，不论如何，我们必定拥有了属于自己的那一份悸动，愿今后我们能朝着前方，秉持信仰，一路披荆斩棘，这就是我的所感所想，一个在路上的准大一学生。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>我</title>
+    <url>/2018/05/06/%E6%88%91/</url>
+    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
+<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
+<p>也许<br>来来往往<br>你已老去</p>
+<p>但是<br>往复之间<br>越发真切</p>
+<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
+<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
+<p>我也知道<br>你<br>曾多少次暗自神伤</p>
+<p>我亦知道<br>你<br>曾多少次触景生情</p>
+<p>因为<br>我知道<br>我便是你</p>
+<p style="text-align:right;">写于2018-5-6</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
     <title>学习路线</title>
     <url>/2024/03/03/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/</url>
     <content><![CDATA[
@@ -1123,24 +1140,6 @@
       </tags>
   </entry>
   <entry>
-    <title>小丑</title>
-    <url>/2021/08/16/%E5%B0%8F%E4%B8%91/</url>
-    <content><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p>
-<p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p>
-<p>哀嚎着，<br>究竟是人是鬼？</p>
-<p style="text-align:right;">写于2021-8-16</p>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./joker.jpg"
-                      width="500px" height="auto" alt="小丑"
-                ><figcaption>小丑</figcaption></figure>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
     <title>把握</title>
     <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
     <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
@@ -1157,30 +1156,19 @@
       </categories>
   </entry>
   <entry>
-    <title>我</title>
-    <url>/2018/05/06/%E6%88%91/</url>
-    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
-<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
-<p>也许<br>来来往往<br>你已老去</p>
-<p>但是<br>往复之间<br>越发真切</p>
-<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
-<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
-<p>我也知道<br>你<br>曾多少次暗自神伤</p>
-<p>我亦知道<br>你<br>曾多少次触景生情</p>
-<p>因为<br>我知道<br>我便是你</p>
-<p style="text-align:right;">写于2018-5-6</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>沉默的大多数</title>
-    <url>/2017/01/14/%E6%B2%89%E9%BB%98%E7%9A%84%E5%A4%A7%E5%A4%9A%E6%95%B0/</url>
-    <content><![CDATA[<p>沉默，一切无言，对于世间的种种，我只能冷眼相对，不是冷漠，而是心力交瘁，感觉内心充满了黑暗，却装出一副无所谓、不在乎的样子，仅仅是为了更好地融入这个虚伪的世界，那又能怎么样呢？迷失了方向，只有家的光芒仍引导着我向前走，尽管前路茫茫，但，路在前方，坚持走下去，哪怕是为了自己的信念，也要咬牙坚持走下去。</p>
-<p>可是，却早已无力，瘫倒在冰冷的地上，看着天空，白茫茫的一片覆盖了蓝天，仅露出些空隙，光从中渗透出来，洒满了大地，也照到我的脸上，麻木的脸颊甚至感受不到丝毫暖意，此刻太阳仿佛冷焰一般，燃烧着，却冷到无感，这早已不是火，而是晃动着的光球，散发着寒人的光芒，世间这一切仿佛失色，在这天地间，仅剩我一人，自由地飞翔在冰冷的大地上，内心燃烧起一团火，双眼只剩下无尽的深邃，毫无感情，无奈化作脸上那唯一的标志——沉默，无尽的沉默。</p>
-<p>曾几何时，可笑的认为这世间如此美好，却在一瞬之间，破灭了，一点点消散在内心深处，化为一道道无法修复的伤痕，触目惊心，却又蕴含着对从前的回忆，不禁交杂着一种复杂的情感，在笑的时候，眼角却冒出了眼泪，内心痛苦，牵动着神经，身体做出抗拒的表现，想要发泄，却又不能，只能任由它肆意破坏曾经美好的感受，剩下一片废墟，慢慢沙化，渴望雨水将其冲刷干净，却只有几滴眼泪。</p>
-<p>无言，岁月流逝，也许废墟会重建，但一切早已不是原来的模样，只有那面目全非的痕迹才能证明这曾经存在过，只能独自缅怀逝去的青春，却无人能懂，烦闷瞬间爆炸，将我炸得血肉横飞。一次又一次地隐忍，早已受不了那倦怠，我只想逃离，逃离这一切。</p>
-<p style="text-align:right;">写于高中某天</p>]]></content>
+    <title>小丑</title>
+    <url>/2021/08/16/%E5%B0%8F%E4%B8%91/</url>
+    <content><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p>
+<p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p>
+<p>哀嚎着，<br>究竟是人是鬼？</p>
+<p style="text-align:right;">写于2021-8-16</p>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./joker.jpg"
+                      width="500px" height="auto" alt="小丑"
+                ><figcaption>小丑</figcaption></figure>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -1321,11 +1309,36 @@
       </tags>
   </entry>
   <entry>
+    <title>沉默的大多数</title>
+    <url>/2017/01/14/%E6%B2%89%E9%BB%98%E7%9A%84%E5%A4%A7%E5%A4%9A%E6%95%B0/</url>
+    <content><![CDATA[<p>沉默，一切无言，对于世间的种种，我只能冷眼相对，不是冷漠，而是心力交瘁，感觉内心充满了黑暗，却装出一副无所谓、不在乎的样子，仅仅是为了更好地融入这个虚伪的世界，那又能怎么样呢？迷失了方向，只有家的光芒仍引导着我向前走，尽管前路茫茫，但，路在前方，坚持走下去，哪怕是为了自己的信念，也要咬牙坚持走下去。</p>
+<p>可是，却早已无力，瘫倒在冰冷的地上，看着天空，白茫茫的一片覆盖了蓝天，仅露出些空隙，光从中渗透出来，洒满了大地，也照到我的脸上，麻木的脸颊甚至感受不到丝毫暖意，此刻太阳仿佛冷焰一般，燃烧着，却冷到无感，这早已不是火，而是晃动着的光球，散发着寒人的光芒，世间这一切仿佛失色，在这天地间，仅剩我一人，自由地飞翔在冰冷的大地上，内心燃烧起一团火，双眼只剩下无尽的深邃，毫无感情，无奈化作脸上那唯一的标志——沉默，无尽的沉默。</p>
+<p>曾几何时，可笑的认为这世间如此美好，却在一瞬之间，破灭了，一点点消散在内心深处，化为一道道无法修复的伤痕，触目惊心，却又蕴含着对从前的回忆，不禁交杂着一种复杂的情感，在笑的时候，眼角却冒出了眼泪，内心痛苦，牵动着神经，身体做出抗拒的表现，想要发泄，却又不能，只能任由它肆意破坏曾经美好的感受，剩下一片废墟，慢慢沙化，渴望雨水将其冲刷干净，却只有几滴眼泪。</p>
+<p>无言，岁月流逝，也许废墟会重建，但一切早已不是原来的模样，只有那面目全非的痕迹才能证明这曾经存在过，只能独自缅怀逝去的青春，却无人能懂，烦闷瞬间爆炸，将我炸得血肉横飞。一次又一次地隐忍，早已受不了那倦怠，我只想逃离，逃离这一切。</p>
+<p style="text-align:right;">写于高中某天</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
     <title>溺水</title>
     <url>/2017/04/08/%E6%BA%BA%E6%B0%B4/</url>
     <content><![CDATA[<p>渐渐丧失知觉，阳光仿佛随我一起消失在这河里，逐渐黯淡，岸上的呼喊声在耳边若隐若现。有那么几刻，我甚至怀疑这并不真实，仿佛做梦一般飘渺，它就那样将我拉入万丈深渊，我不禁想要挣扎，去挣脱它的控制，但毫无成效，反而使我越陷越深，我感到一丝无力与绝望，不甘就这么死去，世间的种种在眼前浮现，我不禁笑了笑，是啊，又有什么可怀念的呢？放弃挣扎的我慢慢下沉，我仿佛看到世间最美的景色，一切是那么安静，祥和，我闭上眼睛，想去感受死亡所带来的一丝不安与恐惧，但我感受到的只有无尽的黑暗和一片虚无。</p>
 <p>岸上的那人仿佛冷漠无比，事不关己地看着我，渐渐死去，于是，我便长眠于此，世间再无我的容身之地，我已不复存在，接管这个皮囊的是另一种存在，一种未知的存在，它就在那，就那么默默注视着我，看着我渐渐堕落，迷失自我，取代我的便是它，是我助长它的存在，使它慢慢腐蚀我的灵魂，侵入我的内心，但对此我一无所知，直至此刻，我死了，我才领悟，但也没有什么值得我去留念了，当初的信念早已覆灭，随着我一同消散在这世间。</p>
 <p style="text-align:right;">写于高中某天</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>致百日誓师的我</title>
+    <url>/2018/09/16/%E8%87%B4%E7%99%BE%E6%97%A5%E8%AA%93%E5%B8%88%E7%9A%84%E6%88%91/</url>
+    <content><![CDATA[<p>当我审视自己，我看到了无数个视角下不同的我，为了他人目光活着，有点累，而我却看不清真实的自己到底是哪个，还是说，我早已不是当初的那个我，我曾以为我便是我，一个自由放纵的我，可现实却击中了我，把我击倒在地，我强忍着伤痛，匍匐前进，前方始终是黑暗，我心逐渐绝望，终于，我看清了，我就是我，一个独一无二的我，也许他人目光将我弄得遍体鳞伤，但我终究是我，随自己的心意而活，可是，真的吗？我不禁陷入了深思，我真的能吗？我想这是不可能的，生活本就是一个囚笼，你无法打破它，只能去学会接受它，去改造它，让它变得更加美好，哪怕再不堪，也要好好的，没有人能真正按照自己心意而活，生活本就是如此，面对他人的目光，不要去逃避，不然你终将会被其击倒在地，我挣扎着爬起来，哪怕前方没有光亮，我也要用我这心，去照亮前方，只为那当初的我，于是，我便不断前行，披荆斩棘。</p>
+<p>我知道你内心挣扎，并全力克制着疑惑，我理解你每次每次哭泣时的痛苦与无奈，但我早已没了眼泪，被生活磨去了棱角，你本能再坚强一点的，把握明天将给予的一切，但是等待我们的往往是狂风骤雨，不要害怕，去感受它，敞开心胸，让它来吧，学会接受恐惧给你带来的感受，是那么黑暗，那么纯粹，而带来恐惧的正是你的心，不要抵触，让它成为你的一部分，让它驱使你前进，哪怕跟当初的我一样，你也要前行，因为你一旦停止了脚步，你将迷失在这黑暗之中，陷入深潭，恐惧将会吞噬你，所以，接受它吧，没有人能真正按照自己的心意而活，我也不例外，如今我已完全醒悟，过去那些将我击倒的，逐渐使我升华，所以，请不要灰心，相信明天将会是美好的，哪怕狂风骤雨，但你也不怕了，不是吗？勇敢的去面对它，我知道，真正的敌人就在我内心深处，那里是恐惧本源，我须战胜自我，去降服他，可是，我的双手早已无力，我的内心早已千疮百孔，我已无心战斗，但我的灵魂不允许我松懈，于是，我便不断前行，披荆斩棘。</p>
+<p>那么，便努力吧，努力做自己，去冲。</p>
+<p style="text-align:right;">——致百日誓师的我</p>
+
+<p style="text-align:right;">写于2018-9-16</p>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -1347,19 +1360,6 @@
                      data-src="./whalefall.jpg"
                       width="500px" height="auto" alt="鲸落"
                 ><figcaption>鲸落</figcaption></figure>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>致百日誓师的我</title>
-    <url>/2018/09/16/%E8%87%B4%E7%99%BE%E6%97%A5%E8%AA%93%E5%B8%88%E7%9A%84%E6%88%91/</url>
-    <content><![CDATA[<p>当我审视自己，我看到了无数个视角下不同的我，为了他人目光活着，有点累，而我却看不清真实的自己到底是哪个，还是说，我早已不是当初的那个我，我曾以为我便是我，一个自由放纵的我，可现实却击中了我，把我击倒在地，我强忍着伤痛，匍匐前进，前方始终是黑暗，我心逐渐绝望，终于，我看清了，我就是我，一个独一无二的我，也许他人目光将我弄得遍体鳞伤，但我终究是我，随自己的心意而活，可是，真的吗？我不禁陷入了深思，我真的能吗？我想这是不可能的，生活本就是一个囚笼，你无法打破它，只能去学会接受它，去改造它，让它变得更加美好，哪怕再不堪，也要好好的，没有人能真正按照自己心意而活，生活本就是如此，面对他人的目光，不要去逃避，不然你终将会被其击倒在地，我挣扎着爬起来，哪怕前方没有光亮，我也要用我这心，去照亮前方，只为那当初的我，于是，我便不断前行，披荆斩棘。</p>
-<p>我知道你内心挣扎，并全力克制着疑惑，我理解你每次每次哭泣时的痛苦与无奈，但我早已没了眼泪，被生活磨去了棱角，你本能再坚强一点的，把握明天将给予的一切，但是等待我们的往往是狂风骤雨，不要害怕，去感受它，敞开心胸，让它来吧，学会接受恐惧给你带来的感受，是那么黑暗，那么纯粹，而带来恐惧的正是你的心，不要抵触，让它成为你的一部分，让它驱使你前进，哪怕跟当初的我一样，你也要前行，因为你一旦停止了脚步，你将迷失在这黑暗之中，陷入深潭，恐惧将会吞噬你，所以，接受它吧，没有人能真正按照自己的心意而活，我也不例外，如今我已完全醒悟，过去那些将我击倒的，逐渐使我升华，所以，请不要灰心，相信明天将会是美好的，哪怕狂风骤雨，但你也不怕了，不是吗？勇敢的去面对它，我知道，真正的敌人就在我内心深处，那里是恐惧本源，我须战胜自我，去降服他，可是，我的双手早已无力，我的内心早已千疮百孔，我已无心战斗，但我的灵魂不允许我松懈，于是，我便不断前行，披荆斩棘。</p>
-<p>那么，便努力吧，努力做自己，去冲。</p>
-<p style="text-align:right;">——致百日誓师的我</p>
-
-<p style="text-align:right;">写于2018-9-16</p>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -1447,6 +1447,23 @@
       </categories>
       <tags>
         <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>重构</title>
+    <url>/2023/11/06/%E9%87%8D%E6%9E%84/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>重构，即对程序内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。重构以增加程序的可维护性、可靠性，这是门学问，这与古老的谚语“程序能跑就不要动它”背道而驰，这句谚语也是屎山如何形成的最根本原因，没有定期地重构不合理的代码，使得埋下的坑越来越深，解bug就像探宝一样，时不时能发现其他宝藏：更难解的bug，这就是为什么bug越解越多。当然，重构总是与bug如影随形，这就要求以最小的步伐来进行重构，每一次重构完成时要进行详尽的测试，最好是提供统一稳定的测试环境，按照相同的方法进行测试，以免重构引入bug。</p>
+<p>重复的代码块IDE会进行提醒，如果有两个及以上重复就可以考虑抽象出一个函数了，这样当这块代码出错，就无需修改每处地方，仅需修改那个函数，这就是重构，其实我们每天都在进行重构，提炼、分析，从而选出最适合的数据结构，或者逻辑顺序。重构有许多种方法，其中按照既有模版进行重构是最简单的，因此了解设计模式以及类似的思想是很有必要的，可以减少编写代码出错的概率。重构就像是在梳理代码，只有理解了具体的逻辑，重构才成为可能，这就是代码可理解性的重要性，难以理解的设计非常不利于重构，因此，代码可读性优先于其他要义（如果不考虑性能的情况下，如果要进行性能优化，可能就会摒弃可读性，这是没办法的，不过也可以增加适当的注解来提高可读性，不要让别人揣测你代码的意思，而是浅显易懂，这才是好的设计）。讲个笑话，当有天回过头来看之前写的代码，会看不懂，惊呼一句卧槽这啥*玩意，那么就需要进行重构了，如果当初代码的作者都看不明白了，那么指望别人能快速理解代码意图是不太可能了。</p>
+<h2 id="设计大于编码"><a href="#设计大于编码" class="headerlink" title="设计大于编码"></a>设计大于编码</h2><p>良好的设计才是快速开发的秘诀，恶劣的设计会使得开发大半的时间都花在不断重复地调试当中，因为程序状况百出，不得不每每打断开发的进度，甚至因为修复bug而打上的补丁会影响后续的开发，使代码愈来愈臃肿，这是我们不希望看见的，因此，我再次强调设计思想的重要性，这是重构的前提。</p>
+<p>事先做好设计可以有效减少返工次数，即进行重构的次数，甚至无需进行重构，就能完美符合需求且代码结构清晰，维护容易，当然，不要过度设计，过于揣测之后的变化是不利于开发的，应该能够在满足需求的情况下，然后一定限度地对风险进行预测，考虑增加容错，而不是一上来就“疑神疑鬼”。掌握设计和编码难度的平衡性也是挺困难的，设计为需求而服务，但满足需求并不一定能够实际落地，需要切实考虑编码难度、时间花费、风险控制等等因素，而不是盲目地追求所谓好的设计。在设计前请务必理清需求和度量系统，不要臆测，想当然地以为那样就是那样，需要不断沟通以完善设计。</p>
+<h2 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h2><h3 id="重复代码"><a href="#重复代码" class="headerlink" title="重复代码"></a>重复代码</h3><p>这是再正常不过的坏味道了，当一段代码在多处出现，那就要考虑是否需要进行重构了，提炼出重复代码，然后封装到一个函数中，这样出问题只需改一处即可，而不是牵一发而动全身。</p>
+<h3 id="过长函数"><a href="#过长函数" class="headerlink" title="过长函数"></a>过长函数</h3><p>当一个函数过长，就要注意了，函数越长，逻辑就越难理清，也就越难维护，所谓屎山就是堆砌起来的，当一段冗长的代码摆在面前，且没有相应注释，我想是个人都会抗拒去阅读它，将这类代码分割成一小块一小块，每一块都是单独的一段逻辑，然后再串联起来，这样不仅能减少临时变量，且还能让逻辑变得清晰明了，最重要的是，复用性大大增加。</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>重构</tag>
       </tags>
   </entry>
   <entry>
@@ -1657,23 +1674,6 @@
       <tags>
         <tag>JUC</tag>
         <tag>多线程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>重构</title>
-    <url>/2023/11/06/%E9%87%8D%E6%9E%84/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>重构，即对程序内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。重构以增加程序的可维护性、可靠性，这是门学问，这与古老的谚语“程序能跑就不要动它”背道而驰，这句谚语也是屎山如何形成的最根本原因，没有定期地重构不合理的代码，使得埋下的坑越来越深，解bug就像探宝一样，时不时能发现其他宝藏：更难解的bug，这就是为什么bug越解越多。当然，重构总是与bug如影随形，这就要求以最小的步伐来进行重构，每一次重构完成时要进行详尽的测试，最好是提供统一稳定的测试环境，按照相同的方法进行测试，以免重构引入bug。</p>
-<p>重复的代码块IDE会进行提醒，如果有两个及以上重复就可以考虑抽象出一个函数了，这样当这块代码出错，就无需修改每处地方，仅需修改那个函数，这就是重构，其实我们每天都在进行重构，提炼、分析，从而选出最适合的数据结构，或者逻辑顺序。重构有许多种方法，其中按照既有模版进行重构是最简单的，因此了解设计模式以及类似的思想是很有必要的，可以减少编写代码出错的概率。重构就像是在梳理代码，只有理解了具体的逻辑，重构才成为可能，这就是代码可理解性的重要性，难以理解的设计非常不利于重构，因此，代码可读性优先于其他要义（如果不考虑性能的情况下，如果要进行性能优化，可能就会摒弃可读性，这是没办法的，不过也可以增加适当的注解来提高可读性，不要让别人揣测你代码的意思，而是浅显易懂，这才是好的设计）。讲个笑话，当有天回过头来看之前写的代码，会看不懂，惊呼一句卧槽这啥*玩意，那么就需要进行重构了，如果当初代码的作者都看不明白了，那么指望别人能快速理解代码意图是不太可能了。</p>
-<h2 id="设计大于编码"><a href="#设计大于编码" class="headerlink" title="设计大于编码"></a>设计大于编码</h2><p>良好的设计才是快速开发的秘诀，恶劣的设计会使得开发大半的时间都花在不断重复地调试当中，因为程序状况百出，不得不每每打断开发的进度，甚至因为修复bug而打上的补丁会影响后续的开发，使代码愈来愈臃肿，这是我们不希望看见的，因此，我再次强调设计思想的重要性，这是重构的前提。</p>
-<p>事先做好设计可以有效减少返工次数，即进行重构的次数，甚至无需进行重构，就能完美符合需求且代码结构清晰，维护容易，当然，不要过度设计，过于揣测之后的变化是不利于开发的，应该能够在满足需求的情况下，然后一定限度地对风险进行预测，考虑增加容错，而不是一上来就“疑神疑鬼”。掌握设计和编码难度的平衡性也是挺困难的，设计为需求而服务，但满足需求并不一定能够实际落地，需要切实考虑编码难度、时间花费、风险控制等等因素，而不是盲目地追求所谓好的设计。在设计前请务必理清需求和度量系统，不要臆测，想当然地以为那样就是那样，需要不断沟通以完善设计。</p>
-<h2 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h2><h3 id="重复代码"><a href="#重复代码" class="headerlink" title="重复代码"></a>重复代码</h3><p>这是再正常不过的坏味道了，当一段代码在多处出现，那就要考虑是否需要进行重构了，提炼出重复代码，然后封装到一个函数中，这样出问题只需改一处即可，而不是牵一发而动全身。</p>
-<h3 id="过长函数"><a href="#过长函数" class="headerlink" title="过长函数"></a>过长函数</h3><p>当一个函数过长，就要注意了，函数越长，逻辑就越难理清，也就越难维护，所谓屎山就是堆砌起来的，当一段冗长的代码摆在面前，且没有相应注释，我想是个人都会抗拒去阅读它，将这类代码分割成一小块一小块，每一块都是单独的一段逻辑，然后再串联起来，这样不仅能减少临时变量，且还能让逻辑变得清晰明了，最重要的是，复用性大大增加。</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>重构</tag>
       </tags>
   </entry>
 </search>
