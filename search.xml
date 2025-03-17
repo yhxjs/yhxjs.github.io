@@ -1,6 +1,257 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ARP协议</title>
+    <url>/2024/03/05/ARP%E5%8D%8F%E8%AE%AE/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ARP即地址解析协议，将IP地址解析为MAC地址。数据要在以太网中传输，需要完成以太网封装，这项工作由网络层负责。要完成以太网的数据封装，需要知道目的设备的MAC地址。</p>
+<p>注意：ARP报文不能穿越路由器，不能被转发到其他广播域</p>
+<h3 id="报文格式"><a href="#报文格式" class="headerlink" title="报文格式"></a>报文格式</h3><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./arp_packet_format.png"
+                      width="400px" height="auto" alt="ARP报文格式"
+                ><figcaption>ARP报文格式</figcaption></figure>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./arp_packet_format_wireshark.png"
+                      width="450px" height="auto" alt="ARP报文格式(Wireshark)"
+                ><figcaption>ARP报文格式(Wireshark)</figcaption></figure>
+
+<p><strong>硬件类型</strong>：表示硬件地址的类型（其中，值为1表示以太网地址，其他还可能表示令牌环地址）。</p>
+<p><strong>协议类型</strong>：表示要映射的协议地址类型（其中，0x0800表示IP地址，其他还可能是ICMP&#x2F;IGMP）。</p>
+<p><strong>硬件地址长度</strong>：指出该报文中硬件地址的长度（ARP报文中，它的值为6）。</p>
+<p><strong>协议地址长度</strong>：指出该报文中协议地址的长度（ARP报文中，它的值为4）。</p>
+<p><strong>op</strong>：操作字段，共有4种类型（1.ARP请求，2.ARP应答，3.RARP请求，4.RARP应答）。</p>
+<p><strong>源MAC地址</strong>：发送方设备的硬件地址。</p>
+<p><strong>源IP地址</strong>：发送方设备的IP地址。</p>
+<p><strong>目的MAC地址</strong>：接收方设备的硬件地址。</p>
+<p><strong>目的IP地址</strong>：接收方设备的IP地址。</p>
+<p>ARP报文解析主要关心的是后五个字段。</p>
+<h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./arp_workflow.png"
+                      width="450px" height="auto" alt="ARP工作流程"
+                ><figcaption>ARP工作流程</figcaption></figure>
+
+<ol>
+<li>先查看ARP表，如果ARP表中没有目的IP地址对应的MAC表项，则发送ARP请求包</li>
+<li>源主机广播发送ARP request 数据包，请求目的主机的MAC地址</li>
+<li>同网段内的所有主机都能收到ARP request请求包，但只有目的主机才会回复ARP reply数据包</li>
+<li>源主机收到ARP reply后，将目的主句的IP-MAC对应关系添加进ARP表中，完成数据的以太网封装，进行数据交互</li>
+</ol>
+<p>通过Wireshark抓包可以看到整个过程。</p>
+<p>IP为192.168.56.105的主机A广播目的IP为192.168.56.1的ARP请求，当IP为192.168.56.1的主机B收到该请求后，应答自己的MAC地址给主机A：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./arp_request_wireshark.png"
+                      width="450px" height="auto" alt="ARP请求(Wireshark)"
+                ><figcaption>ARP请求(Wireshark)</figcaption></figure>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./arp_reply_wireshark.png"
+                      width="450px" height="auto" alt="ARP应答(Wireshark)"
+                ><figcaption>ARP应答(Wireshark)</figcaption></figure>
+
+<p>而一整个ping的过程相当于两个来回：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./arp_ping_wireshark.png"
+                      width="800px" height="auto" alt="ping(Wireshark)"
+                ><figcaption>ping(Wireshark)</figcaption></figure>
+
+<p>通过我开发的show arp packet history命令也可以看到整个过程：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./show_arp_packet_history.png"
+                      width="100%" height="auto" alt="show arp packet history"
+                ><figcaption>show arp packet history</figcaption></figure>
+
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>含义</th>
+<th>作用</th>
+<th>属性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>静态</td>
+<td>手动配置（优先级高）、认证下发</td>
+<td></td>
+<td>永久、表项不更新</td>
+</tr>
+<tr>
+<td>动态</td>
+<td>通过报文学得</td>
+<td></td>
+<td>老化、表项更新</td>
+</tr>
+<tr>
+<td>可信任</td>
+<td>客户端认证时候，会在网关交换机上添加arp，该arp是真实有效的</td>
+<td>位于交换机端ARP表项中，防止ARP欺骗</td>
+<td>具有静、动态属性</td>
+</tr>
+<tr>
+<td>免费</td>
+<td>源、目的IP都是自己的广播arp报文</td>
+<td>IP地址冲突检测、MAC地址变化通知其他设备</td>
+<td>可以定时发送免费ARP，若无IP冲突不能应答</td>
+</tr>
+<tr>
+<td>代理</td>
+<td>源目的不属于同一网段，设备知道目的ip的路由信息时，则进行代替arp响应</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>本地代理</td>
+<td>以网关自身的MAC回应本网段的IP地址的ARP请求</td>
+<td>用于二层端口隔离时，主机先获取网关的mac，之后在网关设备上报文会被上送三层，通过三层路由实现同一网段内主机通讯</td>
+<td></td>
+</tr>
+<tr>
+<td>any ip</td>
+<td>任意IP地址都可以上网，ARP请求的源IP和设备不在同网段，且目的IP可能不是自己，但网关仍然发送ARP应答，并且为主机的IP地址生成直连路由</td>
+<td>场景：无需修改IP与网关即可正常上网，例如网吧、酒店等地方</td>
+<td></td>
+</tr>
+<tr>
+<td>探测</td>
+<td>源IP为0，目的IP为待探测地址</td>
+<td>收到应答则说明该IP被使用</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="处理逻辑"><a href="#处理逻辑" class="headerlink" title="处理逻辑"></a>处理逻辑</h2><p>首先底层对报文进行处理，将二进制报文转化为可处理的格式，然后交由控制层进行处理。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./arp_packet_processing.png"
+                      width="300px" height="auto" alt="ARP报文处理逻辑"
+                ><figcaption>ARP报文处理逻辑</figcaption></figure>
+
+<ol>
+<li><p>操作码op，源接口和二层接口协议状态，格式检查，MAC合法性，IP合法性，免费ARP检查，ACL检查等，经过上述一系列检查后，源IP和目的IP都不为0，且都是合法的。</p>
+</li>
+<li><p>判断源IP和源接口是否处于同一网段，主要区分就是VRRP的虚IP和开启了any-ip-arp要进行特殊处理，经过判断后，如果是同一网段就进行处理，否则就丢弃即忽略。只要源IP和本机IP是一致的，都认为IP地址冲突，查看源MAC和源接口的MAC是否相同，如若相同，则说明是自己发的，不进行处理，否则进行冲突应答。如果目的IP为本机IP，判断是否是发给自己的，如果是则继续进行处理，否则进行相关的代理。</p>
+</li>
+<li><p>普通处理</p>
+<p>处理request报文：</p>
+<ol>
+<li><p>目的地址是我们的IP，则不更新表项，只应答。</p>
+</li>
+<li><p>目的地址不是我们的IP，则不应答。</p>
+</li>
+<li><p>如果MAC地址不一样，需要代理冲突应答，并走老化逻辑。</p>
+</li>
+</ol>
+<p>处理reply报文：如果源IP匹配到了表项或者开启了某种学习才进行表项的学习更新。</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>通信</category>
+      </categories>
+      <tags>
+        <tag>ARP</tag>
+        <tag>通信</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo配置</title>
+    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>。</p>
+<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程 <i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>。</p>
+<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
+<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
+<div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
+
+  <div class="note p-4 mb-4 rounded-small success">
+    <figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
+                      class="" alt="hexo -v"
+                ><figcaption>hexo -v</figcaption></figure>
+  </div>
+
+<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./creat_repository.png"
+                      width="600px" height="auto" alt="创建个人页仓库"
+                ><figcaption>创建个人页仓库</figcaption></figure>
+
+<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
+
+<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
+<div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
+
+<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
+<p>Hexo 程序目录：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./directory_structure.png"
+                      width="400px" height="auto" alt="目录结构"
+                ><figcaption>目录结构</figcaption></figure>
+
+<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
+<div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
+
+<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
+<div class="code-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
+<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> ，挑选一个心仪的主题并进行下载。</p>
+<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine <i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> ，用该主题介绍如何进行安装。</p>
+<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
+<div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
+<div class="code-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
+
+<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
+<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
+<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 挑选，甚至可以自己开发一个。</p>
+<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
+<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>使用时可以直接像下面这样：</p>
+<div class="code-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./bilibili_url.png"
+                      width="700px" height="auto" alt="修改哔哩哔哩url"
+                ><figcaption>修改哔哩哔哩url</figcaption></figure>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>配置</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ND协议</title>
     <url>/2024/03/06/ND%E5%8D%8F%E8%AE%AE/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>邻居发现协议，相当于IPv4中ARP、ICMP路由器发现和ICMP重定向这三种协议的组合。</p>
@@ -194,6 +445,25 @@
       </tags>
   </entry>
   <entry>
+    <title>也许那么...</title>
+    <url>/2016/09/25/%E4%B9%9F%E8%AE%B8%E9%82%A3%E4%B9%88/</url>
+    <content><![CDATA[<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./time.jpg"
+                      width="400px" height="auto" alt="时光里"
+                ><figcaption>时光里</figcaption></figure>
+
+<p>那么<br>曾经喜欢过，<br>也许<br>现在还喜欢，<br>但是<br>早已过去。</p>
+<p>曾经铭记于心，<br>现在隐藏内心。<br>包裹着<br>一层又一层的皮囊；<br>感受着<br>一次又一次的煎熬；<br>回想着<br>过去的点点滴滴；<br>不禁<br>心有感悟。</p>
+<p>过去的人和事，<br>如若还在身边，<br>那么这形同陌路，<br>却不如不见。<br>可不见，<br>却又倍加思念，<br>不知该何去何从，<br>便只能做好如今的事。</p>
+<p>那么不如待我如初见——至逝去的三年（初中）</p>
+<p style="text-align:right;">写于2016-09-25</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
     <title>IOC和AOP原理</title>
     <url>/2024/08/06/IOC%E5%92%8CAOP%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<p>通过对<a class="link"   href="https://github.com/DerekYRC/mini-spring" >mini-spring<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 代码的阅读，对IoC和AOP的原理有了进一步认识，二者都为构成Spring的基础概念，是框架底层的实现原理。</p>
@@ -283,303 +553,96 @@
       </tags>
   </entry>
   <entry>
-    <title>ARP协议</title>
-    <url>/2024/03/05/ARP%E5%8D%8F%E8%AE%AE/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ARP即地址解析协议，将IP地址解析为MAC地址。数据要在以太网中传输，需要完成以太网封装，这项工作由网络层负责。要完成以太网的数据封装，需要知道目的设备的MAC地址。</p>
-<p>注意：ARP报文不能穿越路由器，不能被转发到其他广播域</p>
-<h3 id="报文格式"><a href="#报文格式" class="headerlink" title="报文格式"></a>报文格式</h3><figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./arp_packet_format.png"
-                      width="400px" height="auto" alt="ARP报文格式"
-                ><figcaption>ARP报文格式</figcaption></figure>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./arp_packet_format_wireshark.png"
-                      width="450px" height="auto" alt="ARP报文格式(Wireshark)"
-                ><figcaption>ARP报文格式(Wireshark)</figcaption></figure>
-
-<p><strong>硬件类型</strong>：表示硬件地址的类型（其中，值为1表示以太网地址，其他还可能表示令牌环地址）。</p>
-<p><strong>协议类型</strong>：表示要映射的协议地址类型（其中，0x0800表示IP地址，其他还可能是ICMP&#x2F;IGMP）。</p>
-<p><strong>硬件地址长度</strong>：指出该报文中硬件地址的长度（ARP报文中，它的值为6）。</p>
-<p><strong>协议地址长度</strong>：指出该报文中协议地址的长度（ARP报文中，它的值为4）。</p>
-<p><strong>op</strong>：操作字段，共有4种类型（1.ARP请求，2.ARP应答，3.RARP请求，4.RARP应答）。</p>
-<p><strong>源MAC地址</strong>：发送方设备的硬件地址。</p>
-<p><strong>源IP地址</strong>：发送方设备的IP地址。</p>
-<p><strong>目的MAC地址</strong>：接收方设备的硬件地址。</p>
-<p><strong>目的IP地址</strong>：接收方设备的IP地址。</p>
-<p>ARP报文解析主要关心的是后五个字段。</p>
-<h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./arp_workflow.png"
-                      width="450px" height="auto" alt="ARP工作流程"
-                ><figcaption>ARP工作流程</figcaption></figure>
-
-<ol>
-<li>先查看ARP表，如果ARP表中没有目的IP地址对应的MAC表项，则发送ARP请求包</li>
-<li>源主机广播发送ARP request 数据包，请求目的主机的MAC地址</li>
-<li>同网段内的所有主机都能收到ARP request请求包，但只有目的主机才会回复ARP reply数据包</li>
-<li>源主机收到ARP reply后，将目的主句的IP-MAC对应关系添加进ARP表中，完成数据的以太网封装，进行数据交互</li>
-</ol>
-<p>通过Wireshark抓包可以看到整个过程。</p>
-<p>IP为192.168.56.105的主机A广播目的IP为192.168.56.1的ARP请求，当IP为192.168.56.1的主机B收到该请求后，应答自己的MAC地址给主机A：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./arp_request_wireshark.png"
-                      width="450px" height="auto" alt="ARP请求(Wireshark)"
-                ><figcaption>ARP请求(Wireshark)</figcaption></figure>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./arp_reply_wireshark.png"
-                      width="450px" height="auto" alt="ARP应答(Wireshark)"
-                ><figcaption>ARP应答(Wireshark)</figcaption></figure>
-
-<p>而一整个ping的过程相当于两个来回：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./arp_ping_wireshark.png"
-                      width="800px" height="auto" alt="ping(Wireshark)"
-                ><figcaption>ping(Wireshark)</figcaption></figure>
-
-<p>通过我开发的show arp packet history命令也可以看到整个过程：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./show_arp_packet_history.png"
-                      width="100%" height="auto" alt="show arp packet history"
-                ><figcaption>show arp packet history</figcaption></figure>
-
-<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><table>
-<thead>
-<tr>
-<th>类别</th>
-<th>含义</th>
-<th>作用</th>
-<th>属性</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>静态</td>
-<td>手动配置（优先级高）、认证下发</td>
-<td></td>
-<td>永久、表项不更新</td>
-</tr>
-<tr>
-<td>动态</td>
-<td>通过报文学得</td>
-<td></td>
-<td>老化、表项更新</td>
-</tr>
-<tr>
-<td>可信任</td>
-<td>客户端认证时候，会在网关交换机上添加arp，该arp是真实有效的</td>
-<td>位于交换机端ARP表项中，防止ARP欺骗</td>
-<td>具有静、动态属性</td>
-</tr>
-<tr>
-<td>免费</td>
-<td>源、目的IP都是自己的广播arp报文</td>
-<td>IP地址冲突检测、MAC地址变化通知其他设备</td>
-<td>可以定时发送免费ARP，若无IP冲突不能应答</td>
-</tr>
-<tr>
-<td>代理</td>
-<td>源目的不属于同一网段，设备知道目的ip的路由信息时，则进行代替arp响应</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>本地代理</td>
-<td>以网关自身的MAC回应本网段的IP地址的ARP请求</td>
-<td>用于二层端口隔离时，主机先获取网关的mac，之后在网关设备上报文会被上送三层，通过三层路由实现同一网段内主机通讯</td>
-<td></td>
-</tr>
-<tr>
-<td>any ip</td>
-<td>任意IP地址都可以上网，ARP请求的源IP和设备不在同网段，且目的IP可能不是自己，但网关仍然发送ARP应答，并且为主机的IP地址生成直连路由</td>
-<td>场景：无需修改IP与网关即可正常上网，例如网吧、酒店等地方</td>
-<td></td>
-</tr>
-<tr>
-<td>探测</td>
-<td>源IP为0，目的IP为待探测地址</td>
-<td>收到应答则说明该IP被使用</td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="处理逻辑"><a href="#处理逻辑" class="headerlink" title="处理逻辑"></a>处理逻辑</h2><p>首先底层对报文进行处理，将二进制报文转化为可处理的格式，然后交由控制层进行处理。</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./arp_packet_processing.png"
-                      width="300px" height="auto" alt="ARP报文处理逻辑"
-                ><figcaption>ARP报文处理逻辑</figcaption></figure>
-
-<ol>
-<li><p>操作码op，源接口和二层接口协议状态，格式检查，MAC合法性，IP合法性，免费ARP检查，ACL检查等，经过上述一系列检查后，源IP和目的IP都不为0，且都是合法的。</p>
+    <title>再识MyBatis-Plus</title>
+    <url>/2024/03/23/%E5%86%8D%E8%AF%86MyBatis-Plus/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本人之前学习过 MyBatis-Plus，但实际自己开发还是用的 MyBatis，基本就是简单 sql，因此用注解进行开发，手写 sql 也还好，故并未采用 MyBatis-Plus进行开发，但新入职的公司需要用到，于是进行重温，才有了这篇简略的记录。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>正如<a class="link"   href="https://mybatis.plus/" >官网<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>所说的愿景：成为 MyBatis 最好的搭档，就像魂斗罗中的 1P、2P，基友搭配，效率翻倍。MyBatis-Plus 相当于 MyBatis 的增强版插件，可以一起使用，事半功倍，省去编写简单 sql 的功夫，具体介绍可自行去官网查看。</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><h3 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h3><ol>
+<li><p>@TableName</p>
+<p>标识实体类对应的数据库表。</p>
 </li>
-<li><p>判断源IP和源接口是否处于同一网段，主要区分就是VRRP的虚IP和开启了any-ip-arp要进行特殊处理，经过判断后，如果是同一网段就进行处理，否则就丢弃即忽略。只要源IP和本机IP是一致的，都认为IP地址冲突，查看源MAC和源接口的MAC是否相同，如若相同，则说明是自己发的，不进行处理，否则进行冲突应答。如果目的IP为本机IP，判断是否是发给自己的，如果是则继续进行处理，否则进行相关的代理。</p>
+<li><p>@TableId</p>
+<p>标识主键属性。</p>
 </li>
-<li><p>普通处理</p>
-<p>处理request报文：</p>
-<ol>
-<li><p>目的地址是我们的IP，则不更新表项，只应答。</p>
+<li><p>@TableField</p>
+<p>标识对应数据库字段。</p>
 </li>
-<li><p>目的地址不是我们的IP，则不应答。</p>
-</li>
-<li><p>如果MAC地址不一样，需要代理冲突应答，并走老化逻辑。</p>
+<li><p>@TableLogic</p>
+<p>标识删除类型。</p>
 </li>
 </ol>
-<p>处理reply报文：如果源IP匹配到了表项或者开启了某种学习才进行表项的学习更新。</p>
-</li>
+<h3 id="基本crud"><a href="#基本crud" class="headerlink" title="基本crud"></a>基本crud</h3><p>所有的基本 crud 都在 BaseMapper 接口中定义，只需要继承并指定具体实体类即可。</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;User&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>BaseMapper 接口如下：</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BaseMapper</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Mapper</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="comment">// 新增数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">insert</span><span class="params">(T entity)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 删除</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">delete</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 更新</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">updateById</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity)</span>;</span><br><span class="line">	<span class="comment">// 更新数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">update</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; updateWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 查询</span></span><br><span class="line">    T <span class="title function_">selectById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量查询</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 查询数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 查询一条数据</span></span><br><span class="line">    T <span class="title function_">selectOne</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询记录总数</span></span><br><span class="line">    Integer <span class="title function_">selectCount</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectList</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">selectMaps</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Object&gt; <span class="title function_">selectObjs</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;T&gt;&gt; E <span class="title function_">selectPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;Map&lt;String, Object&gt;&gt;&gt; E <span class="title function_">selectMapsPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="增"><a href="#增" class="headerlink" title="增"></a>增</h4><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setName(<span class="string">&quot;奕凰轩祭侍&quot;</span>);</span><br><span class="line">user.setAge(<span class="number">18</span>);</span><br><span class="line">userMapper.insert(user);</span><br><span class="line"><span class="comment">// 获取插入数据的主键 ID</span></span><br><span class="line"><span class="type">Long</span> <span class="variable">id</span> <span class="operator">=</span> user.getId();</span><br></pre></td></tr></table></figure></div>
+
+<p>一般使用@TableId(type &#x3D; IdType.AUTO)来指定数据库主键，然后数据库还存在另外一个唯一标识符，一般由后端进行UUID或者雪花算法生成，该标识符相当于业务中使用的主键。</p>
+<h4 id="删"><a href="#删" class="headerlink" title="删"></a>删</h4><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.deleteById(<span class="number">10059249854L</span>); <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
+
+<p>根据主键删除，也可以直接传入对象，会根据标识的主键属性进行删除，以及可以根据其他条件删除，条件构造在<a href="#%E6%9F%A5">查询</a>中介绍。</p>
+<h4 id="改"><a href="#改" class="headerlink" title="改"></a>改</h4><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setId(<span class="number">10059249854L</span>);</span><br><span class="line">user.setGender(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 实际执行的 SQL : UPDATE user SET gender=1 WHERE id=10059249854;</span></span><br><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.updateById(user);  <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="查"><a href="#查" class="headerlink" title="查"></a>查</h4><p>在使用前需要进行 sql 条件语句的构建，有三种条件构建格式：</p>
+<ol>
+<li>常规条件构建格式</li>
 </ol>
-]]></content>
-      <categories>
-        <category>通信</category>
-      </categories>
-      <tags>
-        <tag>通信</tag>
-        <tag>ARP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo配置</title>
-    <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>。</p>
-<p>具体教程可参考 <a class="link"   href="https://blog.csdn.net/WHF__/article/details/129362462" >Node.js下载安装及环境配置教程 <i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>和 <a class="link"   href="https://blog.csdn.net/mukes/article/details/115693833" >Git 详细安装教程<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>。</p>
-<p>安装所需依赖后，可以开始安装 Hexo 了。</p>
-<p>新建一个文件夹用来存放 Hexo 的程序文件，在终端输入以下命令安装 Hexo 的命令行工具：</p>
-<div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapperr&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapperr</span>&lt;User&gt;();</span><br><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//今年刚满18岁~</span></span><br></pre></td></tr></table></figure></div>
 
-<p>安装完毕后输入 hexo -v 即可查看到版本信息，没问题即可继续。</p>
+<ol start="2">
+<li>lamda格式条件构建格式</li>
+</ol>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lambda().eq(User::getName,<span class="string">&quot;劳大&quot;</span>); <span class="comment">//see you again（</span></span><br></pre></td></tr></table></figure></div>
 
-  <div class="note p-4 mb-4 rounded-small success">
-    <figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/hexo-v.png"
-                      class="" alt="hexo -v"
-                ><figcaption>hexo -v</figcaption></figure>
-  </div>
+<ol start="3">
+<li>lambda格式条件构建格式</li>
+</ol>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">LambdaQueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">LambdaQueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lt(User::getPlay, <span class="string">&quot;Genshin Impact&quot;</span>); <span class="comment">//原神启动！</span></span><br></pre></td></tr></table></figure></div>
 
-<p>在GitHub上创建个人页仓库，命名格式为 <strong>用户名.github.io</strong></p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./creat_repository.png"
-                      width="600px" height="auto" alt="创建个人页仓库"
-                ><figcaption>创建个人页仓库</figcaption></figure>
+<h5 id="常见的单条件查询"><a href="#常见的单条件查询" class="headerlink" title="常见的单条件查询"></a>常见的单条件查询</h5><h6 id="lt匹配"><a href="#lt匹配" class="headerlink" title="lt匹配"></a>lt匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;18</span></span><br></pre></td></tr></table></figure></div>
 
-<p>至此，前期工作已准备完毕，接下来进行具体配置。</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化并安装依赖组件"><a href="#初始化并安装依赖组件" class="headerlink" title="初始化并安装依赖组件"></a>初始化并安装依赖组件</h3><div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo init	# 初始化</span><br><span class="line">npm i		# 安装组件</span><br></pre></td></tr></table></figure></div>
+<h6 id="le匹配"><a href="#le匹配" class="headerlink" title="le匹配"></a>le匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.le(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;=18</span></span><br></pre></td></tr></table></figure></div>
 
-<p>完成后输入以下命令即可开启本地服务器进行预览：</p>
-<div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">hexo g	# 生成页面</span><br><span class="line">hexo s  # 启动服务器</span><br></pre></td></tr></table></figure></div>
+<h6 id="eq匹配"><a href="#eq匹配" class="headerlink" title="eq匹配"></a>eq匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//等同于=18</span></span><br></pre></td></tr></table></figure></div>
 
-<p>访问<a class="link"   href="http://localhost:4000/" >http://localhost:4000<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，即可看到默认页面，至此，本地安装结束。</p>
-<p>Hexo 程序目录：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./directory_structure.png"
-                      width="400px" height="auto" alt="目录结构"
-                ><figcaption>目录结构</figcaption></figure>
+<h6 id="gt匹配"><a href="#gt匹配" class="headerlink" title="gt匹配"></a>gt匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;18</span></span><br></pre></td></tr></table></figure></div>
 
-<h3 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h3><p>输入以下命令来安装部署工具：</p>
-<div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
+<h6 id="ge匹配"><a href="#ge匹配" class="headerlink" title="ge匹配"></a>ge匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ge(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;=18</span></span><br></pre></td></tr></table></figure></div>
 
-<p>然后修改 <strong>_config.yml</strong> 的末尾</p>
-<div class="code-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:用户名/用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
+<h6 id="ne匹配"><a href="#ne匹配" class="headerlink" title="ne匹配"></a>ne匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ne(User::getAge,<span class="number">18</span>); <span class="comment">//等同于!=18</span></span><br></pre></td></tr></table></figure></div>
 
-<p>最后运行 <span class="bg-grey">hexo d</span> 即可将网页push到GitHub上，大功告成！访问 https:&#x2F;&#x2F;用户名.github.io 就可以看到自己的博客了。</p>
-<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>Hexo官方网站有不少主题可供使用 <a class="link"   href="https://hexo.io/themes/" >Hexo 主题<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> ，挑选一个心仪的主题并进行下载。</p>
-<p>本博客使用的主题是 <a class="link"   href="https://github.com/EvanNotFound/hexo-theme-redefine" >Redefine <i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> ，用该主题介绍如何进行安装。</p>
-<p>事先根据提供的文档进行安装，一般都提供git clone的方式，还有npm安装的方式：</p>
-<div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/EvanNotFound/hexo-theme-redefine.git themes/redefine</span><br><span class="line">npm install hexo-theme-redefine@latest</span><br></pre></td></tr></table></figure></div>
+<h6 id="between匹配"><a href="#between匹配" class="headerlink" title="between匹配"></a>between匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.between(User::getAge, <span class="number">17</span>, <span class="number">19</span>); <span class="comment">//等同于&gt;=17 &amp;&amp; &lt;= 19</span></span><br></pre></td></tr></table></figure></div>
 
-<p>安装完毕后，修改 <strong>_config.yml</strong> ：</p>
-<div class="code-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">redefine</span></span><br></pre></td></tr></table></figure></div>
+<h6 id="like匹配"><a href="#like匹配" class="headerlink" title="like匹配"></a>like匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.likeLeft(User::getName, <span class="string">&quot;奕&quot;</span>); <span class="comment">//相当于like %奕，还有like对应like %奕%、likeRight对应like 奕%</span></span><br></pre></td></tr></table></figure></div>
 
-<p>最后一般都要在Hexo程序根目录下新建一个主题的配置文件，例如 <strong>_config.redefine.yml</strong>， 具体的根据官方文档进行。</p>
-<p>完美！接下来重新启动服务器查看有多么炸裂吧。</p>
-<h3 id="推荐插件"><a href="#推荐插件" class="headerlink" title="推荐插件"></a>推荐插件</h3><p>如果使用的主题是 Redefine，已经集成了不少有用的插件，在此不再赘述，可以参考 <a class="link"   href="https://redefine-docs.ohevan.com/" >Redefine 官方文档<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 进行相关配置，此处推荐的是额外的插件，如果有需要也可以自己去 <a class="link"   href="https://hexo.io/plugins/" >Hexo 插件广场<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 挑选，甚至可以自己开发一个。</p>
-<h4 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a>hexo-generator-sitemap</h4><p>生成站点地图，利于SEO，地址：<a href="hexo-generator-sitemap">hexo-generator-sitemap</a></p>
-<h4 id="hexo-simple-image"><a href="#hexo-simple-image" class="headerlink" title="hexo-simple-image"></a>hexo-simple-image</h4><p>新建文章时自动在相同路径下生成存放图片的文件夹，使得文章引用图片方便不少，地址：<a class="link"   href="https://github.com/ZaiZheTingDun/hexo-simple-image" >hexo-simple-image<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
-<p>使用时可以直接像下面这样：</p>
-<div class="code-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="code"><pre><span class="line">{% asset_img "span>" '"" "<span class="string">my post image</span>"' %}</span><br><span class="line">或者</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./new_post.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;图片&quot;</span>&gt;</span></span>   &lt;!-- 注意img的话不需要加文件夹名字，因为生成时会自动合并 --&gt;</span><br></pre></td></tr></table></figure></div>
+<p>还有其他的一些条件，例如orderByAsc对应升序等，具体可以自己操作看看。</p>
+<h5 id="多条件查询"><a href="#多条件查询" class="headerlink" title="多条件查询"></a>多条件查询</h5><p>且</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">17</span>).lt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
 
-<h4 id="hexo-tag-mdline"><a href="#hexo-tag-mdline" class="headerlink" title="hexo-tag-mdline"></a>hexo-tag-mdline</h4><p>生成时间线，地址：<a class="link"   href="https://github.com/wangwei1237/hexo-tag-mdline" >hexo-tag-mdline<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
-<h4 id="hexo-tag-bilibili"><a href="#hexo-tag-bilibili" class="headerlink" title="hexo-tag-bilibili"></a>hexo-tag-bilibili</h4><p>生成哔哩哔哩视频卡片，地址：<a class="link"   href="https://github.com/Z4Tech/hexo-tag-bilibili" >hexo-tag-bilibili<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
-<p>建议将url修改为不进行自动播放和默认静音，修改 node_modules\bilibili-embed-convert\index.js，将标出的位置进行修改：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./bilibili_url.png"
-                      width="700px" height="auto" alt="修改哔哩哔哩url"
-                ><figcaption>修改哔哩哔哩url</figcaption></figure>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>配置</tag>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>也许那么...</title>
-    <url>/2016/09/25/%E4%B9%9F%E8%AE%B8%E9%82%A3%E4%B9%88/</url>
-    <content><![CDATA[<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./time.jpg"
-                      width="400px" height="auto" alt="时光里"
-                ><figcaption>时光里</figcaption></figure>
+<p>或</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">17</span>).or().gt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
 
-<p>那么<br>曾经喜欢过，<br>也许<br>现在还喜欢，<br>但是<br>早已过去。</p>
-<p>曾经铭记于心，<br>现在隐藏内心。<br>包裹着<br>一层又一层的皮囊；<br>感受着<br>一次又一次的煎熬；<br>回想着<br>过去的点点滴滴；<br>不禁<br>心有感悟。</p>
-<p>过去的人和事，<br>如若还在身边，<br>那么这形同陌路，<br>却不如不见。<br>可不见，<br>却又倍加思念，<br>不知该何去何从，<br>便只能做好如今的事。</p>
-<p>那么不如待我如初见——至逝去的三年（初中）</p>
-<p style="text-align:right;">写于2016-09-25</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>关于上云故障转移方案</title>
-    <url>/2024/11/01/%E5%85%B3%E4%BA%8E%E4%B8%8A%E4%BA%91%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h2 id="上云"><a href="#上云" class="headerlink" title="上云"></a>上云</h2><p>现代服务部署解决方案基本都为云部署，尤其是较大规模的应用，部署服务的方式一般有自建机房、IDC托管、云服务厂商，现如今以阿里云、腾讯云、华为云等为首的云服务厂商的份额日益增加，得益于上云后带来的最大好处——方便运维，变相提高了应用的可靠性，因为相较于部署在自建机房和IDC托管，云服务厂商会提供更加成熟的部署方案，不仅包括简单的部署，包括域名解析、数据备份、容灾等一系列完善的服务，使得服务部署不再困难，降低运维成本以及减少犯错的概率。</p>
-<p>不过，上云容易受到一些不可控的因素干扰，例如云服务厂商突然做出骚操作，之前就存在云服务厂商升级组件而未通知客户，而组件升级切换并不平滑，导致客户部署的服务出现短暂不可用，甚至出现更为糟糕的情况——光缆被挖断了，物理意义上的断你网线，如果没有做好多地容灾，那后果可想而知，服务完全down，无法恢复，当然，不仅云上有这个问题，云下同样如此，因为本质都是机房，只不过运维方式不同。</p>
-<p>而中间件出问题导致服务不可用的情况只能说挺少见的，至少我目前还未遇到过，但是做好应对方案也是必要的，因为谁也保不准什么时候会出问题，弄好预案就多一份保险，省的出问题时两眼一黑。</p>
-<h2 id="动态数据源"><a href="#动态数据源" class="headerlink" title="动态数据源"></a>动态数据源</h2><p>上云前需要弄清楚各个中间件如何动态设置数据源，从而实现热更新，即仅更改某处的配置即可对应用使用的数据源进行动态更新，而无需重启应用，可以使用Nacos进行配置的修改，而且Nacos支持动态刷新配置，天然支持配置监听，并且也可以不使用Nacos自带的配置监听类，可以使用定时器对配置的数据源进行比对，若发生变化则对数据源进行设置。</p>
-<p>当然，应用启动时是通过读取环境变量来设置初始可用的数据源，避免因为某个数据源不可用导致服务启动失败，由于是上云，因此为了稳妥起见，采用了云下——混合云——云上的渐进上云，混合云的中间件都还是连接的云下，而流量是按比例打到云上和云下，而为了做好上云的准备，各个中间件的数据需要从云下同步到云上，当上云时会将云下服务全量停止，云上服务中间件全量切入，并全量流量切入，为此需要准备两个配置文件，方便进行切换。</p>
-<h2 id="故障转移方案"><a href="#故障转移方案" class="headerlink" title="故障转移方案"></a>故障转移方案</h2><h3 id="废案"><a href="#废案" class="headerlink" title="废案"></a>废案</h3><p>在应用启动时同时初始化云上和云下的数据源bean，而在使用数据源时，通过当前配置的数据源标记进行匹配数据源，从而进行相关的数据源操作，这个存在致命的问题，就是当云上和云下其中一个数据源出现问题，服务会无法启动，所以才有后续的补充方案（仅是个想法，还未进行验证）。</p>
-<h4 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h4><p>通过继承AbstractRoutingDataSource这个jdbc动态数据源类，重写determineCurrentLookupKey方法，即可使用相应的数据源，正常场景是读写分离，写入使用主库，查询使用从库。</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;cloudDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource cloudDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;idcDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource idcDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 配置初始数据源信息</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;Object, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;CLOUD&quot;</span>, cloudDataSource);</span><br><span class="line">        map.put(<span class="string">&quot;IDC&quot;</span>, idcDataSource);</span><br><span class="line">        setTargetDataSources(map);</span><br><span class="line">        setDefaultTargetDataSource(idcDataSource);</span><br><span class="line">        <span class="built_in">super</span>.afterPropertiesSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 这个是主要的方法，根据key查找对应的数据源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;CLOUD&quot;</span>; <span class="comment">// 这里需要修改为返回动态的数据源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<h5 id="动态查询"><a href="#动态查询" class="headerlink" title="动态查询"></a>动态查询</h5><p>可以通过 condition 参数动态拼接条件，例如：</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(minAge != <span class="literal">null</span>, User::getAge, minAge);</span><br><span class="line">userWrapper.lt(maxAge != <span class="literal">null</span>, User::getAge, maxAge);</span><br></pre></td></tr></table></figure></div>
 
-<h4 id="Redis-Kafka"><a href="#Redis-Kafka" class="headerlink" title="Redis&#x2F;Kafka"></a>Redis&#x2F;Kafka</h4><p>Redis和Kafka一般都有工具类，因此在工具类中注入bean，并且通过map维护云上和云下对应的bean，执行相关操作时，通过数据源标记在map中获得相应的bean即可，无需额外操作。</p>
-<p>而以上最终成为了废案，因为不确定因素太多了，容易出现问题，所以采用了最稳妥的方案即终极方案。</p>
-<h3 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h3><p>直接改配置文件，然后重启服务，是的，你没看错，采用了最原始的方式，同样是最为可靠的方式，虽然服务不可用的时间会比较长，但是更为稳妥，不容易出现问题，且代码侵入性低，一个字，白学（bushi</p>
-<h3 id="补充方案（未验证）"><a href="#补充方案（未验证）" class="headerlink" title="补充方案（未验证）"></a>补充方案（未验证）</h3><p>由于废案中是同时初始化云上和云下两套数据源，那么在启动的时候指定其中某一套可用的数据源初始化不就行了，通过查询资料得知，貌似是可行的，通过方法在应用启动后还可以手动初始化数据源，从而实现动态切换数据源，而触发初始化数据源的就可以是之前所提到的使用定时器对配置的数据源进行比对，只不过不是设置数据源了，而是重新初始化数据源。</p>
-<h4 id="MySql-1"><a href="#MySql-1" class="headerlink" title="MySql"></a>MySql</h4><p>以Druid为例，DruidDataSource提供restart方法，可以在应用启动后重新初始化连接池，因此可以修改数据源配置后，由定时器进行调用，设置为需要切换的对应配置，如下：</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意，cloudDataSource需要为DruidDataSource类型</span></span><br><span class="line">cloudDataSource.setUrl(<span class="string">&quot;jdbc:mysql://***.***.***.***:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&quot;</span>);</span><br><span class="line">cloudDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">cloudDataSource.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">cloudDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">cloudDataSource.restart();</span><br></pre></td></tr></table></figure></div>
+<h5 id="查询投影"><a href="#查询投影" class="headerlink" title="查询投影"></a>查询投影</h5><h6 id="查询部分属性"><a href="#查询部分属性" class="headerlink" title="查询部分属性"></a>查询部分属性</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(User::getName, User::getAge);</span><br></pre></td></tr></table></figure></div>
 
-<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>暂未找到相关方法，待补充。。。</p>
-<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>暂未找到相关方法，待补充。。。</p>
+<h6 id="查询未定义属性"><a href="#查询未定义属性" class="headerlink" title="查询未定义属性"></a>查询未定义属性</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(<span class="string">&quot;count(*) as count&quot;</span>,<span class="string">&quot;age&quot;</span>)</span><br><span class="line">		   .groupBy(<span class="string">&quot;age&quot;</span>)  <span class="comment">//分组字段</span></span><br><span class="line">           .having(<span class="string">&quot;COUNT(*)&gt;5&quot;</span>); <span class="comment">// 添加having筛选条件</span></span><br></pre></td></tr></table></figure></div>
+
+<h5 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h5><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 子查询 select id from user where id &lt;= 10059249854</span></span><br><span class="line">userWrapper.inSql(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;select id from user where id &lt;= 10059249854&quot;</span>);</span><br><span class="line">userWrapper.select(<span class="string">&quot;name&quot;</span>,<span class="string">&quot;age&quot;</span>);</span><br><span class="line">userWrapper.last(<span class="string">&quot;LIMIT 10&quot;</span>);</span><br><span class="line"><span class="comment">// 实际执行 SQL : SELECT name,age FROM user WHERE (id IN (select id from user where id &lt;= 10059249854)) LIMIT 10;</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>ps:然而调到了另一个小组，没用到（</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>后端</category>
       </categories>
       <tags>
-        <tag>上云</tag>
-        <tag>故障转移</tag>
+        <tag>Java</tag>
+        <tag>MyBatis-Plus</tag>
       </tags>
   </entry>
   <entry>
@@ -794,96 +857,33 @@
       </tags>
   </entry>
   <entry>
-    <title>再识MyBatis-Plus</title>
-    <url>/2024/03/23/%E5%86%8D%E8%AF%86MyBatis-Plus/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本人之前学习过 MyBatis-Plus，但实际自己开发还是用的 MyBatis，基本就是简单 sql，因此用注解进行开发，手写 sql 也还好，故并未采用 MyBatis-Plus进行开发，但新入职的公司需要用到，于是进行重温，才有了这篇简略的记录。</p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>正如<a class="link"   href="https://mybatis.plus/" >官网<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>所说的愿景：成为 MyBatis 最好的搭档，就像魂斗罗中的 1P、2P，基友搭配，效率翻倍。MyBatis-Plus 相当于 MyBatis 的增强版插件，可以一起使用，事半功倍，省去编写简单 sql 的功夫，具体介绍可自行去官网查看。</p>
-<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><h3 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h3><ol>
-<li><p>@TableName</p>
-<p>标识实体类对应的数据库表。</p>
-</li>
-<li><p>@TableId</p>
-<p>标识主键属性。</p>
-</li>
-<li><p>@TableField</p>
-<p>标识对应数据库字段。</p>
-</li>
-<li><p>@TableLogic</p>
-<p>标识删除类型。</p>
-</li>
-</ol>
-<h3 id="基本crud"><a href="#基本crud" class="headerlink" title="基本crud"></a>基本crud</h3><p>所有的基本 crud 都在 BaseMapper 接口中定义，只需要继承并指定具体实体类即可。</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;User&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+    <title>关于上云故障转移方案</title>
+    <url>/2024/11/01/%E5%85%B3%E4%BA%8E%E4%B8%8A%E4%BA%91%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h2 id="上云"><a href="#上云" class="headerlink" title="上云"></a>上云</h2><p>现代服务部署解决方案基本都为云部署，尤其是较大规模的应用，部署服务的方式一般有自建机房、IDC托管、云服务厂商，现如今以阿里云、腾讯云、华为云等为首的云服务厂商的份额日益增加，得益于上云后带来的最大好处——方便运维，变相提高了应用的可靠性，因为相较于部署在自建机房和IDC托管，云服务厂商会提供更加成熟的部署方案，不仅包括简单的部署，包括域名解析、数据备份、容灾等一系列完善的服务，使得服务部署不再困难，降低运维成本以及减少犯错的概率。</p>
+<p>不过，上云容易受到一些不可控的因素干扰，例如云服务厂商突然做出骚操作，之前就存在云服务厂商升级组件而未通知客户，而组件升级切换并不平滑，导致客户部署的服务出现短暂不可用，甚至出现更为糟糕的情况——光缆被挖断了，物理意义上的断你网线，如果没有做好多地容灾，那后果可想而知，服务完全down，无法恢复，当然，不仅云上有这个问题，云下同样如此，因为本质都是机房，只不过运维方式不同。</p>
+<p>而中间件出问题导致服务不可用的情况只能说挺少见的，至少我目前还未遇到过，但是做好应对方案也是必要的，因为谁也保不准什么时候会出问题，弄好预案就多一份保险，省的出问题时两眼一黑。</p>
+<h2 id="动态数据源"><a href="#动态数据源" class="headerlink" title="动态数据源"></a>动态数据源</h2><p>上云前需要弄清楚各个中间件如何动态设置数据源，从而实现热更新，即仅更改某处的配置即可对应用使用的数据源进行动态更新，而无需重启应用，可以使用Nacos进行配置的修改，而且Nacos支持动态刷新配置，天然支持配置监听，并且也可以不使用Nacos自带的配置监听类，可以使用定时器对配置的数据源进行比对，若发生变化则对数据源进行设置。</p>
+<p>当然，应用启动时是通过读取环境变量来设置初始可用的数据源，避免因为某个数据源不可用导致服务启动失败，由于是上云，因此为了稳妥起见，采用了云下——混合云——云上的渐进上云，混合云的中间件都还是连接的云下，而流量是按比例打到云上和云下，而为了做好上云的准备，各个中间件的数据需要从云下同步到云上，当上云时会将云下服务全量停止，云上服务中间件全量切入，并全量流量切入，为此需要准备两个配置文件，方便进行切换。</p>
+<h2 id="故障转移方案"><a href="#故障转移方案" class="headerlink" title="故障转移方案"></a>故障转移方案</h2><h3 id="废案"><a href="#废案" class="headerlink" title="废案"></a>废案</h3><p>在应用启动时同时初始化云上和云下的数据源bean，而在使用数据源时，通过当前配置的数据源标记进行匹配数据源，从而进行相关的数据源操作，这个存在致命的问题，就是当云上和云下其中一个数据源出现问题，服务会无法启动，所以才有后续的补充方案（仅是个想法，还未进行验证）。</p>
+<h4 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h4><p>通过继承AbstractRoutingDataSource这个jdbc动态数据源类，重写determineCurrentLookupKey方法，即可使用相应的数据源，正常场景是读写分离，写入使用主库，查询使用从库。</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;cloudDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource cloudDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;idcDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource idcDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 配置初始数据源信息</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;Object, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;CLOUD&quot;</span>, cloudDataSource);</span><br><span class="line">        map.put(<span class="string">&quot;IDC&quot;</span>, idcDataSource);</span><br><span class="line">        setTargetDataSources(map);</span><br><span class="line">        setDefaultTargetDataSource(idcDataSource);</span><br><span class="line">        <span class="built_in">super</span>.afterPropertiesSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 这个是主要的方法，根据key查找对应的数据源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;CLOUD&quot;</span>; <span class="comment">// 这里需要修改为返回动态的数据源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
-<p>BaseMapper 接口如下：</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BaseMapper</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Mapper</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="comment">// 新增数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">insert</span><span class="params">(T entity)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 删除</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">delete</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量删除数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">deleteBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 更新</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">updateById</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity)</span>;</span><br><span class="line">	<span class="comment">// 更新数据</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">update</span><span class="params">(<span class="meta">@Param(&quot;et&quot;)</span> T entity, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; updateWrapper)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 查询</span></span><br><span class="line">    T <span class="title function_">selectById</span><span class="params">(Serializable id)</span>;</span><br><span class="line">	<span class="comment">// 根据 ID 批量查询</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectBatchIds</span><span class="params">(<span class="meta">@Param(&quot;coll&quot;)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line">	<span class="comment">// 查询数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectByMap</span><span class="params">(<span class="meta">@Param(&quot;cm&quot;)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line">	<span class="comment">// 查询一条数据</span></span><br><span class="line">    T <span class="title function_">selectOne</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询记录总数</span></span><br><span class="line">    Integer <span class="title function_">selectCount</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;T&gt; <span class="title function_">selectList</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">selectMaps</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 查询多条数据</span></span><br><span class="line">    List&lt;Object&gt; <span class="title function_">selectObjs</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;T&gt;&gt; E <span class="title function_">selectPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">	<span class="comment">// 分页查询</span></span><br><span class="line">    &lt;E <span class="keyword">extends</span> <span class="title class_">IPage</span>&lt;Map&lt;String, Object&gt;&gt;&gt; E <span class="title function_">selectMapsPage</span><span class="params">(E page, <span class="meta">@Param(&quot;ew&quot;)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<h4 id="Redis-Kafka"><a href="#Redis-Kafka" class="headerlink" title="Redis&#x2F;Kafka"></a>Redis&#x2F;Kafka</h4><p>Redis和Kafka一般都有工具类，因此在工具类中注入bean，并且通过map维护云上和云下对应的bean，执行相关操作时，通过数据源标记在map中获得相应的bean即可，无需额外操作。</p>
+<p>而以上最终成为了废案，因为不确定因素太多了，容易出现问题，所以采用了最稳妥的方案即终极方案。</p>
+<h3 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h3><p>直接改配置文件，然后重启服务，是的，你没看错，采用了最原始的方式，同样是最为可靠的方式，虽然服务不可用的时间会比较长，但是更为稳妥，不容易出现问题，且代码侵入性低，一个字，白学（bushi</p>
+<h3 id="补充方案（未验证）"><a href="#补充方案（未验证）" class="headerlink" title="补充方案（未验证）"></a>补充方案（未验证）</h3><p>由于废案中是同时初始化云上和云下两套数据源，那么在启动的时候指定其中某一套可用的数据源初始化不就行了，通过查询资料得知，貌似是可行的，通过方法在应用启动后还可以手动初始化数据源，从而实现动态切换数据源，而触发初始化数据源的就可以是之前所提到的使用定时器对配置的数据源进行比对，只不过不是设置数据源了，而是重新初始化数据源。</p>
+<h4 id="MySql-1"><a href="#MySql-1" class="headerlink" title="MySql"></a>MySql</h4><p>以Druid为例，DruidDataSource提供restart方法，可以在应用启动后重新初始化连接池，因此可以修改数据源配置后，由定时器进行调用，设置为需要切换的对应配置，如下：</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意，cloudDataSource需要为DruidDataSource类型</span></span><br><span class="line">cloudDataSource.setUrl(<span class="string">&quot;jdbc:mysql://***.***.***.***:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&quot;</span>);</span><br><span class="line">cloudDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">cloudDataSource.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">cloudDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">cloudDataSource.restart();</span><br></pre></td></tr></table></figure></div>
 
-<h4 id="增"><a href="#增" class="headerlink" title="增"></a>增</h4><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setName(<span class="string">&quot;奕凰轩祭侍&quot;</span>);</span><br><span class="line">user.setAge(<span class="number">18</span>);</span><br><span class="line">userMapper.insert(user);</span><br><span class="line"><span class="comment">// 获取插入数据的主键 ID</span></span><br><span class="line"><span class="type">Long</span> <span class="variable">id</span> <span class="operator">=</span> user.getId();</span><br></pre></td></tr></table></figure></div>
-
-<p>一般使用@TableId(type &#x3D; IdType.AUTO)来指定数据库主键，然后数据库还存在另外一个唯一标识符，一般由后端进行UUID或者雪花算法生成，该标识符相当于业务中使用的主键。</p>
-<h4 id="删"><a href="#删" class="headerlink" title="删"></a>删</h4><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.deleteById(<span class="number">10059249854L</span>); <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
-
-<p>根据主键删除，也可以直接传入对象，会根据标识的主键属性进行删除，以及可以根据其他条件删除，条件构造在<a href="#%E6%9F%A5">查询</a>中介绍。</p>
-<h4 id="改"><a href="#改" class="headerlink" title="改"></a>改</h4><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">user.setId(<span class="number">10059249854L</span>);</span><br><span class="line">user.setGender(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 实际执行的 SQL : UPDATE user SET gender=1 WHERE id=10059249854;</span></span><br><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> userMapper.updateById(user);  <span class="comment">//返回受影响的行数</span></span><br></pre></td></tr></table></figure></div>
-
-<h4 id="查"><a href="#查" class="headerlink" title="查"></a>查</h4><p>在使用前需要进行 sql 条件语句的构建，有三种条件构建格式：</p>
-<ol>
-<li>常规条件构建格式</li>
-</ol>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapperr&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapperr</span>&lt;User&gt;();</span><br><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//今年刚满18岁~</span></span><br></pre></td></tr></table></figure></div>
-
-<ol start="2">
-<li>lamda格式条件构建格式</li>
-</ol>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">QueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lambda().eq(User::getName,<span class="string">&quot;劳大&quot;</span>); <span class="comment">//see you again（</span></span><br></pre></td></tr></table></figure></div>
-
-<ol start="3">
-<li>lambda格式条件构建格式</li>
-</ol>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">LambdaQueryWrapper&lt;User&gt; userWrapper = <span class="keyword">new</span> <span class="title class_">LambdaQueryWrapper</span>&lt;User&gt;();</span><br><span class="line">userWrapper.lt(User::getPlay, <span class="string">&quot;Genshin Impact&quot;</span>); <span class="comment">//原神启动！</span></span><br></pre></td></tr></table></figure></div>
-
-<h5 id="常见的单条件查询"><a href="#常见的单条件查询" class="headerlink" title="常见的单条件查询"></a>常见的单条件查询</h5><h6 id="lt匹配"><a href="#lt匹配" class="headerlink" title="lt匹配"></a>lt匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="le匹配"><a href="#le匹配" class="headerlink" title="le匹配"></a>le匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.le(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&lt;=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="eq匹配"><a href="#eq匹配" class="headerlink" title="eq匹配"></a>eq匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.eq(User::getAge,<span class="number">18</span>); <span class="comment">//等同于=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="gt匹配"><a href="#gt匹配" class="headerlink" title="gt匹配"></a>gt匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="ge匹配"><a href="#ge匹配" class="headerlink" title="ge匹配"></a>ge匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ge(User::getAge,<span class="number">18</span>); <span class="comment">//等同于&gt;=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="ne匹配"><a href="#ne匹配" class="headerlink" title="ne匹配"></a>ne匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.ne(User::getAge,<span class="number">18</span>); <span class="comment">//等同于!=18</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="between匹配"><a href="#between匹配" class="headerlink" title="between匹配"></a>between匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.between(User::getAge, <span class="number">17</span>, <span class="number">19</span>); <span class="comment">//等同于&gt;=17 &amp;&amp; &lt;= 19</span></span><br></pre></td></tr></table></figure></div>
-
-<h6 id="like匹配"><a href="#like匹配" class="headerlink" title="like匹配"></a>like匹配</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.likeLeft(User::getName, <span class="string">&quot;奕&quot;</span>); <span class="comment">//相当于like %奕，还有like对应like %奕%、likeRight对应like 奕%</span></span><br></pre></td></tr></table></figure></div>
-
-<p>还有其他的一些条件，例如orderByAsc对应升序等，具体可以自己操作看看。</p>
-<h5 id="多条件查询"><a href="#多条件查询" class="headerlink" title="多条件查询"></a>多条件查询</h5><p>且</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(User::getAge,<span class="number">17</span>).lt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>或</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.lt(User::getAge,<span class="number">17</span>).or().gt(User::getAge, <span class="number">19</span>);</span><br></pre></td></tr></table></figure></div>
-
-<h5 id="动态查询"><a href="#动态查询" class="headerlink" title="动态查询"></a>动态查询</h5><p>可以通过 condition 参数动态拼接条件，例如：</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.gt(minAge != <span class="literal">null</span>, User::getAge, minAge);</span><br><span class="line">userWrapper.lt(maxAge != <span class="literal">null</span>, User::getAge, maxAge);</span><br></pre></td></tr></table></figure></div>
-
-<h5 id="查询投影"><a href="#查询投影" class="headerlink" title="查询投影"></a>查询投影</h5><h6 id="查询部分属性"><a href="#查询部分属性" class="headerlink" title="查询部分属性"></a>查询部分属性</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(User::getName, User::getAge);</span><br></pre></td></tr></table></figure></div>
-
-<h6 id="查询未定义属性"><a href="#查询未定义属性" class="headerlink" title="查询未定义属性"></a>查询未定义属性</h6><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line">userWrapper.select(<span class="string">&quot;count(*) as count&quot;</span>,<span class="string">&quot;age&quot;</span>)</span><br><span class="line">		   .groupBy(<span class="string">&quot;age&quot;</span>)  <span class="comment">//分组字段</span></span><br><span class="line">           .having(<span class="string">&quot;COUNT(*)&gt;5&quot;</span>); <span class="comment">// 添加having筛选条件</span></span><br></pre></td></tr></table></figure></div>
-
-<h5 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h5><div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 子查询 select id from user where id &lt;= 10059249854</span></span><br><span class="line">userWrapper.inSql(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;select id from user where id &lt;= 10059249854&quot;</span>);</span><br><span class="line">userWrapper.select(<span class="string">&quot;name&quot;</span>,<span class="string">&quot;age&quot;</span>);</span><br><span class="line">userWrapper.last(<span class="string">&quot;LIMIT 10&quot;</span>);</span><br><span class="line"><span class="comment">// 实际执行 SQL : SELECT name,age FROM user WHERE (id IN (select id from user where id &lt;= 10059249854)) LIMIT 10;</span></span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>ps:然而调到了另一个小组，没用到（</p>
-</blockquote>
+<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>暂未找到相关方法，待补充。。。</p>
+<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>暂未找到相关方法，待补充。。。</p>
 ]]></content>
       <categories>
         <category>后端</category>
       </categories>
       <tags>
-        <tag>Java</tag>
-        <tag>MyBatis-Plus</tag>
+        <tag>上云</tag>
+        <tag>故障转移</tag>
       </tags>
   </entry>
   <entry>
@@ -912,35 +912,6 @@
       <categories>
         <category>随笔</category>
       </categories>
-  </entry>
-  <entry>
-    <title>学习路线</title>
-    <url>/2024/03/03/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/</url>
-    <content><![CDATA[
-<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码错误，请重新输入。" data-whm="Oh, these decrypted content cannot be verified, but you can still have a look.">
-  <script id="hbeData" type="hbeData" data-hmacdigest="013fc0de40798fedac257ef41416532922574204f98f42392195fe904ee2b78b">d7858a6e92f3366b7c704364929b51d80c9159cc3bf648b2d2d5eacdffd72b7a55f6087b0dc0a61904208cc7b0976c21f27a890ab2a97a4f25a09e51a5a1ce110ec7e68e0994bf3b2096901a72a7da161b3294aa74e589fa1e2a9a11f0293c5c05f2a8519288b2eed34f079f841991ccb5534a2b802c1f0babfe4e0f184921f73799ac64e88b41764b40f8dca02eba7de821889d2bc8666e0ea9a09bd7130edf36fc84d10aff6260d407db5feec0f74ca11c1f01d1661c4bd6461bf3696a01a0444bec341698f53198deb913d8f2667600e707396aee403eaab70e9af92cae4e203a291b42d44c99e82858c7e7d447fbe83fcdf7e10c3622f4c4e9bebe1fec6ac5d84489adcb076c02c5683e0e2d65760fff5abc5e75d57252b5aee5fecaa4d774b978cf099b3fbf5bb322f19734c32476708eccf028cfdc929a6acdd0ad44d950f996115ea63103f9cc3f1b3753d6fa1c1b2d2b542929d70abc272e84f1ae67b4cf3dac594c99f01213afd00dd1fee4ecf129cdb2d6818d8a9f36a282d78e8d9fcab1315ea795c09180d6644afb6c9665859802067a0c9f802625eaf8ca7748194180b9d0382d0fdc4da8140fb12c380f41865e3b41b9ea1eab8ac9878e7ab6f1c2db72ba09274f00aa92ca081b77cda8bc625003caf05a4f3096b08d517be659d10d0a28f5df925ce5a9997d24adea8e255f696b5e72bf4bf8558722176643137a1b261be5dde4dc6b7b3026072cd5241aba81a145c4e77e2f2ee0df9f6b166a554a944e3e617de8664f35a70c876cfff463ffed8628c87dbfc60a6bd599afb86d78aba416ecd51ed638cc5e22cfcf63194285a06e0900de9fbeb68304a45b6e43f5908505d845e2c0f53ac0360ed6024e1b4579cd98f778413959c3599c60296d660a0d2cee49180f0529b507e9704e16727b9b84e94cdbd4455e184decb49441f90b277df3c5546ce32eded0221c069fecb768f07d48628d0a6c2449766aae29ccfd50d2ab74ecfbb11862df059f6cd5f616fdde2fd7ec2420d978779791e2389f44d676e1aed136cb33b10cc193278ba4f3bf93c9141d9f6c1415cacc039220a3e7d33aad61829ecf36ada7dd3291c07bb302a52e1dba823b2262a3d480da8530c9befcb7f911b448400990a3f3d245a266c25ccb6aa9fe7471114d707c0b12b281a08260eab0ba557cceecb367c9cf4fa9d62d105091048f3f816a2c87a232aed977603d07e4eb2c4349f01faae97bbbcc5a25f3d1f2d82e934bd76bc3f42e461d9407319fed311c82080706710714d6fc6806badd5ed9789bf1a47749f0cd8f7f97b815db53663db7fa6b6656215c9a0397be102757ca3cbdbac92ffe735d8dbc1a7b2ecbe04ee7e7b82c6af0b53721f76e1867fd4dc6a56dc547a448913519f009dec6a839da2bacf86af5cf8a645d101335177afefbbebbdfb5eae64e4a306d090895820bf3828b941f1a9cf0d2b5ff83d44bbaaf11ae1eb077a2f23a69de18de841d113706bbc3ee08af0bc43c8f5fcc86e70aee52df4bb0326cad1b3bd7a822b141cd0eebc20ed94bb73092e9778dd212e9e712b8adb4aad087b4a372662df77a7619c7ed54c76ba85eb800ed021eee27a46b9019389fc6c35c557e12d5459737ac84a1c6722ee8edbdc43085744c98f8e866fe4cab098050eccec1a8aa649726850ccde35bbd4278618df8670927c5c7b5be5f44322a0a6efa78ca2acd76b7cd9b3c060ee3ca2d9ffe2f43d4f48b28d3af0e1adcdd077cea0cfa5a4482aeb2a0999831c9da4f5c553bb9906ea708a9d1d4983f8ea8dbfa2595bd4aea1f8eca4c9324242094384f70717b80fe32d29573e1968f3ab02031629b4f36c6eb3cd35296e8b5dc8515528f65f26e1dd8331a2acff2d08a89742923e6c7f1395fa3926ac7608d839164a143ad6aa11c94bd12981915077bb2cae4181ba2724cfc825e838772b29f3532cb864ae58242852beec2ac17e9d5f5b08b8d992a8f4598a2cb74b5da99272b1a83a452cbb66a43567effe5aae59d541b86774df359b463545f5e2e7819ec35a415fbfef5e151bdcd020a54ae5295a2ad8271dcf61e0adce311cdf750931e0ad920ef89542367e2cff2ba281281c26d068c44c932b8af7b766e4cdd2283ec86294a1a21086786db7e6d8294cfe6ebfb2cb84d12b8d5f96485b384a60a4564f9d87b3d594667d74c49095d02025b6eca54b0a8f4782096395b5f5ecf4481e9991235f18e8558de0d8191ba503da9d2c1f85cb6641223a85c585785c81da246b623e81dbe4035716100805abd6b7d527e6fee9af9d9f568e61bd92391360792cec1eace6e3fde5f4e2fd5f67a1d043afba93f662fbc04311198f4bc17bffc9e7d7405fa5a4fb5c301beb462468452c998bfd3184207824d36a9ea30e5429b316e201a0396b4a66d4db0680fa961b541741b8841ccbea4d103922fcbf397ee4c37c8768cd4118c3bacb9a59817da78bb40a244d59cd46ea23db2bf0b01f19228a33f2bade66bd4dd718f5ed001e3c9e414d071a681e6598e3d05f1ad50c3b47f9f0b05eaf30b0eb5bd00e9ef659c0100b07eb484fc526bfe5cd82a264accb6a2076a032a2678bd48fd5d0f40927a59982c906ed66b206b6d15f0155482e89f50e65210cf25b24b34b74ebd4028ec9d544e47737c08a9586eb57337681a6437726c2c20ad506bff2dda4d147da8c379f539dc3051fc99ade6bb0960def38d507506910e56a3505ef7de175bd9f0c995d577690db7a37361a99f91c97f91b8fdf9c7b2f0566b3b4c0b8d4be14b63f07027c7ce1043246ba2c748d177fbab456af7308b89fd21507d5b624a38bdbaa03f52c16b61129677d69308d5e580458e7a9975b7d7ed22bd43d92512f3009b540594acce6d26f63fe4f9da01b1caa88685caedbb7f7cd122759c7f5d4c20707bd97cca6861b0062d4ab2db10f9d1519ff434ef9e96c950dc3748000529c5a82abb67c10be069914d4eb514e6d472ba268c6622e1cda141665f32010acfae0fa939dd8b822cb35db14f5550a370a91c6d08c5f27db64703d2d2506ce9311761c4b19ba8abf12a7b363c156370f6e29e5e7fbca3a86b90da26aa0bd1d27387fd06b18d88152a2159e38a07d3c6ed93fd312f40d35467446a2c6ae4e5b836cdedf16d93bc7fd02d23cf3a2a262cdcc5461c5c60b96a44528b9d3920f2502b1da9b2a6eab080bbb90c4481ba6560b76c8a8d96f5ac2cb09109a5c22177f63093216fbc67479f869593d4ff7921e75a21c195ae584b86bf50b38a29bf2814d2f1699c20e7aef7a2acc55b0c8bf92889ca6fcb6a3e712b7d6d698f472fba29238cab2bc0e891026b139508e525dde45a33e72dd88e8a3e2d233f5cbd5144d80ca776a45f11954bc02e1e74dd14a71b4e7d85bda54b5e4258616c184484e18c3ac277bf08c16a1e39696e71d77ed0549f210060945f5beaa5939517df5d9cc395878878dbcb0d37bda0924737c1777439ed1a883d273b03c355b1dcef525a757df55b8d1b2afbf0c2c82cc234c7d6557f9e3361c615998062e4154ffc4562706fab1700b1890b79dbc96aaf704d41695f94ff2ab187da7d73541d425e25d3d53db21bc9d4110329a03208c28cbd67ea13e48544c1842d7959044123e130c64b4d9b9233af998359afabe4a4638ccedfcf728e33b2dc01fb0791a66249b364a5645c60fb96982fa406bbe563f7879a912bf76bf6310261e3064fb3d4cdeb02e0d5da9285b2c5744eec7d4b43042a172b77da037f994d0d2553b0054ace745e1d4f663f496a6729402ebb1db98107a0cfd3d455810d9cdbdae84125bc517c08bae7d6aa1e73528c3771806fb79cb99392e750bd7a929115de9f0d6b64790dea08439ef0c9b7fcb2730ee4a0a97630fb39d89a0db4cbbc9dd47f1b1fe957680101852fa90271b69046f2b46f1101c80024d4067be3bfc0731f67fd49ea13e41f9d29e53570d8eec3afe029e951e41d93f0c167b4f1002053de01398c8994e4b4b4e21bfd458e96e73a1191047ed92030d55899ed52fd4b628a80b694eb2f3c6c7f7f7821c99a18cb20f711c9183e8e54e49016ff254178b900918e6544ad213a60c9dae582894ae2a5dc74cbaf88794dbe5b36dbf528f573b273115a091968800d660bbbad453d1532d41c673d31e7f4bd4684e614419f0a0e3e687eddd546881ba17b55158915ca7f1a0abf3f08027716a86ce1ff9041c160e0f83653eb1679408453bd7beb0bde7d33aa033c5f73befcbaf311614d46407622aec4851f1cdc1c7d13d03d30790c3295c9e5a0d955f1448acb239d9d10f80759a6bc03c02572078a8ff8f1ad26740e14be340e7751ba386379eb532d14eace424c9ba7bf78f3b100bec2a313701fd2918f9f119e899f6ec7c64eb3e57bf328301089dacbf8a7d390dad4978ed8afde593d854a4eefc13651235b4cac83145a878f6b8efdd6a5d85c62b99630c5f658e49d7f3c9ecc406da14474d82bd3de4faf8e96b5d16e0e6a4b920bf93284961ed40da8f8a65cd5d34e302cc5790dccc583b988f53d4b157b7e4f0acf7f86f9ecd47bdbad7e040ec7889e60bbd68bc5bb29a6ef14fdca7ed085dba2fcb5ccef6dc24e0b7773d006cd9f8b201cee2cefbb6aeb46de308873eefc7be476ada6e5332606f46f869ca222bef86a6a3ec0cfa463a74dc14495943ff7794d61f66e4f8bd2d143436d4813ebd60478c251c18d73f6722682a9c2ebbec081b5d9cfe6d75876ddb53ab2aaa34128543e6ee10a5bcdd08a64a8b74dc8242e90af48c8b68c59189b292016cbe5d5e83d663a449c4d88963bc605f5cc5d54b25170dce9d3e43daf8948a82694cb4fc840f3f6cff166fc55b5907eb934184ca25fdd6a97cf2132ed9f18df39577d5907538ac4baefc90f3ac079bce9dc5eba1c772eeabd288ba52fad0d4b97ef4ff3f9c0daefcee4ff057385991e6fdbbce0230bac9891d6e197ccca0736e43423cd8486be24249a10bb419deee71d570b356eb886cc9915976390c943fe54e70fd93f55a4cd81456fbebd71530b50c48f1ff27ec00884470c6e78c4524ae3245a6bade4563100e6eb37c2f9fe518ea289bcaa10e7a657498660b8028f0718548ede02339448a1c861189519d0dd397206875986c3704bd8e7e36ddf0ae9a41b1e8d17710b2c3a17adba385119600858598c0a462383ea38ff105816d6d0d7968df54b1b9088c3970576416bcbb9ffce7d1eec50deea2492b910cd55105551d2378dc177ee0568855a7dbaa0baee3ec1ff10d3086dd1bc5247cfbe356e6a1be0df4ab7ae7c767989a9d0be8f21f1b45abdf320a85f55e283910ec6704e582199674a1fefad0447e07d7b78134dd02e92c5143034e27e596e2f6f45c4a21d4eae3999cc980e2878195c30ea7dc47407ab98d5dc1169dc5c826c7fc06d4608fbdee70c6385aa5f0e32bc3a80ec1b0321e00d590e206a4a8eaac9a7c7f5677a7731bee974e4ab673646a6a3ddbc46f1e798664f565b8979521f5fcd5334ed4d9a67da850c116c267570b067fc544d12ebb5890a152af4e35358615f2ca92ff9b5659356865836798dccf1c399666962cc5197ac746f6df3bda847ab7b32863b3b3386c9988135eb35d8458a885ec931c7f78e5cdd1cffac7187b27c09ac98acdbdf041b1ea48213305ed6236a38c3d9b495557d6356bf90e6b35d49b34b17b424fc289e876dfd5bd27da0ba8068a05a7ee3aa0915baf9a3d943490f6f31eec5aa583a3da20fba69a841eb4d2d090cb6d4a010aa4efee5ec7b7950d5ddabff8e7abc45fffaab837f2219ae98f74ead5ba60f617759fd100ee791eadee33db12b930d55c3e281334a4c5e3485bf344ed6e802bc3265de1a926a865d71287971daa85926603387489036008e121ef3dbeee69a8a3ffadfdd235499b509d908b06d8ba191f2bd8792318fe13a5587671a967e491d0ed10426a53da6a53370744e8e6c2c79f7d09df9268f06abb7073bc40ead932b601499b36bc6d92130b1164163d4395ca771c6f2ab0f8fce28a556ac501d47bde1d961775c56760bc51de1884fe2071e90622a6687a0b9002ca79946bd3589f7b7cfc6c901b01b818f49b6606e734512cf28f9b9f2b55fbb619d46c595de51e7aa1698677a6c66cade6d657495e4db92ec53d4ed0b4fa23668a95ddf5aced758c79f1074e9e77a649905f908979f49c603dff19011cdfede72ea4bd13c03cbac82b125f1df69e3154971069e15428555aa5e9fa95948e32024970813f942de4ec0523ed0848471b48796c495e47e979255561d34e03205f48ed3a2b9c13bb766f0a0d5939999b3a44067e32a7bada1eeccb7d8c67c0e861a21ec7eb558af04844edb41f0cbb92c62bfe41d31d264c1676966d2305731f5fca25bde37d99a7781d6d87cc091caf399123e0ebbd22ddc82470296bda4013d97bb52bd1bdf4e2826759669e5420248d33769c1b248e2c2577ea24c416816edf961d71d26f23ff97a9b8b760b86a6af21eb181aa0244bd5fc5f366649c2d6fa3c4dc767a01d3eaf54235e327022f2fc6dab507e0a6d9393b407f4d73b3fa16f91e614522e9057aad93078b51c5bce6189ded2c42c9221cdb6e2ce83fbd9f769533513fd07755011a8aae1cecdc0f53d418bba00e8c8d12b77c9f31b82c66f6dc45a8f9dcda6e2551ac2b06c0864d3f7b392825e2682fc913215bcaa91e8024bbdbd0340b104716be7d36e2836ec12637f6ab1ef04b6ad1d4ea8c30247f3136dbd7be81b1e9c080e40af892014935922bd08587e880f1b3a4bc9cc8b5d0e630c6d0d499ca9ed9299fb28d3680ec48df5fe1c34b7be530a82d16fdbe5e7db4dfb421d4387ce027ac18e0195180fcb4d981754245e21fda279a9b7cda6eadaba3b7cea0879f176fd0f4f1dc02df871f466ce65c653797ff73c16ca7f7eaf115978dc7d0baaeb70c5094ad2ed891dc169ec53aa24597fedda222b8e79b093ed0aec5c09f6c0bfc35c7dcdee76d61aa26c002b10d85c0806b6f8811c803b452936d62e0dbac6a2985090b2036e9ee88ff259e09ae14c96741172ef586b8ed2556622f17f091cdd1dae378d00d48eac2c009a7b8f1bcaade9eb9f58f9f3c6c90d104870be29fc7e03088888bbbe68ba11cc23d95c67ec9ca1babe0781b4d963168a5dd7730d23855e694a8bd180ed26e63dbfe34f24c72f2d535c07c6dae20156038e4c6bc2a96e9bb2cffd59d0c395bc96f53d97a613ecf204f8976a2e46f82a95daa8130777dd24ec55d48db138a2a2cc5d8dd5246c52535c9f256dde281486ac1b1463fea98ac3cf95a03b9a2ba06e1fe9fe46bc7b0d1d8ea3a03b50868f8d833cdfbfeac75a279f599bc53c4e9306563745bb573378f9f26b5104d2b2bc9a10166593b1142b683e7014f4f5e780691a8eab9d0f87b54ac8a437e376cddcb3ac42ddd9d747630ee5cab90f59e9ed31b45de26e8b0773698864a4c0f597b810298ce86a60a6c247ecacd1e604a9965c896b97cc9bd388f9d329c828ec4deb8ab953ed8084fe518d5a9445791df812944ad88004d904c47b3855093c5630ef8cc91b080ab69f90e90e65c9b21fa2c3d81c464a11a5937ff6a8cc5f39f7a99161d5ee29b5f79838439538a18605acfdbec1638fd989017d77877318cd8cfd41b2ae70473db7b7ba296fbd4d4e6000d23ebad45de5695c41645f02bce3a7b34d411f013cc5da7302de6b52d89d4469f093abee761e0abbdaa080060c4034696d3e11c74cea989e8795532d4ea407398b81c144be8aa0634b80e87b242a9c6c36c8c71b0a3fb2ce1e7befc9331be03a560eabb3a4dabf9a7bd64d5e047808f8fb3686556b4d9e07a3d6446b2be2893a766acab646dc929feb142ed8a1ef1115836d1798abb22072aefeacee30114d1d1ef3fe1b5e9e1aa1396381ff1364c98a357a1c99334d0c75804359ed661113c6b05a16bacd2aceb97185efaac3635b84fb14ae923dc62e4eb47a0267938c01eeb57da5afbd9bca748285ba161d4bc42b91067484925fecf515b2af24af93f1c2335330c85a7c2714a33f769ab168d1ef127d4f3d2bfb8e4aa0c6a5a47081d41c210db57dabe379e55e079bb2617562efe2e18ab7384a6ad33766f97c908d98af81028278c7df2dc6f88b3238da1cb4e70ab1c2373994282f596f7384c542c3f83f3dfa075f911f77a231800bc18e2638d6618463c6e7742201d0e57c4bfa0b91596a300c71d3c509106e6837c0f54ea5f76d838192b5e1c064b39f032b7a5fda30e505a6b2c7e626ffa921a553c75c6857b2896a57073b6d04248c5b02aacfd9d1926e2e84445a40b6c8fdb4099e46e8c1252125f11ec97bb2d203adcb4fa910265f8544363582e38107f624d8b04706b6c7b04865ead25dca1dbe3eafe9ac138f9e8eef48c51a0b2c1b21c2c2558d91f884c736a23c80832b8e0d07cfaf7b29d822779e7c532ea518ba2717776ee3afb2ba7ed7929d68eb9ccb3b84fa03b805ffb49ae5f13484ad9cabe847d4a229bd286b13cac3affacf87034dabcc84a4809fdcb2d3dfa367d6b1e96cd0be563ad1f08c7de8f8cc86bc542530c6aa6f8cc2b35017b6eea151d8976f0e3b1beefd122543a809829a22f23436124943bc4123246136445289838aab974aedf4f5339e362b16785d71f4579ed106da87c736d8e722ca9fde8ece2c8f6a3c55f2d976673c5f3bcd43db2c70321834f0bf9ecd244070eda59b717c44123c5ed471f07e768514ccc898982301b787aa969aa721f44bdceb2d1a723bbc2e6770c1e0723eb786ebdb4e3884bf3dd01baf99b2c85c8cf2a648d6cd97d83f56fa7bff60cf4c47647df56210b527f5605074385fcc042ebf3ca9038bb0d6a722e732ef64ea23de16ac683344119a7bbc824c4009bfc87bc2126f107a41aa2ec3323ae59a7205def664f44e23e3d7c6597e2665c71885740e56bda659ca9d3050c3241fea1b31005c5da60d1f32f148683843a1fd65794cd6b7226e1ace8e774d044ea30e4e0c315c00829701dd7b764c5effe29415ccb677247f496cb29be6f9cd66b9d4dc42d38c74037fbface4ca50814956e61b142325ea25e68db594098a3c5d173e633472da8a9072dded58dbd3f7d52369a2d85575cf3d13f1c0853db1c3645d184da39adf26124e581bef3cfd7851b15b0167c0669e4ad394ca2c58dd991fb8dd63920fd5f840b2004d418389dff99bdac1f90d9ad87466dd50b49b616dde24dfbea50e1846742fe42ef29c3c18a8c74a7e59fb1fa71831d9d93e9cce788daf91d1d482269fc6377d0cadc5e08731eed586671dfc43fed6e1a578dcaeff91073265ac05348a92b9e76b988b3f3dfedacacc8eacde3779a11ee28ac010f6148c4c3dff393d2d7bb929af8a7c1b6bac5d6f85e508ac5018e31bf755d79f13fbf7bb48f9a20822723b12a2fc858bbd8addfb48b9bc00a91e68d4f40ecaa3216386d80539fad1b28b22966a60078a01c1c48099bb44463af9969724e62a6603f0e9f715d45d27b8153cd021cc036a50b317ebb81ac21377e43fa5b8b6539f58902f258fed8fcfaa73e38e549eee259dfefc228108817a70590ccd6bbcd8d16bb9f699201f727cf9d187b0e6f3132c88fa637298b3f499b41690fad07c6798debde1a0ae671922bdebe37f721eeea2753d0028b063cf48fbb5a11e8dd521428ccc2edbb6c3c5f16170685d6da2260d3ed323fccdb040a6c8f2bb4ded0e716eb403cb5a589162386bb66eac336d3298e006ef3124c351eaf1f60ac16bb89fae273ad2c6eaacb5d398d585257f0a1a617eb4f46e027003c46fc90d01c049541802f20c283f82ad1c900477d2e6d9ea44f46e145fa4bdb0c98a200fcc60895284e6e1096130655981fe352abfcf24d00531b174680c48358c893ae735a2f0fee1e9165efed20dc175bd221eb383849795a2f007314ce6217fc409d9fcb6b1ae0f1b3070a99adea21f17aa3cc06dc165ddf51636191e46e1e6fb12525073fb8401c4</script>
-  <div class="hbe hbe-content">
-    <div class="hbe hbe-input hbe-input-default">
-      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
-      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
-        <span class="hbe hbe-input-label-content hbe-input-label-content-default">请输入密码以查看此内容</span>
-      </label>
-    </div>
-  </div>
-</div>
-<link href="/css/hbe.style.css" rel="stylesheet" type="text/css"><script data-swup-reload-script type="module" src="/js/plugins/hbe.js"></script>
-<script data-swup-reload-script type="module">
-import {initHBE} from "/js/plugins/hbe.js";
-  // console.log("hexo-blog-encrypt: loaded.");
-    initHBE();
-</script>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>学习路线</tag>
-      </tags>
   </entry>
   <entry>
     <title>基于Docker和k8s的部署方案</title>
@@ -1129,55 +1100,33 @@ import {initHBE} from "/js/plugins/hbe.js";
       </tags>
   </entry>
   <entry>
-    <title>小丑</title>
-    <url>/2021/08/16/%E5%B0%8F%E4%B8%91/</url>
-    <content><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p>
-<p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p>
-<p>哀嚎着，<br>究竟是人是鬼？</p>
-<p style="text-align:right;">写于2021-8-16</p>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./joker.jpg"
-                      width="500px" height="auto" alt="小丑"
-                ><figcaption>小丑</figcaption></figure>]]></content>
+    <title>学习路线</title>
+    <url>/2024/03/03/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/</url>
+    <content><![CDATA[
+<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码错误，请重新输入。" data-whm="Oh, these decrypted content cannot be verified, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="013fc0de40798fedac257ef41416532922574204f98f42392195fe904ee2b78b">d7858a6e92f3366b7c704364929b51d80c9159cc3bf648b2d2d5eacdffd72b7a55f6087b0dc0a61904208cc7b0976c21f27a890ab2a97a4f25a09e51a5a1ce110ec7e68e0994bf3b2096901a72a7da161b3294aa74e589fa1e2a9a11f0293c5c05f2a8519288b2eed34f079f841991ccb5534a2b802c1f0babfe4e0f184921f73799ac64e88b41764b40f8dca02eba7de821889d2bc8666e0ea9a09bd7130edf36fc84d10aff6260d407db5feec0f74ca11c1f01d1661c4bd6461bf3696a01a0444bec341698f53198deb913d8f2667600e707396aee403eaab70e9af92cae4e203a291b42d44c99e82858c7e7d447fbe83fcdf7e10c3622f4c4e9bebe1fec6ac5d84489adcb076c02c5683e0e2d65760fff5abc5e75d57252b5aee5fecaa4d774b978cf099b3fbf5bb322f19734c32476708eccf028cfdc929a6acdd0ad44d950f996115ea63103f9cc3f1b3753d6fa1c1b2d2b542929d70abc272e84f1ae67b4cf3dac594c99f01213afd00dd1fee4ecf129cdb2d6818d8a9f36a282d78e8d9fcab1315ea795c09180d6644afb6c9665859802067a0c9f802625eaf8ca7748194180b9d0382d0fdc4da8140fb12c380f41865e3b41b9ea1eab8ac9878e7ab6f1c2db72ba09274f00aa92ca081b77cda8bc625003caf05a4f3096b08d517be659d10d0a28f5df925ce5a9997d24adea8e255f696b5e72bf4bf8558722176643137a1b261be5dde4dc6b7b3026072cd5241aba81a145c4e77e2f2ee0df9f6b166a554a944e3e617de8664f35a70c876cfff463ffed8628c87dbfc60a6bd599afb86d78aba416ecd51ed638cc5e22cfcf63194285a06e0900de9fbeb68304a45b6e43f5908505d845e2c0f53ac0360ed6024e1b4579cd98f778413959c3599c60296d660a0d2cee49180f0529b507e9704e16727b9b84e94cdbd4455e184decb49441f90b277df3c5546ce32eded0221c069fecb768f07d48628d0a6c2449766aae29ccfd50d2ab74ecfbb11862df059f6cd5f616fdde2fd7ec2420d978779791e2389f44d676e1aed136cb33b10cc193278ba4f3bf93c9141d9f6c1415cacc039220a3e7d33aad61829ecf36ada7dd3291c07bb302a52e1dba823b2262a3d480da8530c9befcb7f911b448400990a3f3d245a266c25ccb6aa9fe7471114d707c0b12b281a08260eab0ba557cceecb367c9cf4fa9d62d105091048f3f816a2c87a232aed977603d07e4eb2c4349f01faae97bbbcc5a25f3d1f2d82e934bd76bc3f42e461d9407319fed311c82080706710714d6fc6806badd5ed9789bf1a47749f0cd8f7f97b815db53663db7fa6b6656215c9a0397be102757ca3cbdbac92ffe735d8dbc1a7b2ecbe04ee7e7b82c6af0b53721f76e1867fd4dc6a56dc547a448913519f009dec6a839da2bacf86af5cf8a645d101335177afefbbebbdfb5eae64e4a306d090895820bf3828b941f1a9cf0d2b5ff83d44bbaaf11ae1eb077a2f23a69de18de841d113706bbc3ee08af0bc43c8f5fcc86e70aee52df4bb0326cad1b3bd7a822b141cd0eebc20ed94bb73092e9778dd212e9e712b8adb4aad087b4a372662df77a7619c7ed54c76ba85eb800ed021eee27a46b9019389fc6c35c557e12d5459737ac84a1c6722ee8edbdc43085744c98f8e866fe4cab098050eccec1a8aa649726850ccde35bbd4278618df8670927c5c7b5be5f44322a0a6efa78ca2acd76b7cd9b3c060ee3ca2d9ffe2f43d4f48b28d3af0e1adcdd077cea0cfa5a4482aeb2a0999831c9da4f5c553bb9906ea708a9d1d4983f8ea8dbfa2595bd4aea1f8eca4c9324242094384f70717b80fe32d29573e1968f3ab02031629b4f36c6eb3cd35296e8b5dc8515528f65f26e1dd8331a2acff2d08a89742923e6c7f1395fa3926ac7608d839164a143ad6aa11c94bd12981915077bb2cae4181ba2724cfc825e838772b29f3532cb864ae58242852beec2ac17e9d5f5b08b8d992a8f4598a2cb74b5da99272b1a83a452cbb66a43567effe5aae59d541b86774df359b463545f5e2e7819ec35a415fbfef5e151bdcd020a54ae5295a2ad8271dcf61e0adce311cdf750931e0ad920ef89542367e2cff2ba281281c26d068c44c932b8af7b766e4cdd2283ec86294a1a21086786db7e6d8294cfe6ebfb2cb84d12b8d5f96485b384a60a4564f9d87b3d594667d74c49095d02025b6eca54b0a8f4782096395b5f5ecf4481e9991235f18e8558de0d8191ba503da9d2c1f85cb6641223a85c585785c81da246b623e81dbe4035716100805abd6b7d527e6fee9af9d9f568e61bd92391360792cec1eace6e3fde5f4e2fd5f67a1d043afba93f662fbc04311198f4bc17bffc9e7d7405fa5a4fb5c301beb462468452c998bfd3184207824d36a9ea30e5429b316e201a0396b4a66d4db0680fa961b541741b8841ccbea4d103922fcbf397ee4c37c8768cd4118c3bacb9a59817da78bb40a244d59cd46ea23db2bf0b01f19228a33f2bade66bd4dd718f5ed001e3c9e414d071a681e6598e3d05f1ad50c3b47f9f0b05eaf30b0eb5bd00e9ef659c0100b07eb484fc526bfe5cd82a264accb6a2076a032a2678bd48fd5d0f40927a59982c906ed66b206b6d15f0155482e89f50e65210cf25b24b34b74ebd4028ec9d544e47737c08a9586eb57337681a6437726c2c20ad506bff2dda4d147da8c379f539dc3051fc99ade6bb0960def38d507506910e56a3505ef7de175bd9f0c995d577690db7a37361a99f91c97f91b8fdf9c7b2f0566b3b4c0b8d4be14b63f07027c7ce1043246ba2c748d177fbab456af7308b89fd21507d5b624a38bdbaa03f52c16b61129677d69308d5e580458e7a9975b7d7ed22bd43d92512f3009b540594acce6d26f63fe4f9da01b1caa88685caedbb7f7cd122759c7f5d4c20707bd97cca6861b0062d4ab2db10f9d1519ff434ef9e96c950dc3748000529c5a82abb67c10be069914d4eb514e6d472ba268c6622e1cda141665f32010acfae0fa939dd8b822cb35db14f5550a370a91c6d08c5f27db64703d2d2506ce9311761c4b19ba8abf12a7b363c156370f6e29e5e7fbca3a86b90da26aa0bd1d27387fd06b18d88152a2159e38a07d3c6ed93fd312f40d35467446a2c6ae4e5b836cdedf16d93bc7fd02d23cf3a2a262cdcc5461c5c60b96a44528b9d3920f2502b1da9b2a6eab080bbb90c4481ba6560b76c8a8d96f5ac2cb09109a5c22177f63093216fbc67479f869593d4ff7921e75a21c195ae584b86bf50b38a29bf2814d2f1699c20e7aef7a2acc55b0c8bf92889ca6fcb6a3e712b7d6d698f472fba29238cab2bc0e891026b139508e525dde45a33e72dd88e8a3e2d233f5cbd5144d80ca776a45f11954bc02e1e74dd14a71b4e7d85bda54b5e4258616c184484e18c3ac277bf08c16a1e39696e71d77ed0549f210060945f5beaa5939517df5d9cc395878878dbcb0d37bda0924737c1777439ed1a883d273b03c355b1dcef525a757df55b8d1b2afbf0c2c82cc234c7d6557f9e3361c615998062e4154ffc4562706fab1700b1890b79dbc96aaf704d41695f94ff2ab187da7d73541d425e25d3d53db21bc9d4110329a03208c28cbd67ea13e48544c1842d7959044123e130c64b4d9b9233af998359afabe4a4638ccedfcf728e33b2dc01fb0791a66249b364a5645c60fb96982fa406bbe563f7879a912bf76bf6310261e3064fb3d4cdeb02e0d5da9285b2c5744eec7d4b43042a172b77da037f994d0d2553b0054ace745e1d4f663f496a6729402ebb1db98107a0cfd3d455810d9cdbdae84125bc517c08bae7d6aa1e73528c3771806fb79cb99392e750bd7a929115de9f0d6b64790dea08439ef0c9b7fcb2730ee4a0a97630fb39d89a0db4cbbc9dd47f1b1fe957680101852fa90271b69046f2b46f1101c80024d4067be3bfc0731f67fd49ea13e41f9d29e53570d8eec3afe029e951e41d93f0c167b4f1002053de01398c8994e4b4b4e21bfd458e96e73a1191047ed92030d55899ed52fd4b628a80b694eb2f3c6c7f7f7821c99a18cb20f711c9183e8e54e49016ff254178b900918e6544ad213a60c9dae582894ae2a5dc74cbaf88794dbe5b36dbf528f573b273115a091968800d660bbbad453d1532d41c673d31e7f4bd4684e614419f0a0e3e687eddd546881ba17b55158915ca7f1a0abf3f08027716a86ce1ff9041c160e0f83653eb1679408453bd7beb0bde7d33aa033c5f73befcbaf311614d46407622aec4851f1cdc1c7d13d03d30790c3295c9e5a0d955f1448acb239d9d10f80759a6bc03c02572078a8ff8f1ad26740e14be340e7751ba386379eb532d14eace424c9ba7bf78f3b100bec2a313701fd2918f9f119e899f6ec7c64eb3e57bf328301089dacbf8a7d390dad4978ed8afde593d854a4eefc13651235b4cac83145a878f6b8efdd6a5d85c62b99630c5f658e49d7f3c9ecc406da14474d82bd3de4faf8e96b5d16e0e6a4b920bf93284961ed40da8f8a65cd5d34e302cc5790dccc583b988f53d4b157b7e4f0acf7f86f9ecd47bdbad7e040ec7889e60bbd68bc5bb29a6ef14fdca7ed085dba2fcb5ccef6dc24e0b7773d006cd9f8b201cee2cefbb6aeb46de308873eefc7be476ada6e5332606f46f869ca222bef86a6a3ec0cfa463a74dc14495943ff7794d61f66e4f8bd2d143436d4813ebd60478c251c18d73f6722682a9c2ebbec081b5d9cfe6d75876ddb53ab2aaa34128543e6ee10a5bcdd08a64a8b74dc8242e90af48c8b68c59189b292016cbe5d5e83d663a449c4d88963bc605f5cc5d54b25170dce9d3e43daf8948a82694cb4fc840f3f6cff166fc55b5907eb934184ca25fdd6a97cf2132ed9f18df39577d5907538ac4baefc90f3ac079bce9dc5eba1c772eeabd288ba52fad0d4b97ef4ff3f9c0daefcee4ff057385991e6fdbbce0230bac9891d6e197ccca0736e43423cd8486be24249a10bb419deee71d570b356eb886cc9915976390c943fe54e70fd93f55a4cd81456fbebd71530b50c48f1ff27ec00884470c6e78c4524ae3245a6bade4563100e6eb37c2f9fe518ea289bcaa10e7a657498660b8028f0718548ede02339448a1c861189519d0dd397206875986c3704bd8e7e36ddf0ae9a41b1e8d17710b2c3a17adba385119600858598c0a462383ea38ff105816d6d0d7968df54b1b9088c3970576416bcbb9ffce7d1eec50deea2492b910cd55105551d2378dc177ee0568855a7dbaa0baee3ec1ff10d3086dd1bc5247cfbe356e6a1be0df4ab7ae7c767989a9d0be8f21f1b45abdf320a85f55e283910ec6704e582199674a1fefad0447e07d7b78134dd02e92c5143034e27e596e2f6f45c4a21d4eae3999cc980e2878195c30ea7dc47407ab98d5dc1169dc5c826c7fc06d4608fbdee70c6385aa5f0e32bc3a80ec1b0321e00d590e206a4a8eaac9a7c7f5677a7731bee974e4ab673646a6a3ddbc46f1e798664f565b8979521f5fcd5334ed4d9a67da850c116c267570b067fc544d12ebb5890a152af4e35358615f2ca92ff9b5659356865836798dccf1c399666962cc5197ac746f6df3bda847ab7b32863b3b3386c9988135eb35d8458a885ec931c7f78e5cdd1cffac7187b27c09ac98acdbdf041b1ea48213305ed6236a38c3d9b495557d6356bf90e6b35d49b34b17b424fc289e876dfd5bd27da0ba8068a05a7ee3aa0915baf9a3d943490f6f31eec5aa583a3da20fba69a841eb4d2d090cb6d4a010aa4efee5ec7b7950d5ddabff8e7abc45fffaab837f2219ae98f74ead5ba60f617759fd100ee791eadee33db12b930d55c3e281334a4c5e3485bf344ed6e802bc3265de1a926a865d71287971daa85926603387489036008e121ef3dbeee69a8a3ffadfdd235499b509d908b06d8ba191f2bd8792318fe13a5587671a967e491d0ed10426a53da6a53370744e8e6c2c79f7d09df9268f06abb7073bc40ead932b601499b36bc6d92130b1164163d4395ca771c6f2ab0f8fce28a556ac501d47bde1d961775c56760bc51de1884fe2071e90622a6687a0b9002ca79946bd3589f7b7cfc6c901b01b818f49b6606e734512cf28f9b9f2b55fbb619d46c595de51e7aa1698677a6c66cade6d657495e4db92ec53d4ed0b4fa23668a95ddf5aced758c79f1074e9e77a649905f908979f49c603dff19011cdfede72ea4bd13c03cbac82b125f1df69e3154971069e15428555aa5e9fa95948e32024970813f942de4ec0523ed0848471b48796c495e47e979255561d34e03205f48ed3a2b9c13bb766f0a0d5939999b3a44067e32a7bada1eeccb7d8c67c0e861a21ec7eb558af04844edb41f0cbb92c62bfe41d31d264c1676966d2305731f5fca25bde37d99a7781d6d87cc091caf399123e0ebbd22ddc82470296bda4013d97bb52bd1bdf4e2826759669e5420248d33769c1b248e2c2577ea24c416816edf961d71d26f23ff97a9b8b760b86a6af21eb181aa0244bd5fc5f366649c2d6fa3c4dc767a01d3eaf54235e327022f2fc6dab507e0a6d9393b407f4d73b3fa16f91e614522e9057aad93078b51c5bce6189ded2c42c9221cdb6e2ce83fbd9f769533513fd07755011a8aae1cecdc0f53d418bba00e8c8d12b77c9f31b82c66f6dc45a8f9dcda6e2551ac2b06c0864d3f7b392825e2682fc913215bcaa91e8024bbdbd0340b104716be7d36e2836ec12637f6ab1ef04b6ad1d4ea8c30247f3136dbd7be81b1e9c080e40af892014935922bd08587e880f1b3a4bc9cc8b5d0e630c6d0d499ca9ed9299fb28d3680ec48df5fe1c34b7be530a82d16fdbe5e7db4dfb421d4387ce027ac18e0195180fcb4d981754245e21fda279a9b7cda6eadaba3b7cea0879f176fd0f4f1dc02df871f466ce65c653797ff73c16ca7f7eaf115978dc7d0baaeb70c5094ad2ed891dc169ec53aa24597fedda222b8e79b093ed0aec5c09f6c0bfc35c7dcdee76d61aa26c002b10d85c0806b6f8811c803b452936d62e0dbac6a2985090b2036e9ee88ff259e09ae14c96741172ef586b8ed2556622f17f091cdd1dae378d00d48eac2c009a7b8f1bcaade9eb9f58f9f3c6c90d104870be29fc7e03088888bbbe68ba11cc23d95c67ec9ca1babe0781b4d963168a5dd7730d23855e694a8bd180ed26e63dbfe34f24c72f2d535c07c6dae20156038e4c6bc2a96e9bb2cffd59d0c395bc96f53d97a613ecf204f8976a2e46f82a95daa8130777dd24ec55d48db138a2a2cc5d8dd5246c52535c9f256dde281486ac1b1463fea98ac3cf95a03b9a2ba06e1fe9fe46bc7b0d1d8ea3a03b50868f8d833cdfbfeac75a279f599bc53c4e9306563745bb573378f9f26b5104d2b2bc9a10166593b1142b683e7014f4f5e780691a8eab9d0f87b54ac8a437e376cddcb3ac42ddd9d747630ee5cab90f59e9ed31b45de26e8b0773698864a4c0f597b810298ce86a60a6c247ecacd1e604a9965c896b97cc9bd388f9d329c828ec4deb8ab953ed8084fe518d5a9445791df812944ad88004d904c47b3855093c5630ef8cc91b080ab69f90e90e65c9b21fa2c3d81c464a11a5937ff6a8cc5f39f7a99161d5ee29b5f79838439538a18605acfdbec1638fd989017d77877318cd8cfd41b2ae70473db7b7ba296fbd4d4e6000d23ebad45de5695c41645f02bce3a7b34d411f013cc5da7302de6b52d89d4469f093abee761e0abbdaa080060c4034696d3e11c74cea989e8795532d4ea407398b81c144be8aa0634b80e87b242a9c6c36c8c71b0a3fb2ce1e7befc9331be03a560eabb3a4dabf9a7bd64d5e047808f8fb3686556b4d9e07a3d6446b2be2893a766acab646dc929feb142ed8a1ef1115836d1798abb22072aefeacee30114d1d1ef3fe1b5e9e1aa1396381ff1364c98a357a1c99334d0c75804359ed661113c6b05a16bacd2aceb97185efaac3635b84fb14ae923dc62e4eb47a0267938c01eeb57da5afbd9bca748285ba161d4bc42b91067484925fecf515b2af24af93f1c2335330c85a7c2714a33f769ab168d1ef127d4f3d2bfb8e4aa0c6a5a47081d41c210db57dabe379e55e079bb2617562efe2e18ab7384a6ad33766f97c908d98af81028278c7df2dc6f88b3238da1cb4e70ab1c2373994282f596f7384c542c3f83f3dfa075f911f77a231800bc18e2638d6618463c6e7742201d0e57c4bfa0b91596a300c71d3c509106e6837c0f54ea5f76d838192b5e1c064b39f032b7a5fda30e505a6b2c7e626ffa921a553c75c6857b2896a57073b6d04248c5b02aacfd9d1926e2e84445a40b6c8fdb4099e46e8c1252125f11ec97bb2d203adcb4fa910265f8544363582e38107f624d8b04706b6c7b04865ead25dca1dbe3eafe9ac138f9e8eef48c51a0b2c1b21c2c2558d91f884c736a23c80832b8e0d07cfaf7b29d822779e7c532ea518ba2717776ee3afb2ba7ed7929d68eb9ccb3b84fa03b805ffb49ae5f13484ad9cabe847d4a229bd286b13cac3affacf87034dabcc84a4809fdcb2d3dfa367d6b1e96cd0be563ad1f08c7de8f8cc86bc542530c6aa6f8cc2b35017b6eea151d8976f0e3b1beefd122543a809829a22f23436124943bc4123246136445289838aab974aedf4f5339e362b16785d71f4579ed106da87c736d8e722ca9fde8ece2c8f6a3c55f2d976673c5f3bcd43db2c70321834f0bf9ecd244070eda59b717c44123c5ed471f07e768514ccc898982301b787aa969aa721f44bdceb2d1a723bbc2e6770c1e0723eb786ebdb4e3884bf3dd01baf99b2c85c8cf2a648d6cd97d83f56fa7bff60cf4c47647df56210b527f5605074385fcc042ebf3ca9038bb0d6a722e732ef64ea23de16ac683344119a7bbc824c4009bfc87bc2126f107a41aa2ec3323ae59a7205def664f44e23e3d7c6597e2665c71885740e56bda659ca9d3050c3241fea1b31005c5da60d1f32f148683843a1fd65794cd6b7226e1ace8e774d044ea30e4e0c315c00829701dd7b764c5effe29415ccb677247f496cb29be6f9cd66b9d4dc42d38c74037fbface4ca50814956e61b142325ea25e68db594098a3c5d173e633472da8a9072dded58dbd3f7d52369a2d85575cf3d13f1c0853db1c3645d184da39adf26124e581bef3cfd7851b15b0167c0669e4ad394ca2c58dd991fb8dd63920fd5f840b2004d418389dff99bdac1f90d9ad87466dd50b49b616dde24dfbea50e1846742fe42ef29c3c18a8c74a7e59fb1fa71831d9d93e9cce788daf91d1d482269fc6377d0cadc5e08731eed586671dfc43fed6e1a578dcaeff91073265ac05348a92b9e76b988b3f3dfedacacc8eacde3779a11ee28ac010f6148c4c3dff393d2d7bb929af8a7c1b6bac5d6f85e508ac5018e31bf755d79f13fbf7bb48f9a20822723b12a2fc858bbd8addfb48b9bc00a91e68d4f40ecaa3216386d80539fad1b28b22966a60078a01c1c48099bb44463af9969724e62a6603f0e9f715d45d27b8153cd021cc036a50b317ebb81ac21377e43fa5b8b6539f58902f258fed8fcfaa73e38e549eee259dfefc228108817a70590ccd6bbcd8d16bb9f699201f727cf9d187b0e6f3132c88fa637298b3f499b41690fad07c6798debde1a0ae671922bdebe37f721eeea2753d0028b063cf48fbb5a11e8dd521428ccc2edbb6c3c5f16170685d6da2260d3ed323fccdb040a6c8f2bb4ded0e716eb403cb5a589162386bb66eac336d3298e006ef3124c351eaf1f60ac16bb89fae273ad2c6eaacb5d398d585257f0a1a617eb4f46e027003c46fc90d01c049541802f20c283f82ad1c900477d2e6d9ea44f46e145fa4bdb0c98a200fcc60895284e6e1096130655981fe352abfcf24d00531b174680c48358c893ae735a2f0fee1e9165efed20dc175bd221eb383849795a2f007314ce6217fc409d9fcb6b1ae0f1b3070a99adea21f17aa3cc06dc165ddf51636191e46e1e6fb12525073fb8401c4</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">请输入密码以查看此内容</span>
+      </label>
+    </div>
+  </div>
+</div>
+<link href="/css/hbe.style.css" rel="stylesheet" type="text/css"><script data-swup-reload-script type="module" src="/js/plugins/hbe.js"></script>
+<script data-swup-reload-script type="module">
+import {initHBE} from "/js/plugins/hbe.js";
+  // console.log("hexo-blog-encrypt: loaded.");
+    initHBE();
+</script>
+]]></content>
       <categories>
-        <category>随笔</category>
+        <category>杂项</category>
       </categories>
-  </entry>
-  <entry>
-    <title>把握</title>
-    <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
-    <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
-<p style="text-align:right;">写于2016-5-14</p>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./elapse.jpg"
-                      width="400px" height="auto" alt="流逝"
-                ><figcaption>流逝</figcaption></figure>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>我</title>
-    <url>/2018/05/06/%E6%88%91/</url>
-    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
-<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
-<p>也许<br>来来往往<br>你已老去</p>
-<p>但是<br>往复之间<br>越发真切</p>
-<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
-<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
-<p>我也知道<br>你<br>曾多少次暗自神伤</p>
-<p>我亦知道<br>你<br>曾多少次触景生情</p>
-<p>因为<br>我知道<br>我便是你</p>
-<p style="text-align:right;">写于2018-5-6</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
+      <tags>
+        <tag>学习路线</tag>
+      </tags>
   </entry>
   <entry>
     <title>本地部署LLM</title>
@@ -1315,6 +1264,22 @@ import {initHBE} from "/js/plugins/hbe.js";
       </tags>
   </entry>
   <entry>
+    <title>把握</title>
+    <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
+    <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
+<p style="text-align:right;">写于2016-5-14</p>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./elapse.jpg"
+                      width="400px" height="auto" alt="流逝"
+                ><figcaption>流逝</figcaption></figure>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
     <title>本地部署dify</title>
     <url>/2025/03/14/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2dify/</url>
     <content><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>dify是一个开源的LLM应用开发平台，能将大模型进行编排，按照预期执行对应的任务。</p>
@@ -1422,6 +1387,41 @@ import {initHBE} from "/js/plugins/hbe.js";
       <tags>
         <tag>LLM</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>小丑</title>
+    <url>/2021/08/16/%E5%B0%8F%E4%B8%91/</url>
+    <content><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p>
+<p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p>
+<p>哀嚎着，<br>究竟是人是鬼？</p>
+<p style="text-align:right;">写于2021-8-16</p>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./joker.jpg"
+                      width="500px" height="auto" alt="小丑"
+                ><figcaption>小丑</figcaption></figure>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>我</title>
+    <url>/2018/05/06/%E6%88%91/</url>
+    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
+<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
+<p>也许<br>来来往往<br>你已老去</p>
+<p>但是<br>往复之间<br>越发真切</p>
+<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
+<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
+<p>我也知道<br>你<br>曾多少次暗自神伤</p>
+<p>我亦知道<br>你<br>曾多少次触景生情</p>
+<p>因为<br>我知道<br>我便是你</p>
+<p style="text-align:right;">写于2018-5-6</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
   </entry>
   <entry>
     <title>沉默的大多数</title>
