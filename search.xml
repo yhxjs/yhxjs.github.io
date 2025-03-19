@@ -553,6 +553,51 @@
       </tags>
   </entry>
   <entry>
+    <title>伤</title>
+    <url>/2022/06/29/%E4%BC%A4/</url>
+    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
+<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
+<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
+<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
+<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
+<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
+<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>关于上云故障转移方案</title>
+    <url>/2024/11/01/%E5%85%B3%E4%BA%8E%E4%B8%8A%E4%BA%91%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h2 id="上云"><a href="#上云" class="headerlink" title="上云"></a>上云</h2><p>现代服务部署解决方案基本都为云部署，尤其是较大规模的应用，部署服务的方式一般有自建机房、IDC托管、云服务厂商，现如今以阿里云、腾讯云、华为云等为首的云服务厂商的份额日益增加，得益于上云后带来的最大好处——方便运维，变相提高了应用的可靠性，因为相较于部署在自建机房和IDC托管，云服务厂商会提供更加成熟的部署方案，不仅包括简单的部署，包括域名解析、数据备份、容灾等一系列完善的服务，使得服务部署不再困难，降低运维成本以及减少犯错的概率。</p>
+<p>不过，上云容易受到一些不可控的因素干扰，例如云服务厂商突然做出骚操作，之前就存在云服务厂商升级组件而未通知客户，而组件升级切换并不平滑，导致客户部署的服务出现短暂不可用，甚至出现更为糟糕的情况——光缆被挖断了，物理意义上的断你网线，如果没有做好多地容灾，那后果可想而知，服务完全down，无法恢复，当然，不仅云上有这个问题，云下同样如此，因为本质都是机房，只不过运维方式不同。</p>
+<p>而中间件出问题导致服务不可用的情况只能说挺少见的，至少我目前还未遇到过，但是做好应对方案也是必要的，因为谁也保不准什么时候会出问题，弄好预案就多一份保险，省的出问题时两眼一黑。</p>
+<h2 id="动态数据源"><a href="#动态数据源" class="headerlink" title="动态数据源"></a>动态数据源</h2><p>上云前需要弄清楚各个中间件如何动态设置数据源，从而实现热更新，即仅更改某处的配置即可对应用使用的数据源进行动态更新，而无需重启应用，可以使用Nacos进行配置的修改，而且Nacos支持动态刷新配置，天然支持配置监听，并且也可以不使用Nacos自带的配置监听类，可以使用定时器对配置的数据源进行比对，若发生变化则对数据源进行设置。</p>
+<p>当然，应用启动时是通过读取环境变量来设置初始可用的数据源，避免因为某个数据源不可用导致服务启动失败，由于是上云，因此为了稳妥起见，采用了云下——混合云——云上的渐进上云，混合云的中间件都还是连接的云下，而流量是按比例打到云上和云下，而为了做好上云的准备，各个中间件的数据需要从云下同步到云上，当上云时会将云下服务全量停止，云上服务中间件全量切入，并全量流量切入，为此需要准备两个配置文件，方便进行切换。</p>
+<h2 id="故障转移方案"><a href="#故障转移方案" class="headerlink" title="故障转移方案"></a>故障转移方案</h2><h3 id="废案"><a href="#废案" class="headerlink" title="废案"></a>废案</h3><p>在应用启动时同时初始化云上和云下的数据源bean，而在使用数据源时，通过当前配置的数据源标记进行匹配数据源，从而进行相关的数据源操作，这个存在致命的问题，就是当云上和云下其中一个数据源出现问题，服务会无法启动，所以才有后续的补充方案（仅是个想法，还未进行验证）。</p>
+<h4 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h4><p>通过继承AbstractRoutingDataSource这个jdbc动态数据源类，重写determineCurrentLookupKey方法，即可使用相应的数据源，正常场景是读写分离，写入使用主库，查询使用从库。</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;cloudDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource cloudDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;idcDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource idcDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 配置初始数据源信息</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;Object, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;CLOUD&quot;</span>, cloudDataSource);</span><br><span class="line">        map.put(<span class="string">&quot;IDC&quot;</span>, idcDataSource);</span><br><span class="line">        setTargetDataSources(map);</span><br><span class="line">        setDefaultTargetDataSource(idcDataSource);</span><br><span class="line">        <span class="built_in">super</span>.afterPropertiesSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 这个是主要的方法，根据key查找对应的数据源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;CLOUD&quot;</span>; <span class="comment">// 这里需要修改为返回动态的数据源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Redis-Kafka"><a href="#Redis-Kafka" class="headerlink" title="Redis&#x2F;Kafka"></a>Redis&#x2F;Kafka</h4><p>Redis和Kafka一般都有工具类，因此在工具类中注入bean，并且通过map维护云上和云下对应的bean，执行相关操作时，通过数据源标记在map中获得相应的bean即可，无需额外操作。</p>
+<p>而以上最终成为了废案，因为不确定因素太多了，容易出现问题，所以采用了最稳妥的方案即终极方案。</p>
+<h3 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h3><p>直接改配置文件，然后重启服务，是的，你没看错，采用了最原始的方式，同样是最为可靠的方式，虽然服务不可用的时间会比较长，但是更为稳妥，不容易出现问题，且代码侵入性低，一个字，白学（bushi</p>
+<h3 id="补充方案（未验证）"><a href="#补充方案（未验证）" class="headerlink" title="补充方案（未验证）"></a>补充方案（未验证）</h3><p>由于废案中是同时初始化云上和云下两套数据源，那么在启动的时候指定其中某一套可用的数据源初始化不就行了，通过查询资料得知，貌似是可行的，通过方法在应用启动后还可以手动初始化数据源，从而实现动态切换数据源，而触发初始化数据源的就可以是之前所提到的使用定时器对配置的数据源进行比对，只不过不是设置数据源了，而是重新初始化数据源。</p>
+<h4 id="MySql-1"><a href="#MySql-1" class="headerlink" title="MySql"></a>MySql</h4><p>以Druid为例，DruidDataSource提供restart方法，可以在应用启动后重新初始化连接池，因此可以修改数据源配置后，由定时器进行调用，设置为需要切换的对应配置，如下：</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意，cloudDataSource需要为DruidDataSource类型</span></span><br><span class="line">cloudDataSource.setUrl(<span class="string">&quot;jdbc:mysql://***.***.***.***:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&quot;</span>);</span><br><span class="line">cloudDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">cloudDataSource.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">cloudDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">cloudDataSource.restart();</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>暂未找到相关方法，待补充。。。</p>
+<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>暂未找到相关方法，待补充。。。</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>上云</tag>
+        <tag>故障转移</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>再识MyBatis-Plus</title>
     <url>/2024/03/23/%E5%86%8D%E8%AF%86MyBatis-Plus/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本人之前学习过 MyBatis-Plus，但实际自己开发还是用的 MyBatis，基本就是简单 sql，因此用注解进行开发，手写 sql 也还好，故并未采用 MyBatis-Plus进行开发，但新入职的公司需要用到，于是进行重温，才有了这篇简略的记录。</p>
@@ -644,21 +689,6 @@
         <tag>Java</tag>
         <tag>MyBatis-Plus</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>伤</title>
-    <url>/2022/06/29/%E4%BC%A4/</url>
-    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
-<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
-<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
-<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
-<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
-<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
-<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
   </entry>
   <entry>
     <title>函数式编程</title>
@@ -857,36 +887,6 @@
       </tags>
   </entry>
   <entry>
-    <title>关于上云故障转移方案</title>
-    <url>/2024/11/01/%E5%85%B3%E4%BA%8E%E4%B8%8A%E4%BA%91%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h2 id="上云"><a href="#上云" class="headerlink" title="上云"></a>上云</h2><p>现代服务部署解决方案基本都为云部署，尤其是较大规模的应用，部署服务的方式一般有自建机房、IDC托管、云服务厂商，现如今以阿里云、腾讯云、华为云等为首的云服务厂商的份额日益增加，得益于上云后带来的最大好处——方便运维，变相提高了应用的可靠性，因为相较于部署在自建机房和IDC托管，云服务厂商会提供更加成熟的部署方案，不仅包括简单的部署，包括域名解析、数据备份、容灾等一系列完善的服务，使得服务部署不再困难，降低运维成本以及减少犯错的概率。</p>
-<p>不过，上云容易受到一些不可控的因素干扰，例如云服务厂商突然做出骚操作，之前就存在云服务厂商升级组件而未通知客户，而组件升级切换并不平滑，导致客户部署的服务出现短暂不可用，甚至出现更为糟糕的情况——光缆被挖断了，物理意义上的断你网线，如果没有做好多地容灾，那后果可想而知，服务完全down，无法恢复，当然，不仅云上有这个问题，云下同样如此，因为本质都是机房，只不过运维方式不同。</p>
-<p>而中间件出问题导致服务不可用的情况只能说挺少见的，至少我目前还未遇到过，但是做好应对方案也是必要的，因为谁也保不准什么时候会出问题，弄好预案就多一份保险，省的出问题时两眼一黑。</p>
-<h2 id="动态数据源"><a href="#动态数据源" class="headerlink" title="动态数据源"></a>动态数据源</h2><p>上云前需要弄清楚各个中间件如何动态设置数据源，从而实现热更新，即仅更改某处的配置即可对应用使用的数据源进行动态更新，而无需重启应用，可以使用Nacos进行配置的修改，而且Nacos支持动态刷新配置，天然支持配置监听，并且也可以不使用Nacos自带的配置监听类，可以使用定时器对配置的数据源进行比对，若发生变化则对数据源进行设置。</p>
-<p>当然，应用启动时是通过读取环境变量来设置初始可用的数据源，避免因为某个数据源不可用导致服务启动失败，由于是上云，因此为了稳妥起见，采用了云下——混合云——云上的渐进上云，混合云的中间件都还是连接的云下，而流量是按比例打到云上和云下，而为了做好上云的准备，各个中间件的数据需要从云下同步到云上，当上云时会将云下服务全量停止，云上服务中间件全量切入，并全量流量切入，为此需要准备两个配置文件，方便进行切换。</p>
-<h2 id="故障转移方案"><a href="#故障转移方案" class="headerlink" title="故障转移方案"></a>故障转移方案</h2><h3 id="废案"><a href="#废案" class="headerlink" title="废案"></a>废案</h3><p>在应用启动时同时初始化云上和云下的数据源bean，而在使用数据源时，通过当前配置的数据源标记进行匹配数据源，从而进行相关的数据源操作，这个存在致命的问题，就是当云上和云下其中一个数据源出现问题，服务会无法启动，所以才有后续的补充方案（仅是个想法，还未进行验证）。</p>
-<h4 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h4><p>通过继承AbstractRoutingDataSource这个jdbc动态数据源类，重写determineCurrentLookupKey方法，即可使用相应的数据源，正常场景是读写分离，写入使用主库，查询使用从库。</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;cloudDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource cloudDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;idcDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource idcDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 配置初始数据源信息</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;Object, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;CLOUD&quot;</span>, cloudDataSource);</span><br><span class="line">        map.put(<span class="string">&quot;IDC&quot;</span>, idcDataSource);</span><br><span class="line">        setTargetDataSources(map);</span><br><span class="line">        setDefaultTargetDataSource(idcDataSource);</span><br><span class="line">        <span class="built_in">super</span>.afterPropertiesSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 这个是主要的方法，根据key查找对应的数据源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;CLOUD&quot;</span>; <span class="comment">// 这里需要修改为返回动态的数据源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="Redis-Kafka"><a href="#Redis-Kafka" class="headerlink" title="Redis&#x2F;Kafka"></a>Redis&#x2F;Kafka</h4><p>Redis和Kafka一般都有工具类，因此在工具类中注入bean，并且通过map维护云上和云下对应的bean，执行相关操作时，通过数据源标记在map中获得相应的bean即可，无需额外操作。</p>
-<p>而以上最终成为了废案，因为不确定因素太多了，容易出现问题，所以采用了最稳妥的方案即终极方案。</p>
-<h3 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h3><p>直接改配置文件，然后重启服务，是的，你没看错，采用了最原始的方式，同样是最为可靠的方式，虽然服务不可用的时间会比较长，但是更为稳妥，不容易出现问题，且代码侵入性低，一个字，白学（bushi</p>
-<h3 id="补充方案（未验证）"><a href="#补充方案（未验证）" class="headerlink" title="补充方案（未验证）"></a>补充方案（未验证）</h3><p>由于废案中是同时初始化云上和云下两套数据源，那么在启动的时候指定其中某一套可用的数据源初始化不就行了，通过查询资料得知，貌似是可行的，通过方法在应用启动后还可以手动初始化数据源，从而实现动态切换数据源，而触发初始化数据源的就可以是之前所提到的使用定时器对配置的数据源进行比对，只不过不是设置数据源了，而是重新初始化数据源。</p>
-<h4 id="MySql-1"><a href="#MySql-1" class="headerlink" title="MySql"></a>MySql</h4><p>以Druid为例，DruidDataSource提供restart方法，可以在应用启动后重新初始化连接池，因此可以修改数据源配置后，由定时器进行调用，设置为需要切换的对应配置，如下：</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意，cloudDataSource需要为DruidDataSource类型</span></span><br><span class="line">cloudDataSource.setUrl(<span class="string">&quot;jdbc:mysql://***.***.***.***:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&quot;</span>);</span><br><span class="line">cloudDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">cloudDataSource.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">cloudDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">cloudDataSource.restart();</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>暂未找到相关方法，待补充。。。</p>
-<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>暂未找到相关方法，待补充。。。</p>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>上云</tag>
-        <tag>故障转移</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>告别高中</title>
     <url>/2019/06/28/%E5%91%8A%E5%88%AB%E9%AB%98%E4%B8%AD/</url>
     <content><![CDATA[<p>回想高中三年，有许多说不清道不明的意味，就好像天边的云彩，随着风飘动变得灵动万分，随着太阳的映射变得多姿多彩，但云终究是由液滴组成的，在不断的变化过程中，化为泡影，虽大气是不断循环的，但我就好比是其中的一个不起眼的水滴，终究会脱离这个大群体，融入另一个集体之中，这是必然性的结果。</p>
@@ -912,6 +912,35 @@
       <categories>
         <category>随笔</category>
       </categories>
+  </entry>
+  <entry>
+    <title>学习路线</title>
+    <url>/2024/03/03/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/</url>
+    <content><![CDATA[
+<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码错误，请重新输入。" data-whm="Oh, these decrypted content cannot be verified, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="013fc0de40798fedac257ef41416532922574204f98f42392195fe904ee2b78b">d7858a6e92f3366b7c704364929b51d80c9159cc3bf648b2d2d5eacdffd72b7a55f6087b0dc0a61904208cc7b0976c21f27a890ab2a97a4f25a09e51a5a1ce110ec7e68e0994bf3b2096901a72a7da161b3294aa74e589fa1e2a9a11f0293c5c05f2a8519288b2eed34f079f841991ccb5534a2b802c1f0babfe4e0f184921f73799ac64e88b41764b40f8dca02eba7de821889d2bc8666e0ea9a09bd7130edf36fc84d10aff6260d407db5feec0f74ca11c1f01d1661c4bd6461bf3696a01a0444bec341698f53198deb913d8f2667600e707396aee403eaab70e9af92cae4e203a291b42d44c99e82858c7e7d447fbe83fcdf7e10c3622f4c4e9bebe1fec6ac5d84489adcb076c02c5683e0e2d65760fff5abc5e75d57252b5aee5fecaa4d774b978cf099b3fbf5bb322f19734c32476708eccf028cfdc929a6acdd0ad44d950f996115ea63103f9cc3f1b3753d6fa1c1b2d2b542929d70abc272e84f1ae67b4cf3dac594c99f01213afd00dd1fee4ecf129cdb2d6818d8a9f36a282d78e8d9fcab1315ea795c09180d6644afb6c9665859802067a0c9f802625eaf8ca7748194180b9d0382d0fdc4da8140fb12c380f41865e3b41b9ea1eab8ac9878e7ab6f1c2db72ba09274f00aa92ca081b77cda8bc625003caf05a4f3096b08d517be659d10d0a28f5df925ce5a9997d24adea8e255f696b5e72bf4bf8558722176643137a1b261be5dde4dc6b7b3026072cd5241aba81a145c4e77e2f2ee0df9f6b166a554a944e3e617de8664f35a70c876cfff463ffed8628c87dbfc60a6bd599afb86d78aba416ecd51ed638cc5e22cfcf63194285a06e0900de9fbeb68304a45b6e43f5908505d845e2c0f53ac0360ed6024e1b4579cd98f778413959c3599c60296d660a0d2cee49180f0529b507e9704e16727b9b84e94cdbd4455e184decb49441f90b277df3c5546ce32eded0221c069fecb768f07d48628d0a6c2449766aae29ccfd50d2ab74ecfbb11862df059f6cd5f616fdde2fd7ec2420d978779791e2389f44d676e1aed136cb33b10cc193278ba4f3bf93c9141d9f6c1415cacc039220a3e7d33aad61829ecf36ada7dd3291c07bb302a52e1dba823b2262a3d480da8530c9befcb7f911b448400990a3f3d245a266c25ccb6aa9fe7471114d707c0b12b281a08260eab0ba557cceecb367c9cf4fa9d62d105091048f3f816a2c87a232aed977603d07e4eb2c4349f01faae97bbbcc5a25f3d1f2d82e934bd76bc3f42e461d9407319fed311c82080706710714d6fc6806badd5ed9789bf1a47749f0cd8f7f97b815db53663db7fa6b6656215c9a0397be102757ca3cbdbac92ffe735d8dbc1a7b2ecbe04ee7e7b82c6af0b53721f76e1867fd4dc6a56dc547a448913519f009dec6a839da2bacf86af5cf8a645d101335177afefbbebbdfb5eae64e4a306d090895820bf3828b941f1a9cf0d2b5ff83d44bbaaf11ae1eb077a2f23a69de18de841d113706bbc3ee08af0bc43c8f5fcc86e70aee52df4bb0326cad1b3bd7a822b141cd0eebc20ed94bb73092e9778dd212e9e712b8adb4aad087b4a372662df77a7619c7ed54c76ba85eb800ed021eee27a46b9019389fc6c35c557e12d5459737ac84a1c6722ee8edbdc43085744c98f8e866fe4cab098050eccec1a8aa649726850ccde35bbd4278618df8670927c5c7b5be5f44322a0a6efa78ca2acd76b7cd9b3c060ee3ca2d9ffe2f43d4f48b28d3af0e1adcdd077cea0cfa5a4482aeb2a0999831c9da4f5c553bb9906ea708a9d1d4983f8ea8dbfa2595bd4aea1f8eca4c9324242094384f70717b80fe32d29573e1968f3ab02031629b4f36c6eb3cd35296e8b5dc8515528f65f26e1dd8331a2acff2d08a89742923e6c7f1395fa3926ac7608d839164a143ad6aa11c94bd12981915077bb2cae4181ba2724cfc825e838772b29f3532cb864ae58242852beec2ac17e9d5f5b08b8d992a8f4598a2cb74b5da99272b1a83a452cbb66a43567effe5aae59d541b86774df359b463545f5e2e7819ec35a415fbfef5e151bdcd020a54ae5295a2ad8271dcf61e0adce311cdf750931e0ad920ef89542367e2cff2ba281281c26d068c44c932b8af7b766e4cdd2283ec86294a1a21086786db7e6d8294cfe6ebfb2cb84d12b8d5f96485b384a60a4564f9d87b3d594667d74c49095d02025b6eca54b0a8f4782096395b5f5ecf4481e9991235f18e8558de0d8191ba503da9d2c1f85cb6641223a85c585785c81da246b623e81dbe4035716100805abd6b7d527e6fee9af9d9f568e61bd92391360792cec1eace6e3fde5f4e2fd5f67a1d043afba93f662fbc04311198f4bc17bffc9e7d7405fa5a4fb5c301beb462468452c998bfd3184207824d36a9ea30e5429b316e201a0396b4a66d4db0680fa961b541741b8841ccbea4d103922fcbf397ee4c37c8768cd4118c3bacb9a59817da78bb40a244d59cd46ea23db2bf0b01f19228a33f2bade66bd4dd718f5ed001e3c9e414d071a681e6598e3d05f1ad50c3b47f9f0b05eaf30b0eb5bd00e9ef659c0100b07eb484fc526bfe5cd82a264accb6a2076a032a2678bd48fd5d0f40927a59982c906ed66b206b6d15f0155482e89f50e65210cf25b24b34b74ebd4028ec9d544e47737c08a9586eb57337681a6437726c2c20ad506bff2dda4d147da8c379f539dc3051fc99ade6bb0960def38d507506910e56a3505ef7de175bd9f0c995d577690db7a37361a99f91c97f91b8fdf9c7b2f0566b3b4c0b8d4be14b63f07027c7ce1043246ba2c748d177fbab456af7308b89fd21507d5b624a38bdbaa03f52c16b61129677d69308d5e580458e7a9975b7d7ed22bd43d92512f3009b540594acce6d26f63fe4f9da01b1caa88685caedbb7f7cd122759c7f5d4c20707bd97cca6861b0062d4ab2db10f9d1519ff434ef9e96c950dc3748000529c5a82abb67c10be069914d4eb514e6d472ba268c6622e1cda141665f32010acfae0fa939dd8b822cb35db14f5550a370a91c6d08c5f27db64703d2d2506ce9311761c4b19ba8abf12a7b363c156370f6e29e5e7fbca3a86b90da26aa0bd1d27387fd06b18d88152a2159e38a07d3c6ed93fd312f40d35467446a2c6ae4e5b836cdedf16d93bc7fd02d23cf3a2a262cdcc5461c5c60b96a44528b9d3920f2502b1da9b2a6eab080bbb90c4481ba6560b76c8a8d96f5ac2cb09109a5c22177f63093216fbc67479f869593d4ff7921e75a21c195ae584b86bf50b38a29bf2814d2f1699c20e7aef7a2acc55b0c8bf92889ca6fcb6a3e712b7d6d698f472fba29238cab2bc0e891026b139508e525dde45a33e72dd88e8a3e2d233f5cbd5144d80ca776a45f11954bc02e1e74dd14a71b4e7d85bda54b5e4258616c184484e18c3ac277bf08c16a1e39696e71d77ed0549f210060945f5beaa5939517df5d9cc395878878dbcb0d37bda0924737c1777439ed1a883d273b03c355b1dcef525a757df55b8d1b2afbf0c2c82cc234c7d6557f9e3361c615998062e4154ffc4562706fab1700b1890b79dbc96aaf704d41695f94ff2ab187da7d73541d425e25d3d53db21bc9d4110329a03208c28cbd67ea13e48544c1842d7959044123e130c64b4d9b9233af998359afabe4a4638ccedfcf728e33b2dc01fb0791a66249b364a5645c60fb96982fa406bbe563f7879a912bf76bf6310261e3064fb3d4cdeb02e0d5da9285b2c5744eec7d4b43042a172b77da037f994d0d2553b0054ace745e1d4f663f496a6729402ebb1db98107a0cfd3d455810d9cdbdae84125bc517c08bae7d6aa1e73528c3771806fb79cb99392e750bd7a929115de9f0d6b64790dea08439ef0c9b7fcb2730ee4a0a97630fb39d89a0db4cbbc9dd47f1b1fe957680101852fa90271b69046f2b46f1101c80024d4067be3bfc0731f67fd49ea13e41f9d29e53570d8eec3afe029e951e41d93f0c167b4f1002053de01398c8994e4b4b4e21bfd458e96e73a1191047ed92030d55899ed52fd4b628a80b694eb2f3c6c7f7f7821c99a18cb20f711c9183e8e54e49016ff254178b900918e6544ad213a60c9dae582894ae2a5dc74cbaf88794dbe5b36dbf528f573b273115a091968800d660bbbad453d1532d41c673d31e7f4bd4684e614419f0a0e3e687eddd546881ba17b55158915ca7f1a0abf3f08027716a86ce1ff9041c160e0f83653eb1679408453bd7beb0bde7d33aa033c5f73befcbaf311614d46407622aec4851f1cdc1c7d13d03d30790c3295c9e5a0d955f1448acb239d9d10f80759a6bc03c02572078a8ff8f1ad26740e14be340e7751ba386379eb532d14eace424c9ba7bf78f3b100bec2a313701fd2918f9f119e899f6ec7c64eb3e57bf328301089dacbf8a7d390dad4978ed8afde593d854a4eefc13651235b4cac83145a878f6b8efdd6a5d85c62b99630c5f658e49d7f3c9ecc406da14474d82bd3de4faf8e96b5d16e0e6a4b920bf93284961ed40da8f8a65cd5d34e302cc5790dccc583b988f53d4b157b7e4f0acf7f86f9ecd47bdbad7e040ec7889e60bbd68bc5bb29a6ef14fdca7ed085dba2fcb5ccef6dc24e0b7773d006cd9f8b201cee2cefbb6aeb46de308873eefc7be476ada6e5332606f46f869ca222bef86a6a3ec0cfa463a74dc14495943ff7794d61f66e4f8bd2d143436d4813ebd60478c251c18d73f6722682a9c2ebbec081b5d9cfe6d75876ddb53ab2aaa34128543e6ee10a5bcdd08a64a8b74dc8242e90af48c8b68c59189b292016cbe5d5e83d663a449c4d88963bc605f5cc5d54b25170dce9d3e43daf8948a82694cb4fc840f3f6cff166fc55b5907eb934184ca25fdd6a97cf2132ed9f18df39577d5907538ac4baefc90f3ac079bce9dc5eba1c772eeabd288ba52fad0d4b97ef4ff3f9c0daefcee4ff057385991e6fdbbce0230bac9891d6e197ccca0736e43423cd8486be24249a10bb419deee71d570b356eb886cc9915976390c943fe54e70fd93f55a4cd81456fbebd71530b50c48f1ff27ec00884470c6e78c4524ae3245a6bade4563100e6eb37c2f9fe518ea289bcaa10e7a657498660b8028f0718548ede02339448a1c861189519d0dd397206875986c3704bd8e7e36ddf0ae9a41b1e8d17710b2c3a17adba385119600858598c0a462383ea38ff105816d6d0d7968df54b1b9088c3970576416bcbb9ffce7d1eec50deea2492b910cd55105551d2378dc177ee0568855a7dbaa0baee3ec1ff10d3086dd1bc5247cfbe356e6a1be0df4ab7ae7c767989a9d0be8f21f1b45abdf320a85f55e283910ec6704e582199674a1fefad0447e07d7b78134dd02e92c5143034e27e596e2f6f45c4a21d4eae3999cc980e2878195c30ea7dc47407ab98d5dc1169dc5c826c7fc06d4608fbdee70c6385aa5f0e32bc3a80ec1b0321e00d590e206a4a8eaac9a7c7f5677a7731bee974e4ab673646a6a3ddbc46f1e798664f565b8979521f5fcd5334ed4d9a67da850c116c267570b067fc544d12ebb5890a152af4e35358615f2ca92ff9b5659356865836798dccf1c399666962cc5197ac746f6df3bda847ab7b32863b3b3386c9988135eb35d8458a885ec931c7f78e5cdd1cffac7187b27c09ac98acdbdf041b1ea48213305ed6236a38c3d9b495557d6356bf90e6b35d49b34b17b424fc289e876dfd5bd27da0ba8068a05a7ee3aa0915baf9a3d943490f6f31eec5aa583a3da20fba69a841eb4d2d090cb6d4a010aa4efee5ec7b7950d5ddabff8e7abc45fffaab837f2219ae98f74ead5ba60f617759fd100ee791eadee33db12b930d55c3e281334a4c5e3485bf344ed6e802bc3265de1a926a865d71287971daa85926603387489036008e121ef3dbeee69a8a3ffadfdd235499b509d908b06d8ba191f2bd8792318fe13a5587671a967e491d0ed10426a53da6a53370744e8e6c2c79f7d09df9268f06abb7073bc40ead932b601499b36bc6d92130b1164163d4395ca771c6f2ab0f8fce28a556ac501d47bde1d961775c56760bc51de1884fe2071e90622a6687a0b9002ca79946bd3589f7b7cfc6c901b01b818f49b6606e734512cf28f9b9f2b55fbb619d46c595de51e7aa1698677a6c66cade6d657495e4db92ec53d4ed0b4fa23668a95ddf5aced758c79f1074e9e77a649905f908979f49c603dff19011cdfede72ea4bd13c03cbac82b125f1df69e3154971069e15428555aa5e9fa95948e32024970813f942de4ec0523ed0848471b48796c495e47e979255561d34e03205f48ed3a2b9c13bb766f0a0d5939999b3a44067e32a7bada1eeccb7d8c67c0e861a21ec7eb558af04844edb41f0cbb92c62bfe41d31d264c1676966d2305731f5fca25bde37d99a7781d6d87cc091caf399123e0ebbd22ddc82470296bda4013d97bb52bd1bdf4e2826759669e5420248d33769c1b248e2c2577ea24c416816edf961d71d26f23ff97a9b8b760b86a6af21eb181aa0244bd5fc5f366649c2d6fa3c4dc767a01d3eaf54235e327022f2fc6dab507e0a6d9393b407f4d73b3fa16f91e614522e9057aad93078b51c5bce6189ded2c42c9221cdb6e2ce83fbd9f769533513fd07755011a8aae1cecdc0f53d418bba00e8c8d12b77c9f31b82c66f6dc45a8f9dcda6e2551ac2b06c0864d3f7b392825e2682fc913215bcaa91e8024bbdbd0340b104716be7d36e2836ec12637f6ab1ef04b6ad1d4ea8c30247f3136dbd7be81b1e9c080e40af892014935922bd08587e880f1b3a4bc9cc8b5d0e630c6d0d499ca9ed9299fb28d3680ec48df5fe1c34b7be530a82d16fdbe5e7db4dfb421d4387ce027ac18e0195180fcb4d981754245e21fda279a9b7cda6eadaba3b7cea0879f176fd0f4f1dc02df871f466ce65c653797ff73c16ca7f7eaf115978dc7d0baaeb70c5094ad2ed891dc169ec53aa24597fedda222b8e79b093ed0aec5c09f6c0bfc35c7dcdee76d61aa26c002b10d85c0806b6f8811c803b452936d62e0dbac6a2985090b2036e9ee88ff259e09ae14c96741172ef586b8ed2556622f17f091cdd1dae378d00d48eac2c009a7b8f1bcaade9eb9f58f9f3c6c90d104870be29fc7e03088888bbbe68ba11cc23d95c67ec9ca1babe0781b4d963168a5dd7730d23855e694a8bd180ed26e63dbfe34f24c72f2d535c07c6dae20156038e4c6bc2a96e9bb2cffd59d0c395bc96f53d97a613ecf204f8976a2e46f82a95daa8130777dd24ec55d48db138a2a2cc5d8dd5246c52535c9f256dde281486ac1b1463fea98ac3cf95a03b9a2ba06e1fe9fe46bc7b0d1d8ea3a03b50868f8d833cdfbfeac75a279f599bc53c4e9306563745bb573378f9f26b5104d2b2bc9a10166593b1142b683e7014f4f5e780691a8eab9d0f87b54ac8a437e376cddcb3ac42ddd9d747630ee5cab90f59e9ed31b45de26e8b0773698864a4c0f597b810298ce86a60a6c247ecacd1e604a9965c896b97cc9bd388f9d329c828ec4deb8ab953ed8084fe518d5a9445791df812944ad88004d904c47b3855093c5630ef8cc91b080ab69f90e90e65c9b21fa2c3d81c464a11a5937ff6a8cc5f39f7a99161d5ee29b5f79838439538a18605acfdbec1638fd989017d77877318cd8cfd41b2ae70473db7b7ba296fbd4d4e6000d23ebad45de5695c41645f02bce3a7b34d411f013cc5da7302de6b52d89d4469f093abee761e0abbdaa080060c4034696d3e11c74cea989e8795532d4ea407398b81c144be8aa0634b80e87b242a9c6c36c8c71b0a3fb2ce1e7befc9331be03a560eabb3a4dabf9a7bd64d5e047808f8fb3686556b4d9e07a3d6446b2be2893a766acab646dc929feb142ed8a1ef1115836d1798abb22072aefeacee30114d1d1ef3fe1b5e9e1aa1396381ff1364c98a357a1c99334d0c75804359ed661113c6b05a16bacd2aceb97185efaac3635b84fb14ae923dc62e4eb47a0267938c01eeb57da5afbd9bca748285ba161d4bc42b91067484925fecf515b2af24af93f1c2335330c85a7c2714a33f769ab168d1ef127d4f3d2bfb8e4aa0c6a5a47081d41c210db57dabe379e55e079bb2617562efe2e18ab7384a6ad33766f97c908d98af81028278c7df2dc6f88b3238da1cb4e70ab1c2373994282f596f7384c542c3f83f3dfa075f911f77a231800bc18e2638d6618463c6e7742201d0e57c4bfa0b91596a300c71d3c509106e6837c0f54ea5f76d838192b5e1c064b39f032b7a5fda30e505a6b2c7e626ffa921a553c75c6857b2896a57073b6d04248c5b02aacfd9d1926e2e84445a40b6c8fdb4099e46e8c1252125f11ec97bb2d203adcb4fa910265f8544363582e38107f624d8b04706b6c7b04865ead25dca1dbe3eafe9ac138f9e8eef48c51a0b2c1b21c2c2558d91f884c736a23c80832b8e0d07cfaf7b29d822779e7c532ea518ba2717776ee3afb2ba7ed7929d68eb9ccb3b84fa03b805ffb49ae5f13484ad9cabe847d4a229bd286b13cac3affacf87034dabcc84a4809fdcb2d3dfa367d6b1e96cd0be563ad1f08c7de8f8cc86bc542530c6aa6f8cc2b35017b6eea151d8976f0e3b1beefd122543a809829a22f23436124943bc4123246136445289838aab974aedf4f5339e362b16785d71f4579ed106da87c736d8e722ca9fde8ece2c8f6a3c55f2d976673c5f3bcd43db2c70321834f0bf9ecd244070eda59b717c44123c5ed471f07e768514ccc898982301b787aa969aa721f44bdceb2d1a723bbc2e6770c1e0723eb786ebdb4e3884bf3dd01baf99b2c85c8cf2a648d6cd97d83f56fa7bff60cf4c47647df56210b527f5605074385fcc042ebf3ca9038bb0d6a722e732ef64ea23de16ac683344119a7bbc824c4009bfc87bc2126f107a41aa2ec3323ae59a7205def664f44e23e3d7c6597e2665c71885740e56bda659ca9d3050c3241fea1b31005c5da60d1f32f148683843a1fd65794cd6b7226e1ace8e774d044ea30e4e0c315c00829701dd7b764c5effe29415ccb677247f496cb29be6f9cd66b9d4dc42d38c74037fbface4ca50814956e61b142325ea25e68db594098a3c5d173e633472da8a9072dded58dbd3f7d52369a2d85575cf3d13f1c0853db1c3645d184da39adf26124e581bef3cfd7851b15b0167c0669e4ad394ca2c58dd991fb8dd63920fd5f840b2004d418389dff99bdac1f90d9ad87466dd50b49b616dde24dfbea50e1846742fe42ef29c3c18a8c74a7e59fb1fa71831d9d93e9cce788daf91d1d482269fc6377d0cadc5e08731eed586671dfc43fed6e1a578dcaeff91073265ac05348a92b9e76b988b3f3dfedacacc8eacde3779a11ee28ac010f6148c4c3dff393d2d7bb929af8a7c1b6bac5d6f85e508ac5018e31bf755d79f13fbf7bb48f9a20822723b12a2fc858bbd8addfb48b9bc00a91e68d4f40ecaa3216386d80539fad1b28b22966a60078a01c1c48099bb44463af9969724e62a6603f0e9f715d45d27b8153cd021cc036a50b317ebb81ac21377e43fa5b8b6539f58902f258fed8fcfaa73e38e549eee259dfefc228108817a70590ccd6bbcd8d16bb9f699201f727cf9d187b0e6f3132c88fa637298b3f499b41690fad07c6798debde1a0ae671922bdebe37f721eeea2753d0028b063cf48fbb5a11e8dd521428ccc2edbb6c3c5f16170685d6da2260d3ed323fccdb040a6c8f2bb4ded0e716eb403cb5a589162386bb66eac336d3298e006ef3124c351eaf1f60ac16bb89fae273ad2c6eaacb5d398d585257f0a1a617eb4f46e027003c46fc90d01c049541802f20c283f82ad1c900477d2e6d9ea44f46e145fa4bdb0c98a200fcc60895284e6e1096130655981fe352abfcf24d00531b174680c48358c893ae735a2f0fee1e9165efed20dc175bd221eb383849795a2f007314ce6217fc409d9fcb6b1ae0f1b3070a99adea21f17aa3cc06dc165ddf51636191e46e1e6fb12525073fb8401c4</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">请输入密码以查看此内容</span>
+      </label>
+    </div>
+  </div>
+</div>
+<link href="/css/hbe.style.css" rel="stylesheet" type="text/css"><script data-swup-reload-script type="module" src="/js/plugins/hbe.js"></script>
+<script data-swup-reload-script type="module">
+import {initHBE} from "/js/plugins/hbe.js";
+  // console.log("hexo-blog-encrypt: loaded.");
+    initHBE();
+</script>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>学习路线</tag>
+      </tags>
   </entry>
   <entry>
     <title>基于Docker和k8s的部署方案</title>
@@ -1100,33 +1129,55 @@
       </tags>
   </entry>
   <entry>
-    <title>学习路线</title>
-    <url>/2024/03/03/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/</url>
-    <content><![CDATA[
-<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码错误，请重新输入。" data-whm="Oh, these decrypted content cannot be verified, but you can still have a look.">
-  <script id="hbeData" type="hbeData" data-hmacdigest="013fc0de40798fedac257ef41416532922574204f98f42392195fe904ee2b78b">d7858a6e92f3366b7c704364929b51d80c9159cc3bf648b2d2d5eacdffd72b7a55f6087b0dc0a61904208cc7b0976c21f27a890ab2a97a4f25a09e51a5a1ce110ec7e68e0994bf3b2096901a72a7da161b3294aa74e589fa1e2a9a11f0293c5c05f2a8519288b2eed34f079f841991ccb5534a2b802c1f0babfe4e0f184921f73799ac64e88b41764b40f8dca02eba7de821889d2bc8666e0ea9a09bd7130edf36fc84d10aff6260d407db5feec0f74ca11c1f01d1661c4bd6461bf3696a01a0444bec341698f53198deb913d8f2667600e707396aee403eaab70e9af92cae4e203a291b42d44c99e82858c7e7d447fbe83fcdf7e10c3622f4c4e9bebe1fec6ac5d84489adcb076c02c5683e0e2d65760fff5abc5e75d57252b5aee5fecaa4d774b978cf099b3fbf5bb322f19734c32476708eccf028cfdc929a6acdd0ad44d950f996115ea63103f9cc3f1b3753d6fa1c1b2d2b542929d70abc272e84f1ae67b4cf3dac594c99f01213afd00dd1fee4ecf129cdb2d6818d8a9f36a282d78e8d9fcab1315ea795c09180d6644afb6c9665859802067a0c9f802625eaf8ca7748194180b9d0382d0fdc4da8140fb12c380f41865e3b41b9ea1eab8ac9878e7ab6f1c2db72ba09274f00aa92ca081b77cda8bc625003caf05a4f3096b08d517be659d10d0a28f5df925ce5a9997d24adea8e255f696b5e72bf4bf8558722176643137a1b261be5dde4dc6b7b3026072cd5241aba81a145c4e77e2f2ee0df9f6b166a554a944e3e617de8664f35a70c876cfff463ffed8628c87dbfc60a6bd599afb86d78aba416ecd51ed638cc5e22cfcf63194285a06e0900de9fbeb68304a45b6e43f5908505d845e2c0f53ac0360ed6024e1b4579cd98f778413959c3599c60296d660a0d2cee49180f0529b507e9704e16727b9b84e94cdbd4455e184decb49441f90b277df3c5546ce32eded0221c069fecb768f07d48628d0a6c2449766aae29ccfd50d2ab74ecfbb11862df059f6cd5f616fdde2fd7ec2420d978779791e2389f44d676e1aed136cb33b10cc193278ba4f3bf93c9141d9f6c1415cacc039220a3e7d33aad61829ecf36ada7dd3291c07bb302a52e1dba823b2262a3d480da8530c9befcb7f911b448400990a3f3d245a266c25ccb6aa9fe7471114d707c0b12b281a08260eab0ba557cceecb367c9cf4fa9d62d105091048f3f816a2c87a232aed977603d07e4eb2c4349f01faae97bbbcc5a25f3d1f2d82e934bd76bc3f42e461d9407319fed311c82080706710714d6fc6806badd5ed9789bf1a47749f0cd8f7f97b815db53663db7fa6b6656215c9a0397be102757ca3cbdbac92ffe735d8dbc1a7b2ecbe04ee7e7b82c6af0b53721f76e1867fd4dc6a56dc547a448913519f009dec6a839da2bacf86af5cf8a645d101335177afefbbebbdfb5eae64e4a306d090895820bf3828b941f1a9cf0d2b5ff83d44bbaaf11ae1eb077a2f23a69de18de841d113706bbc3ee08af0bc43c8f5fcc86e70aee52df4bb0326cad1b3bd7a822b141cd0eebc20ed94bb73092e9778dd212e9e712b8adb4aad087b4a372662df77a7619c7ed54c76ba85eb800ed021eee27a46b9019389fc6c35c557e12d5459737ac84a1c6722ee8edbdc43085744c98f8e866fe4cab098050eccec1a8aa649726850ccde35bbd4278618df8670927c5c7b5be5f44322a0a6efa78ca2acd76b7cd9b3c060ee3ca2d9ffe2f43d4f48b28d3af0e1adcdd077cea0cfa5a4482aeb2a0999831c9da4f5c553bb9906ea708a9d1d4983f8ea8dbfa2595bd4aea1f8eca4c9324242094384f70717b80fe32d29573e1968f3ab02031629b4f36c6eb3cd35296e8b5dc8515528f65f26e1dd8331a2acff2d08a89742923e6c7f1395fa3926ac7608d839164a143ad6aa11c94bd12981915077bb2cae4181ba2724cfc825e838772b29f3532cb864ae58242852beec2ac17e9d5f5b08b8d992a8f4598a2cb74b5da99272b1a83a452cbb66a43567effe5aae59d541b86774df359b463545f5e2e7819ec35a415fbfef5e151bdcd020a54ae5295a2ad8271dcf61e0adce311cdf750931e0ad920ef89542367e2cff2ba281281c26d068c44c932b8af7b766e4cdd2283ec86294a1a21086786db7e6d8294cfe6ebfb2cb84d12b8d5f96485b384a60a4564f9d87b3d594667d74c49095d02025b6eca54b0a8f4782096395b5f5ecf4481e9991235f18e8558de0d8191ba503da9d2c1f85cb6641223a85c585785c81da246b623e81dbe4035716100805abd6b7d527e6fee9af9d9f568e61bd92391360792cec1eace6e3fde5f4e2fd5f67a1d043afba93f662fbc04311198f4bc17bffc9e7d7405fa5a4fb5c301beb462468452c998bfd3184207824d36a9ea30e5429b316e201a0396b4a66d4db0680fa961b541741b8841ccbea4d103922fcbf397ee4c37c8768cd4118c3bacb9a59817da78bb40a244d59cd46ea23db2bf0b01f19228a33f2bade66bd4dd718f5ed001e3c9e414d071a681e6598e3d05f1ad50c3b47f9f0b05eaf30b0eb5bd00e9ef659c0100b07eb484fc526bfe5cd82a264accb6a2076a032a2678bd48fd5d0f40927a59982c906ed66b206b6d15f0155482e89f50e65210cf25b24b34b74ebd4028ec9d544e47737c08a9586eb57337681a6437726c2c20ad506bff2dda4d147da8c379f539dc3051fc99ade6bb0960def38d507506910e56a3505ef7de175bd9f0c995d577690db7a37361a99f91c97f91b8fdf9c7b2f0566b3b4c0b8d4be14b63f07027c7ce1043246ba2c748d177fbab456af7308b89fd21507d5b624a38bdbaa03f52c16b61129677d69308d5e580458e7a9975b7d7ed22bd43d92512f3009b540594acce6d26f63fe4f9da01b1caa88685caedbb7f7cd122759c7f5d4c20707bd97cca6861b0062d4ab2db10f9d1519ff434ef9e96c950dc3748000529c5a82abb67c10be069914d4eb514e6d472ba268c6622e1cda141665f32010acfae0fa939dd8b822cb35db14f5550a370a91c6d08c5f27db64703d2d2506ce9311761c4b19ba8abf12a7b363c156370f6e29e5e7fbca3a86b90da26aa0bd1d27387fd06b18d88152a2159e38a07d3c6ed93fd312f40d35467446a2c6ae4e5b836cdedf16d93bc7fd02d23cf3a2a262cdcc5461c5c60b96a44528b9d3920f2502b1da9b2a6eab080bbb90c4481ba6560b76c8a8d96f5ac2cb09109a5c22177f63093216fbc67479f869593d4ff7921e75a21c195ae584b86bf50b38a29bf2814d2f1699c20e7aef7a2acc55b0c8bf92889ca6fcb6a3e712b7d6d698f472fba29238cab2bc0e891026b139508e525dde45a33e72dd88e8a3e2d233f5cbd5144d80ca776a45f11954bc02e1e74dd14a71b4e7d85bda54b5e4258616c184484e18c3ac277bf08c16a1e39696e71d77ed0549f210060945f5beaa5939517df5d9cc395878878dbcb0d37bda0924737c1777439ed1a883d273b03c355b1dcef525a757df55b8d1b2afbf0c2c82cc234c7d6557f9e3361c615998062e4154ffc4562706fab1700b1890b79dbc96aaf704d41695f94ff2ab187da7d73541d425e25d3d53db21bc9d4110329a03208c28cbd67ea13e48544c1842d7959044123e130c64b4d9b9233af998359afabe4a4638ccedfcf728e33b2dc01fb0791a66249b364a5645c60fb96982fa406bbe563f7879a912bf76bf6310261e3064fb3d4cdeb02e0d5da9285b2c5744eec7d4b43042a172b77da037f994d0d2553b0054ace745e1d4f663f496a6729402ebb1db98107a0cfd3d455810d9cdbdae84125bc517c08bae7d6aa1e73528c3771806fb79cb99392e750bd7a929115de9f0d6b64790dea08439ef0c9b7fcb2730ee4a0a97630fb39d89a0db4cbbc9dd47f1b1fe957680101852fa90271b69046f2b46f1101c80024d4067be3bfc0731f67fd49ea13e41f9d29e53570d8eec3afe029e951e41d93f0c167b4f1002053de01398c8994e4b4b4e21bfd458e96e73a1191047ed92030d55899ed52fd4b628a80b694eb2f3c6c7f7f7821c99a18cb20f711c9183e8e54e49016ff254178b900918e6544ad213a60c9dae582894ae2a5dc74cbaf88794dbe5b36dbf528f573b273115a091968800d660bbbad453d1532d41c673d31e7f4bd4684e614419f0a0e3e687eddd546881ba17b55158915ca7f1a0abf3f08027716a86ce1ff9041c160e0f83653eb1679408453bd7beb0bde7d33aa033c5f73befcbaf311614d46407622aec4851f1cdc1c7d13d03d30790c3295c9e5a0d955f1448acb239d9d10f80759a6bc03c02572078a8ff8f1ad26740e14be340e7751ba386379eb532d14eace424c9ba7bf78f3b100bec2a313701fd2918f9f119e899f6ec7c64eb3e57bf328301089dacbf8a7d390dad4978ed8afde593d854a4eefc13651235b4cac83145a878f6b8efdd6a5d85c62b99630c5f658e49d7f3c9ecc406da14474d82bd3de4faf8e96b5d16e0e6a4b920bf93284961ed40da8f8a65cd5d34e302cc5790dccc583b988f53d4b157b7e4f0acf7f86f9ecd47bdbad7e040ec7889e60bbd68bc5bb29a6ef14fdca7ed085dba2fcb5ccef6dc24e0b7773d006cd9f8b201cee2cefbb6aeb46de308873eefc7be476ada6e5332606f46f869ca222bef86a6a3ec0cfa463a74dc14495943ff7794d61f66e4f8bd2d143436d4813ebd60478c251c18d73f6722682a9c2ebbec081b5d9cfe6d75876ddb53ab2aaa34128543e6ee10a5bcdd08a64a8b74dc8242e90af48c8b68c59189b292016cbe5d5e83d663a449c4d88963bc605f5cc5d54b25170dce9d3e43daf8948a82694cb4fc840f3f6cff166fc55b5907eb934184ca25fdd6a97cf2132ed9f18df39577d5907538ac4baefc90f3ac079bce9dc5eba1c772eeabd288ba52fad0d4b97ef4ff3f9c0daefcee4ff057385991e6fdbbce0230bac9891d6e197ccca0736e43423cd8486be24249a10bb419deee71d570b356eb886cc9915976390c943fe54e70fd93f55a4cd81456fbebd71530b50c48f1ff27ec00884470c6e78c4524ae3245a6bade4563100e6eb37c2f9fe518ea289bcaa10e7a657498660b8028f0718548ede02339448a1c861189519d0dd397206875986c3704bd8e7e36ddf0ae9a41b1e8d17710b2c3a17adba385119600858598c0a462383ea38ff105816d6d0d7968df54b1b9088c3970576416bcbb9ffce7d1eec50deea2492b910cd55105551d2378dc177ee0568855a7dbaa0baee3ec1ff10d3086dd1bc5247cfbe356e6a1be0df4ab7ae7c767989a9d0be8f21f1b45abdf320a85f55e283910ec6704e582199674a1fefad0447e07d7b78134dd02e92c5143034e27e596e2f6f45c4a21d4eae3999cc980e2878195c30ea7dc47407ab98d5dc1169dc5c826c7fc06d4608fbdee70c6385aa5f0e32bc3a80ec1b0321e00d590e206a4a8eaac9a7c7f5677a7731bee974e4ab673646a6a3ddbc46f1e798664f565b8979521f5fcd5334ed4d9a67da850c116c267570b067fc544d12ebb5890a152af4e35358615f2ca92ff9b5659356865836798dccf1c399666962cc5197ac746f6df3bda847ab7b32863b3b3386c9988135eb35d8458a885ec931c7f78e5cdd1cffac7187b27c09ac98acdbdf041b1ea48213305ed6236a38c3d9b495557d6356bf90e6b35d49b34b17b424fc289e876dfd5bd27da0ba8068a05a7ee3aa0915baf9a3d943490f6f31eec5aa583a3da20fba69a841eb4d2d090cb6d4a010aa4efee5ec7b7950d5ddabff8e7abc45fffaab837f2219ae98f74ead5ba60f617759fd100ee791eadee33db12b930d55c3e281334a4c5e3485bf344ed6e802bc3265de1a926a865d71287971daa85926603387489036008e121ef3dbeee69a8a3ffadfdd235499b509d908b06d8ba191f2bd8792318fe13a5587671a967e491d0ed10426a53da6a53370744e8e6c2c79f7d09df9268f06abb7073bc40ead932b601499b36bc6d92130b1164163d4395ca771c6f2ab0f8fce28a556ac501d47bde1d961775c56760bc51de1884fe2071e90622a6687a0b9002ca79946bd3589f7b7cfc6c901b01b818f49b6606e734512cf28f9b9f2b55fbb619d46c595de51e7aa1698677a6c66cade6d657495e4db92ec53d4ed0b4fa23668a95ddf5aced758c79f1074e9e77a649905f908979f49c603dff19011cdfede72ea4bd13c03cbac82b125f1df69e3154971069e15428555aa5e9fa95948e32024970813f942de4ec0523ed0848471b48796c495e47e979255561d34e03205f48ed3a2b9c13bb766f0a0d5939999b3a44067e32a7bada1eeccb7d8c67c0e861a21ec7eb558af04844edb41f0cbb92c62bfe41d31d264c1676966d2305731f5fca25bde37d99a7781d6d87cc091caf399123e0ebbd22ddc82470296bda4013d97bb52bd1bdf4e2826759669e5420248d33769c1b248e2c2577ea24c416816edf961d71d26f23ff97a9b8b760b86a6af21eb181aa0244bd5fc5f366649c2d6fa3c4dc767a01d3eaf54235e327022f2fc6dab507e0a6d9393b407f4d73b3fa16f91e614522e9057aad93078b51c5bce6189ded2c42c9221cdb6e2ce83fbd9f769533513fd07755011a8aae1cecdc0f53d418bba00e8c8d12b77c9f31b82c66f6dc45a8f9dcda6e2551ac2b06c0864d3f7b392825e2682fc913215bcaa91e8024bbdbd0340b104716be7d36e2836ec12637f6ab1ef04b6ad1d4ea8c30247f3136dbd7be81b1e9c080e40af892014935922bd08587e880f1b3a4bc9cc8b5d0e630c6d0d499ca9ed9299fb28d3680ec48df5fe1c34b7be530a82d16fdbe5e7db4dfb421d4387ce027ac18e0195180fcb4d981754245e21fda279a9b7cda6eadaba3b7cea0879f176fd0f4f1dc02df871f466ce65c653797ff73c16ca7f7eaf115978dc7d0baaeb70c5094ad2ed891dc169ec53aa24597fedda222b8e79b093ed0aec5c09f6c0bfc35c7dcdee76d61aa26c002b10d85c0806b6f8811c803b452936d62e0dbac6a2985090b2036e9ee88ff259e09ae14c96741172ef586b8ed2556622f17f091cdd1dae378d00d48eac2c009a7b8f1bcaade9eb9f58f9f3c6c90d104870be29fc7e03088888bbbe68ba11cc23d95c67ec9ca1babe0781b4d963168a5dd7730d23855e694a8bd180ed26e63dbfe34f24c72f2d535c07c6dae20156038e4c6bc2a96e9bb2cffd59d0c395bc96f53d97a613ecf204f8976a2e46f82a95daa8130777dd24ec55d48db138a2a2cc5d8dd5246c52535c9f256dde281486ac1b1463fea98ac3cf95a03b9a2ba06e1fe9fe46bc7b0d1d8ea3a03b50868f8d833cdfbfeac75a279f599bc53c4e9306563745bb573378f9f26b5104d2b2bc9a10166593b1142b683e7014f4f5e780691a8eab9d0f87b54ac8a437e376cddcb3ac42ddd9d747630ee5cab90f59e9ed31b45de26e8b0773698864a4c0f597b810298ce86a60a6c247ecacd1e604a9965c896b97cc9bd388f9d329c828ec4deb8ab953ed8084fe518d5a9445791df812944ad88004d904c47b3855093c5630ef8cc91b080ab69f90e90e65c9b21fa2c3d81c464a11a5937ff6a8cc5f39f7a99161d5ee29b5f79838439538a18605acfdbec1638fd989017d77877318cd8cfd41b2ae70473db7b7ba296fbd4d4e6000d23ebad45de5695c41645f02bce3a7b34d411f013cc5da7302de6b52d89d4469f093abee761e0abbdaa080060c4034696d3e11c74cea989e8795532d4ea407398b81c144be8aa0634b80e87b242a9c6c36c8c71b0a3fb2ce1e7befc9331be03a560eabb3a4dabf9a7bd64d5e047808f8fb3686556b4d9e07a3d6446b2be2893a766acab646dc929feb142ed8a1ef1115836d1798abb22072aefeacee30114d1d1ef3fe1b5e9e1aa1396381ff1364c98a357a1c99334d0c75804359ed661113c6b05a16bacd2aceb97185efaac3635b84fb14ae923dc62e4eb47a0267938c01eeb57da5afbd9bca748285ba161d4bc42b91067484925fecf515b2af24af93f1c2335330c85a7c2714a33f769ab168d1ef127d4f3d2bfb8e4aa0c6a5a47081d41c210db57dabe379e55e079bb2617562efe2e18ab7384a6ad33766f97c908d98af81028278c7df2dc6f88b3238da1cb4e70ab1c2373994282f596f7384c542c3f83f3dfa075f911f77a231800bc18e2638d6618463c6e7742201d0e57c4bfa0b91596a300c71d3c509106e6837c0f54ea5f76d838192b5e1c064b39f032b7a5fda30e505a6b2c7e626ffa921a553c75c6857b2896a57073b6d04248c5b02aacfd9d1926e2e84445a40b6c8fdb4099e46e8c1252125f11ec97bb2d203adcb4fa910265f8544363582e38107f624d8b04706b6c7b04865ead25dca1dbe3eafe9ac138f9e8eef48c51a0b2c1b21c2c2558d91f884c736a23c80832b8e0d07cfaf7b29d822779e7c532ea518ba2717776ee3afb2ba7ed7929d68eb9ccb3b84fa03b805ffb49ae5f13484ad9cabe847d4a229bd286b13cac3affacf87034dabcc84a4809fdcb2d3dfa367d6b1e96cd0be563ad1f08c7de8f8cc86bc542530c6aa6f8cc2b35017b6eea151d8976f0e3b1beefd122543a809829a22f23436124943bc4123246136445289838aab974aedf4f5339e362b16785d71f4579ed106da87c736d8e722ca9fde8ece2c8f6a3c55f2d976673c5f3bcd43db2c70321834f0bf9ecd244070eda59b717c44123c5ed471f07e768514ccc898982301b787aa969aa721f44bdceb2d1a723bbc2e6770c1e0723eb786ebdb4e3884bf3dd01baf99b2c85c8cf2a648d6cd97d83f56fa7bff60cf4c47647df56210b527f5605074385fcc042ebf3ca9038bb0d6a722e732ef64ea23de16ac683344119a7bbc824c4009bfc87bc2126f107a41aa2ec3323ae59a7205def664f44e23e3d7c6597e2665c71885740e56bda659ca9d3050c3241fea1b31005c5da60d1f32f148683843a1fd65794cd6b7226e1ace8e774d044ea30e4e0c315c00829701dd7b764c5effe29415ccb677247f496cb29be6f9cd66b9d4dc42d38c74037fbface4ca50814956e61b142325ea25e68db594098a3c5d173e633472da8a9072dded58dbd3f7d52369a2d85575cf3d13f1c0853db1c3645d184da39adf26124e581bef3cfd7851b15b0167c0669e4ad394ca2c58dd991fb8dd63920fd5f840b2004d418389dff99bdac1f90d9ad87466dd50b49b616dde24dfbea50e1846742fe42ef29c3c18a8c74a7e59fb1fa71831d9d93e9cce788daf91d1d482269fc6377d0cadc5e08731eed586671dfc43fed6e1a578dcaeff91073265ac05348a92b9e76b988b3f3dfedacacc8eacde3779a11ee28ac010f6148c4c3dff393d2d7bb929af8a7c1b6bac5d6f85e508ac5018e31bf755d79f13fbf7bb48f9a20822723b12a2fc858bbd8addfb48b9bc00a91e68d4f40ecaa3216386d80539fad1b28b22966a60078a01c1c48099bb44463af9969724e62a6603f0e9f715d45d27b8153cd021cc036a50b317ebb81ac21377e43fa5b8b6539f58902f258fed8fcfaa73e38e549eee259dfefc228108817a70590ccd6bbcd8d16bb9f699201f727cf9d187b0e6f3132c88fa637298b3f499b41690fad07c6798debde1a0ae671922bdebe37f721eeea2753d0028b063cf48fbb5a11e8dd521428ccc2edbb6c3c5f16170685d6da2260d3ed323fccdb040a6c8f2bb4ded0e716eb403cb5a589162386bb66eac336d3298e006ef3124c351eaf1f60ac16bb89fae273ad2c6eaacb5d398d585257f0a1a617eb4f46e027003c46fc90d01c049541802f20c283f82ad1c900477d2e6d9ea44f46e145fa4bdb0c98a200fcc60895284e6e1096130655981fe352abfcf24d00531b174680c48358c893ae735a2f0fee1e9165efed20dc175bd221eb383849795a2f007314ce6217fc409d9fcb6b1ae0f1b3070a99adea21f17aa3cc06dc165ddf51636191e46e1e6fb12525073fb8401c4</script>
-  <div class="hbe hbe-content">
-    <div class="hbe hbe-input hbe-input-default">
-      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
-      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
-        <span class="hbe hbe-input-label-content hbe-input-label-content-default">请输入密码以查看此内容</span>
-      </label>
-    </div>
-  </div>
-</div>
-<link href="/css/hbe.style.css" rel="stylesheet" type="text/css"><script data-swup-reload-script type="module" src="/js/plugins/hbe.js"></script>
-<script data-swup-reload-script type="module">
-import {initHBE} from "/js/plugins/hbe.js";
-  // console.log("hexo-blog-encrypt: loaded.");
-    initHBE();
-</script>
-]]></content>
+    <title>小丑</title>
+    <url>/2021/08/16/%E5%B0%8F%E4%B8%91/</url>
+    <content><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p>
+<p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p>
+<p>哀嚎着，<br>究竟是人是鬼？</p>
+<p style="text-align:right;">写于2021-8-16</p>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./joker.jpg"
+                      width="500px" height="auto" alt="小丑"
+                ><figcaption>小丑</figcaption></figure>]]></content>
       <categories>
-        <category>杂项</category>
+        <category>随笔</category>
       </categories>
-      <tags>
-        <tag>学习路线</tag>
-      </tags>
+  </entry>
+  <entry>
+    <title>我</title>
+    <url>/2018/05/06/%E6%88%91/</url>
+    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
+<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
+<p>也许<br>来来往往<br>你已老去</p>
+<p>但是<br>往复之间<br>越发真切</p>
+<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
+<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
+<p>我也知道<br>你<br>曾多少次暗自神伤</p>
+<p>我亦知道<br>你<br>曾多少次触景生情</p>
+<p>因为<br>我知道<br>我便是你</p>
+<p style="text-align:right;">写于2018-5-6</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>把握</title>
+    <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
+    <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
+<p style="text-align:right;">写于2016-5-14</p>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./elapse.jpg"
+                      width="400px" height="auto" alt="流逝"
+                ><figcaption>流逝</figcaption></figure>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
   </entry>
   <entry>
     <title>本地部署LLM</title>
@@ -1264,22 +1315,6 @@ import {initHBE} from "/js/plugins/hbe.js";
       </tags>
   </entry>
   <entry>
-    <title>把握</title>
-    <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
-    <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
-<p style="text-align:right;">写于2016-5-14</p>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./elapse.jpg"
-                      width="400px" height="auto" alt="流逝"
-                ><figcaption>流逝</figcaption></figure>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
     <title>本地部署dify</title>
     <url>/2025/03/14/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2dify/</url>
     <content><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>dify是一个开源的LLM应用开发平台，能将大模型进行编排，按照预期执行对应的任务。</p>
@@ -1387,41 +1422,6 @@ import {initHBE} from "/js/plugins/hbe.js";
       <tags>
         <tag>LLM</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>小丑</title>
-    <url>/2021/08/16/%E5%B0%8F%E4%B8%91/</url>
-    <content><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p>
-<p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p>
-<p>哀嚎着，<br>究竟是人是鬼？</p>
-<p style="text-align:right;">写于2021-8-16</p>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./joker.jpg"
-                      width="500px" height="auto" alt="小丑"
-                ><figcaption>小丑</figcaption></figure>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>我</title>
-    <url>/2018/05/06/%E6%88%91/</url>
-    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
-<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
-<p>也许<br>来来往往<br>你已老去</p>
-<p>但是<br>往复之间<br>越发真切</p>
-<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
-<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
-<p>我也知道<br>你<br>曾多少次暗自神伤</p>
-<p>我亦知道<br>你<br>曾多少次触景生情</p>
-<p>因为<br>我知道<br>我便是你</p>
-<p style="text-align:right;">写于2018-5-6</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
   </entry>
   <entry>
     <title>沉默的大多数</title>
@@ -1562,6 +1562,23 @@ import {initHBE} from "/js/plugins/hbe.js";
       </categories>
       <tags>
         <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>重构</title>
+    <url>/2023/11/06/%E9%87%8D%E6%9E%84/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>重构，即对程序内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。重构以增加程序的可维护性、可靠性，这是门学问，这与古老的谚语“程序能跑就不要动它”背道而驰，这句谚语也是屎山如何形成的最根本原因，没有定期地重构不合理的代码，使得埋下的坑越来越深，解bug就像探宝一样，时不时能发现其他宝藏：更难解的bug，这就是为什么bug越解越多。当然，重构总是与bug如影随形，这就要求以最小的步伐来进行重构，每一次重构完成时要进行详尽的测试，最好是提供统一稳定的测试环境，按照相同的方法进行测试，以免重构引入bug。</p>
+<p>重复的代码块IDE会进行提醒，如果有两个及以上重复就可以考虑抽象出一个函数了，这样当这块代码出错，就无需修改每处地方，仅需修改那个函数，这就是重构，其实我们每天都在进行重构，提炼、分析，从而选出最适合的数据结构，或者逻辑顺序。重构有许多种方法，其中按照既有模版进行重构是最简单的，因此了解设计模式以及类似的思想是很有必要的，可以减少编写代码出错的概率。重构就像是在梳理代码，只有理解了具体的逻辑，重构才成为可能，这就是代码可理解性的重要性，难以理解的设计非常不利于重构，因此，代码可读性优先于其他要义（如果不考虑性能的情况下，如果要进行性能优化，可能就会摒弃可读性，这是没办法的，不过也可以增加适当的注解来提高可读性，不要让别人揣测你代码的意思，而是浅显易懂，这才是好的设计）。讲个笑话，当有天回过头来看之前写的代码，会看不懂，惊呼一句卧槽这啥*玩意，那么就需要进行重构了，如果当初代码的作者都看不明白了，那么指望别人能快速理解代码意图是不太可能了。</p>
+<h2 id="设计大于编码"><a href="#设计大于编码" class="headerlink" title="设计大于编码"></a>设计大于编码</h2><p>良好的设计才是快速开发的秘诀，恶劣的设计会使得开发大半的时间都花在不断重复地调试当中，因为程序状况百出，不得不每每打断开发的进度，甚至因为修复bug而打上的补丁会影响后续的开发，使代码愈来愈臃肿，这是我们不希望看见的，因此，我再次强调设计思想的重要性，这是重构的前提。</p>
+<p>事先做好设计可以有效减少返工次数，即进行重构的次数，甚至无需进行重构，就能完美符合需求且代码结构清晰，维护容易，当然，不要过度设计，过于揣测之后的变化是不利于开发的，应该能够在满足需求的情况下，然后一定限度地对风险进行预测，考虑增加容错，而不是一上来就“疑神疑鬼”。掌握设计和编码难度的平衡性也是挺困难的，设计为需求而服务，但满足需求并不一定能够实际落地，需要切实考虑编码难度、时间花费、风险控制等等因素，而不是盲目地追求所谓好的设计。在设计前请务必理清需求和度量系统，不要臆测，想当然地以为那样就是那样，需要不断沟通以完善设计。</p>
+<h2 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h2><h3 id="重复代码"><a href="#重复代码" class="headerlink" title="重复代码"></a>重复代码</h3><p>这是再正常不过的坏味道了，当一段代码在多处出现，那就要考虑是否需要进行重构了，提炼出重复代码，然后封装到一个函数中，这样出问题只需改一处即可，而不是牵一发而动全身。</p>
+<h3 id="过长函数"><a href="#过长函数" class="headerlink" title="过长函数"></a>过长函数</h3><p>当一个函数过长，就要注意了，函数越长，逻辑就越难理清，也就越难维护，所谓屎山就是堆砌起来的，当一段冗长的代码摆在面前，且没有相应注释，我想是个人都会抗拒去阅读它，将这类代码分割成一小块一小块，每一块都是单独的一段逻辑，然后再串联起来，这样不仅能减少临时变量，且还能让逻辑变得清晰明了，最重要的是，复用性大大增加。</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>重构</tag>
       </tags>
   </entry>
   <entry>
@@ -1772,23 +1789,6 @@ import {initHBE} from "/js/plugins/hbe.js";
       <tags>
         <tag>JUC</tag>
         <tag>多线程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>重构</title>
-    <url>/2023/11/06/%E9%87%8D%E6%9E%84/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>重构，即对程序内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。重构以增加程序的可维护性、可靠性，这是门学问，这与古老的谚语“程序能跑就不要动它”背道而驰，这句谚语也是屎山如何形成的最根本原因，没有定期地重构不合理的代码，使得埋下的坑越来越深，解bug就像探宝一样，时不时能发现其他宝藏：更难解的bug，这就是为什么bug越解越多。当然，重构总是与bug如影随形，这就要求以最小的步伐来进行重构，每一次重构完成时要进行详尽的测试，最好是提供统一稳定的测试环境，按照相同的方法进行测试，以免重构引入bug。</p>
-<p>重复的代码块IDE会进行提醒，如果有两个及以上重复就可以考虑抽象出一个函数了，这样当这块代码出错，就无需修改每处地方，仅需修改那个函数，这就是重构，其实我们每天都在进行重构，提炼、分析，从而选出最适合的数据结构，或者逻辑顺序。重构有许多种方法，其中按照既有模版进行重构是最简单的，因此了解设计模式以及类似的思想是很有必要的，可以减少编写代码出错的概率。重构就像是在梳理代码，只有理解了具体的逻辑，重构才成为可能，这就是代码可理解性的重要性，难以理解的设计非常不利于重构，因此，代码可读性优先于其他要义（如果不考虑性能的情况下，如果要进行性能优化，可能就会摒弃可读性，这是没办法的，不过也可以增加适当的注解来提高可读性，不要让别人揣测你代码的意思，而是浅显易懂，这才是好的设计）。讲个笑话，当有天回过头来看之前写的代码，会看不懂，惊呼一句卧槽这啥*玩意，那么就需要进行重构了，如果当初代码的作者都看不明白了，那么指望别人能快速理解代码意图是不太可能了。</p>
-<h2 id="设计大于编码"><a href="#设计大于编码" class="headerlink" title="设计大于编码"></a>设计大于编码</h2><p>良好的设计才是快速开发的秘诀，恶劣的设计会使得开发大半的时间都花在不断重复地调试当中，因为程序状况百出，不得不每每打断开发的进度，甚至因为修复bug而打上的补丁会影响后续的开发，使代码愈来愈臃肿，这是我们不希望看见的，因此，我再次强调设计思想的重要性，这是重构的前提。</p>
-<p>事先做好设计可以有效减少返工次数，即进行重构的次数，甚至无需进行重构，就能完美符合需求且代码结构清晰，维护容易，当然，不要过度设计，过于揣测之后的变化是不利于开发的，应该能够在满足需求的情况下，然后一定限度地对风险进行预测，考虑增加容错，而不是一上来就“疑神疑鬼”。掌握设计和编码难度的平衡性也是挺困难的，设计为需求而服务，但满足需求并不一定能够实际落地，需要切实考虑编码难度、时间花费、风险控制等等因素，而不是盲目地追求所谓好的设计。在设计前请务必理清需求和度量系统，不要臆测，想当然地以为那样就是那样，需要不断沟通以完善设计。</p>
-<h2 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h2><h3 id="重复代码"><a href="#重复代码" class="headerlink" title="重复代码"></a>重复代码</h3><p>这是再正常不过的坏味道了，当一段代码在多处出现，那就要考虑是否需要进行重构了，提炼出重复代码，然后封装到一个函数中，这样出问题只需改一处即可，而不是牵一发而动全身。</p>
-<h3 id="过长函数"><a href="#过长函数" class="headerlink" title="过长函数"></a>过长函数</h3><p>当一个函数过长，就要注意了，函数越长，逻辑就越难理清，也就越难维护，所谓屎山就是堆砌起来的，当一段冗长的代码摆在面前，且没有相应注释，我想是个人都会抗拒去阅读它，将这类代码分割成一小块一小块，每一块都是单独的一段逻辑，然后再串联起来，这样不仅能减少临时变量，且还能让逻辑变得清晰明了，最重要的是，复用性大大增加。</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>重构</tag>
       </tags>
   </entry>
 </search>
