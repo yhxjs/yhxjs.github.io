@@ -168,95 +168,6 @@
       </tags>
   </entry>
   <entry>
-    <title>IOC和AOP原理</title>
-    <url>/2024/08/06/IOC%E5%92%8CAOP%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p>通过对<a class="link"   href="https://github.com/DerekYRC/mini-spring" >mini-spring<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 代码的阅读，对IoC和AOP的原理有了进一步认识，二者都为构成Spring的基础概念，是框架底层的实现原理。</p>
-<blockquote>
-<p>mini-spring是对Spring IOC和AOP部分的简单实现，仅保留最基础的部分。</p>
-</blockquote>
-<h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Ioc即控制反转，指的是容器控制程序对象之间的关系，而不是传统实现中，由程序代码直接控制，控制权由应用代码中转到了外部容器，控制权的转移即所谓的反转。</p>
-<p>对于Spring而言，就是由Spring来控制对象的生命周期和对象之间的关系，因此，Ioc还有另一个名字——依赖注入，即组件之间的依赖关系由容器在运行期间决定，由容器动态地将某种依赖关系注入到组件之间。</p>
-<p>所有的类都会在Spring容器中登记，告诉Spring这是个什么东西，然后当某个类需要什么东西，Spring就会在系统运行到适当的时候，将这个类要的东西主动赋予，同时对于其他类也是如此。所有的类的创建、销毁都由Spring来控制，也就是说控制对象生存周期的不再是引用它的对象，而是Spring。对于某个具体的对象而言，以前是它控制其他对象，现在是所有对象都被Spring控制，所以这叫控制反转。</p>
-<p>依赖注入的思想是通过反射机制实现的，在实例化一个类时，它通过反射调用类中set方法将事先保存在HashMap中的类属性注入到类中。总而言之，在传统的对象创建方式中，通常由调用者来创建被调用者的实例，而在Spring中创建被调用者的工作由Spring来完成，然后注入调用者，即所谓的依赖注入or控制反转。</p>
-<p>IoC的优点：降低了组件之间的耦合，降低了业务对象之间替换的复杂性，使之能够灵活的管理对象。</p>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>见 <a href="#bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">bean的生命周期</a></p>
-<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><p>AOP面向切面编程基于IoC，是对OOP的有益补充，AOP利用一种称为“横切”的技术，剖解开封装的对象内部，并将那些影响了多个类的公共行为封装到一个可重用模块，并将其名为“Aspect”，即切面。</p>
-<p>所谓“切面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，比如日志记录，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可操作性和可维护性。</p>
-<p>AOP代表的是一个横向的关系，将“对象”比作一个空心的立体，其中封装的是对象的属性和行为，则面向切面编程的方法，就是将这个立体以切面形式剖开，选择性地提供业务逻辑，而剖开的切面，也就是所谓的“切面”了。</p>
-<p>实现AOP的技术，主要分为两大类：一是采用动态代理技术，利用截取消息的方式，对该消息进行装饰，以取代原有对象行为的执行，二是采用静态织入的方式，引入特定的语法创建“切面”，从而使得编译器可以在编译期间织入有关“切面”的代码。</p>
-<p>Spring实现AOP：JDK动态代理和CGLIB代理。</p>
-<ul>
-<li>JDK动态代理：其代理对象必须是某个接口的实现，它是通过在运行期间创建一个接口的实现类来完成对目标对象的代理，其核心的两个类是InvocationHandler和Proxy。</li>
-<li>CGLIB代理：实现原理类似于JDK动态代理，只是它在运行期间生成的代理对象是针对目标类扩展的子类。CGLIB是高效的代码生成包，底层是依靠ASM（开源的java字节码编辑类库）操作字节码实现的，性能比JDK强，需要引入包asm.jar和cglib.jar。</li>
-</ul>
-<p>使用AspectJ注入式切面和@AspectJ注解驱动的切面实际上底层也是通过动态代理实现的。</p>
-<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>ProxyFactory是动态代理工厂，用来决定使用JDK动态代理还是CGLIB动态代理。</p>
-<p>获取BeanFactory所有的AspectJExpressionPointcutAdvisor继承类，常用的有BeforeAdvice、AfterAdvice、AfterReturningAdvice等，当bean的类型与Advice的Pointcut规定的类型匹配时，则创建代理对象。</p>
-<p>当方法执行时，获取拦截器链（首先获取全部切面，再判断当前代理对象是否匹配该Advisor，是否匹配当前调用method），依据拦截器链依次执行，执行过程相当于是一个递归的过程。</p>
-<h2 id="bean的生命周期"><a href="#bean的生命周期" class="headerlink" title="bean的生命周期"></a>bean的生命周期</h2><figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./bean的生命周期.png"
-                      width="700px" height="auto" alt="bean的生命周期"
-                ><figcaption>bean的生命周期</figcaption></figure>
-
-<ol>
-<li>创建BeanFactory并读取XML文件，将定义的bean读取出来，将每个bean的属性参数解析到PropertyValues，当存在依赖其他的bean时，会新建一个BeanReference，然后封装为封装为一个BeanDefinition，通过beanFactory进行注册，而如果配置了包扫描，则会对配置的包下进行扫描，扫描出@Component的类同样封装为一个BeanDefinition进行注册，并注册internalAutowiredAnnotationProcessor以便实例化时对自动注入进行处理。</li>
-<li>添加ApplicationContextAwareProcessor，让继承自ApplicationContextAware的bean能感知bean。</li>
-<li>在bean实例化之前，执行注册的BeanFactoryPostProcessor，修改相关的BeanDefinition。</li>
-<li>注册BeanPostProcessor。</li>
-<li>初始化事件发布者和注册事件监听器。</li>
-<li>注册类型转换器和提前实例化单例bean，只有当bean是单例且不为懒加载才会被创建。<ul>
-<li>先从缓存中获取，如果获取到且为FactoryBean则从FactoryBean#getObject中创建bean。</li>
-<li>否则获取BeanDefinition，并根据此创建bean<ul>
-<li>如果bean需要代理，则直接返回代理对象，遍历BeanPostProcessor，对InstantiationAwareBeanPostProcessor的实现类进行处理，调用其postProcessBeforeInstantiation，若返回值不为null，即生成了被代理对象，再调用postProcessAfterInitialization即可生成最终的代理对象。</li>
-<li>接下来就是未被代理的bean，首先调用类的无参构造方法，生成实例，为解决<strong>循环依赖</strong>问题，将实例化后的bean放进缓存中提前暴露，执行InstantiationAwareBeanPostProcessor，此时@Autowired等就会自动注入属性，然后通过反射设置属性，如果继承了BeanFactoryAware，则执行setBeanFactory，执行BeanPostProcessor的前置处理，调用初始化方法init，执行BeanPostProcessor的后置处理，注册有销毁方法的bean，最后，如果有代理对象，则会进行覆盖。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>发布容器刷新完成事件</li>
-</ol>
-<h2 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h2><p>Spring为了解决单例的循环依赖问题，使用了三级缓存。</p>
-<h3 id="三级缓存"><a href="#三级缓存" class="headerlink" title="三级缓存"></a>三级缓存</h3><p>这三个缓存都是定义在DefaultSingletonBeanRegistry类中的：</p>
-<p>bean name –&gt; bean instance</p>
-<p>单例对象的cache：一级缓存</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;(<span class="number">64</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>bean name –&gt; bean instance</p>
-<p>提前暴光的单例对象的Cache：二级缓存</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>bean name –&gt; ObjectFactory</p>
-<p>单例对象工厂的cache：三级缓存</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, ObjectFactory&lt;?&gt;&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>循环依赖主要的三级缓存分别是：</p>
-<ol>
-<li>singletonObbjects：一级缓存单例池，主要存放最终形态的单例bean，一般获取一个bean都是从这个缓存中获取，需要说明的是并不是所有单例bean都存在这个缓存当中，有些特殊的单例bean不存在这个缓存当中。</li>
-<li>earlySingletonObjects：二级缓存，主要存放的是过渡bean（原始对象&#x2F;原始对象的代理对象），也就是从三级缓存当中产生出来的对象，它的作用是防止在多级循环依赖的情况下重复从三级缓存当中创建对象，其他对象都可以直接从二级缓存中获取到原始对象&#x2F;原始对象的代理对象，因为三级缓存当中创建对象是需要牺牲一定得性能，有了这个缓存可以一定程度上提高效率（但是提高的效率并不明显）。只有在调用了三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象时，才会将原始对象&#x2F;原始对象的代理对象放入二级缓存，而调用三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象这种情况只会发生在有循环依赖的时候，所以，<strong>二级缓存在没有循环依赖的情况下不会被使用到</strong>。二级缓存是为了提前暴露Bean来解决循环依赖问题，此时的Bean可能还没有进行属性注入，只有等完成了属性注入、初始化后的Bean才会上移到一级缓存（单例池）中。</li>
-<li>singletonFactories三级缓存，用于存放原始对象对应的ObjectFactory，它的作用主要是为了产生一个对象，每生成一个原始对象，都会将这个原始对象对应的ObjectFactory放到三级缓存中，通过调用ObjectFactory的getObject()方法，就能够在需要动态代理的情况下为原始对象生成代理对象并返回，否则返回原始对象，以此来处理循环依赖时还需要动态代理的情况。</li>
-</ol>
-<p>简单来说：</p>
-<ol>
-<li>singletonObjects，一级缓存，存储的是所有创建好了的单例Bean。</li>
-<li>earlySingletonObjects，完成实例化，但是还未进行属性注入及初始化的对象。</li>
-<li>singletonFactories，提前暴露的一个单例工厂，二级缓存中存储的就是从这个工厂中获取到的对象。</li>
-</ol>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (beanDefinition.isSingleton()) &#123;</span><br><span class="line">	<span class="type">Object</span> <span class="variable">finalBean</span> <span class="operator">=</span> bean;</span><br><span class="line">	addSingletonFactory(beanName, <span class="keyword">new</span> <span class="title class_">ObjectFactory</span>&lt;Object&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="keyword">public</span> Object <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> BeansException &#123;</span><br><span class="line">			<span class="keyword">return</span> getEarlyBeanReference(beanName, beanDefinition, finalBean);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<p>第三级缓存就是坚决循环依赖问题的关键，而这个方法也是解决循环依赖的关键所在，这段代码发生在doCreateBean()方法中createBeanInstance之后，也就是说单例对象此时已经被实例化出来了。这个对象已经被生产出来了，虽然还未设置属性等其他操作，但是已经能被认出来了（根据对象引用能定位到堆中的对象），所以Spring此时将这个对象提前曝光出来，可以进行使用（此时为依赖注入）。</p>
-<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>当A的某个field或者setter依赖了B的实例对象，同时B的某个field或者setter依赖了A的实例对象，这种情况就为循环依赖。A首先完成了创建的第一步（完成实例化），并且将自己提前曝光到singletonFactories中，此时进行创建的第二步（属性注入），发现自己依赖对象B，此时就尝试去getBean(B)，发现B还没有被create，所以走createBean(B)的流程，B在创建第一步的时候发现自己依赖了对象A，于是尝试getBean(A)，尝试查询一级缓存singletonObjects（肯定没有，因为A还没初始化完全），尝试查询二级缓存earlySingletonObjects（也没有），尝试三级缓存singletonFactories，由于A通过ObjectFactory将自己提前曝光了，所以B能够通过ObjectFactory.getObject拿到A对象（即使A还没有初始化完全，但是因此解决了循环依赖的问题），B拿到A对象后顺利完成了创建过程，B完成创建后之后将自己放入到一级缓存singletonObjects中。此时返回A的创建流程中，A此时能拿到B的对象顺利完成自己的创建过程，最终A也完成了创建，将创建好的A添加到一级缓存singletonObjects中，而且需要说明的是，由于B拿到了A的对象引用，所以B现在持有的A对象也完成了最终的创建。<strong>简单来说，就是spring创造了一个循环依赖的结束点标识。</strong></p>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hexo配置</title>
     <url>/2024/02/29/Hexo%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Hexo 基于 Node.js，搭建过程中还需要使用 npm 和 git，因此需要搭建本地操作环境，安装 <a class="link"   href="https://nodejs.org/en" >Node.js<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 和 <a class="link"   href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" >Git<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>。</p>
@@ -355,6 +266,21 @@
 <p>过去的人和事，<br>如若还在身边，<br>那么这形同陌路，<br>却不如不见。<br>可不见，<br>却又倍加思念，<br>不知该何去何从，<br>便只能做好如今的事。</p>
 <p>那么不如待我如初见——至逝去的三年（初中）</p>
 <p style="text-align:right;">写于2016-09-25</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>伤</title>
+    <url>/2022/06/29/%E4%BC%A4/</url>
+    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
+<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
+<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
+<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
+<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
+<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
+<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
+]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -553,19 +479,199 @@
       </tags>
   </entry>
   <entry>
-    <title>伤</title>
-    <url>/2022/06/29/%E4%BC%A4/</url>
-    <content><![CDATA[<p>伤，是人之所感，亦是这世间可随处可见的一种现象，为自己所伤，为世人所伤，无论主体，无论手段，又如刀锋上跳动的冷光，亦如火焰上蔓延的灼烧感，将人拽入深渊，并不是简单的，混杂着不同的情感，正是如此复杂，不能进行量化，描述的仅仅只是其中一小部分，无法将其彻底阐述，只能凭借心中所想，掏出一部分展现出来，畸形的，蠕动着，尖叫着，掏出的那部分化为一个空洞，深不见底，惊恐地望着自己，这是谁？如此丑陋，如此不堪，只能无能地嚎叫。</p>
-<p>伤，附着在生物上，负面的影响是它的养分，它不断扩散，若外部没有事物阻止它，便会向深处爬去，贪婪地吮吸着，血液的醇香，或是内心的影子，皆让其欢喜，躲藏在那邪恶的背后，跳动着指挥，指挥着那傀儡。</p>
-<p>伤，其本源是贪婪。人总是怀着最大的恶意去揣测他人，当人对某样事物产生渴望时，会不择手段地去获取它，如果发现自己无法够到时，要么就此放弃，另行寻找目标，要么就将其抹黑，无论这黑是真实存在还是子虚乌有，这时，伤随之孕育而生，伤其中又孕育着伤的种子，一旦时机成熟，种子就会疯一般地生长，伸出的藤蔓向外蔓延，寻找能进一步寄生的宿主，而其根部越扎越深，随时间的流逝，越难将其根除，直至严重得只能限制其生长。</p>
-<p>世间万物皆是如此，遍布着伤痕。伤无处不在，因外部所受的伤害化为实体和阴霾，实体即为可见的创伤，阴霾则为笼罩在心中的悸动，因内在所受的伤害化为压抑的负面情绪，时而外露，更多是隐藏在内心深处，不让外界触及，带上一层层枷锁，给自己戴上面具，成为双面人。</p>
-<p>伤，会制造混乱，当种子萌发，吸收养分，释放黑暗，包裹着潘多拉魔盒，如同恶鬼一般扑向目光所及的光芒，追寻着光明，却是为了毁灭源头，同化曾向往光明的那些事物，低语着克苏鲁的咒文，如同厉魄一般撕咬着火种，绝望油然而生，而这绝望源源不断，化作美味被其吞咽而下，负面的一切，即最好的养料。</p>
-<p>伤，与疼伴生，当感受到带来的那份苦楚，不由自主地颤抖，回想着世间的美好，借由其温存冲淡心中不适，但适得其反，曾经珍惜的回忆在痛感面前，显得那么的虚无，仿佛不真切地发生过。混乱的思绪牵扯着伤口，随着负面情绪不断蚕食，最后一丝理智丧失了，转向曾经爱过的事物，歇斯底里地怒吼，像受伤的野兽一般，伸出利爪，伤害着靠近的一切，直至只剩自己独立于天地，渐渐被黑暗吞噬，变成非人存在。</p>
-<p>舔舐着伤口，自我感动地寻求着“同类”，聚集起来的非人们，哄骗着入世未深的，拖入深渊吃干抹尽，不断将伤播种。我想，我也是其中一员吧。。。</p>
+    <title>IOC和AOP原理</title>
+    <url>/2024/08/06/IOC%E5%92%8CAOP%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p>通过对<a class="link"   href="https://github.com/DerekYRC/mini-spring" >mini-spring<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 代码的阅读，对IoC和AOP的原理有了进一步认识，二者都为构成Spring的基础概念，是框架底层的实现原理。</p>
+<blockquote>
+<p>mini-spring是对Spring IOC和AOP部分的简单实现，仅保留最基础的部分。</p>
+</blockquote>
+<h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Ioc即控制反转，指的是容器控制程序对象之间的关系，而不是传统实现中，由程序代码直接控制，控制权由应用代码中转到了外部容器，控制权的转移即所谓的反转。</p>
+<p>对于Spring而言，就是由Spring来控制对象的生命周期和对象之间的关系，因此，Ioc还有另一个名字——依赖注入，即组件之间的依赖关系由容器在运行期间决定，由容器动态地将某种依赖关系注入到组件之间。</p>
+<p>所有的类都会在Spring容器中登记，告诉Spring这是个什么东西，然后当某个类需要什么东西，Spring就会在系统运行到适当的时候，将这个类要的东西主动赋予，同时对于其他类也是如此。所有的类的创建、销毁都由Spring来控制，也就是说控制对象生存周期的不再是引用它的对象，而是Spring。对于某个具体的对象而言，以前是它控制其他对象，现在是所有对象都被Spring控制，所以这叫控制反转。</p>
+<p>依赖注入的思想是通过反射机制实现的，在实例化一个类时，它通过反射调用类中set方法将事先保存在HashMap中的类属性注入到类中。总而言之，在传统的对象创建方式中，通常由调用者来创建被调用者的实例，而在Spring中创建被调用者的工作由Spring来完成，然后注入调用者，即所谓的依赖注入or控制反转。</p>
+<p>IoC的优点：降低了组件之间的耦合，降低了业务对象之间替换的复杂性，使之能够灵活的管理对象。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>见 <a href="#bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">bean的生命周期</a></p>
+<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><p>AOP面向切面编程基于IoC，是对OOP的有益补充，AOP利用一种称为“横切”的技术，剖解开封装的对象内部，并将那些影响了多个类的公共行为封装到一个可重用模块，并将其名为“Aspect”，即切面。</p>
+<p>所谓“切面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，比如日志记录，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可操作性和可维护性。</p>
+<p>AOP代表的是一个横向的关系，将“对象”比作一个空心的立体，其中封装的是对象的属性和行为，则面向切面编程的方法，就是将这个立体以切面形式剖开，选择性地提供业务逻辑，而剖开的切面，也就是所谓的“切面”了。</p>
+<p>实现AOP的技术，主要分为两大类：一是采用动态代理技术，利用截取消息的方式，对该消息进行装饰，以取代原有对象行为的执行，二是采用静态织入的方式，引入特定的语法创建“切面”，从而使得编译器可以在编译期间织入有关“切面”的代码。</p>
+<p>Spring实现AOP：JDK动态代理和CGLIB代理。</p>
+<ul>
+<li>JDK动态代理：其代理对象必须是某个接口的实现，它是通过在运行期间创建一个接口的实现类来完成对目标对象的代理，其核心的两个类是InvocationHandler和Proxy。</li>
+<li>CGLIB代理：实现原理类似于JDK动态代理，只是它在运行期间生成的代理对象是针对目标类扩展的子类。CGLIB是高效的代码生成包，底层是依靠ASM（开源的java字节码编辑类库）操作字节码实现的，性能比JDK强，需要引入包asm.jar和cglib.jar。</li>
+</ul>
+<p>使用AspectJ注入式切面和@AspectJ注解驱动的切面实际上底层也是通过动态代理实现的。</p>
+<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>ProxyFactory是动态代理工厂，用来决定使用JDK动态代理还是CGLIB动态代理。</p>
+<p>获取BeanFactory所有的AspectJExpressionPointcutAdvisor继承类，常用的有BeforeAdvice、AfterAdvice、AfterReturningAdvice等，当bean的类型与Advice的Pointcut规定的类型匹配时，则创建代理对象。</p>
+<p>当方法执行时，获取拦截器链（首先获取全部切面，再判断当前代理对象是否匹配该Advisor，是否匹配当前调用method），依据拦截器链依次执行，执行过程相当于是一个递归的过程。</p>
+<h2 id="bean的生命周期"><a href="#bean的生命周期" class="headerlink" title="bean的生命周期"></a>bean的生命周期</h2><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./bean的生命周期.png"
+                      width="700px" height="auto" alt="bean的生命周期"
+                ><figcaption>bean的生命周期</figcaption></figure>
+
+<ol>
+<li>创建BeanFactory并读取XML文件，将定义的bean读取出来，将每个bean的属性参数解析到PropertyValues，当存在依赖其他的bean时，会新建一个BeanReference，然后封装为封装为一个BeanDefinition，通过beanFactory进行注册，而如果配置了包扫描，则会对配置的包下进行扫描，扫描出@Component的类同样封装为一个BeanDefinition进行注册，并注册internalAutowiredAnnotationProcessor以便实例化时对自动注入进行处理。</li>
+<li>添加ApplicationContextAwareProcessor，让继承自ApplicationContextAware的bean能感知bean。</li>
+<li>在bean实例化之前，执行注册的BeanFactoryPostProcessor，修改相关的BeanDefinition。</li>
+<li>注册BeanPostProcessor。</li>
+<li>初始化事件发布者和注册事件监听器。</li>
+<li>注册类型转换器和提前实例化单例bean，只有当bean是单例且不为懒加载才会被创建。<ul>
+<li>先从缓存中获取，如果获取到且为FactoryBean则从FactoryBean#getObject中创建bean。</li>
+<li>否则获取BeanDefinition，并根据此创建bean<ul>
+<li>如果bean需要代理，则直接返回代理对象，遍历BeanPostProcessor，对InstantiationAwareBeanPostProcessor的实现类进行处理，调用其postProcessBeforeInstantiation，若返回值不为null，即生成了被代理对象，再调用postProcessAfterInitialization即可生成最终的代理对象。</li>
+<li>接下来就是未被代理的bean，首先调用类的无参构造方法，生成实例，为解决<strong>循环依赖</strong>问题，将实例化后的bean放进缓存中提前暴露，执行InstantiationAwareBeanPostProcessor，此时@Autowired等就会自动注入属性，然后通过反射设置属性，如果继承了BeanFactoryAware，则执行setBeanFactory，执行BeanPostProcessor的前置处理，调用初始化方法init，执行BeanPostProcessor的后置处理，注册有销毁方法的bean，最后，如果有代理对象，则会进行覆盖。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>发布容器刷新完成事件</li>
+</ol>
+<h2 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h2><p>Spring为了解决单例的循环依赖问题，使用了三级缓存。</p>
+<h3 id="三级缓存"><a href="#三级缓存" class="headerlink" title="三级缓存"></a>三级缓存</h3><p>这三个缓存都是定义在DefaultSingletonBeanRegistry类中的：</p>
+<p>bean name –&gt; bean instance</p>
+<p>单例对象的cache：一级缓存</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;(<span class="number">64</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>bean name –&gt; bean instance</p>
+<p>提前暴光的单例对象的Cache：二级缓存</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>bean name –&gt; ObjectFactory</p>
+<p>单例对象工厂的cache：三级缓存</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, ObjectFactory&lt;?&gt;&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>循环依赖主要的三级缓存分别是：</p>
+<ol>
+<li>singletonObbjects：一级缓存单例池，主要存放最终形态的单例bean，一般获取一个bean都是从这个缓存中获取，需要说明的是并不是所有单例bean都存在这个缓存当中，有些特殊的单例bean不存在这个缓存当中。</li>
+<li>earlySingletonObjects：二级缓存，主要存放的是过渡bean（原始对象&#x2F;原始对象的代理对象），也就是从三级缓存当中产生出来的对象，它的作用是防止在多级循环依赖的情况下重复从三级缓存当中创建对象，其他对象都可以直接从二级缓存中获取到原始对象&#x2F;原始对象的代理对象，因为三级缓存当中创建对象是需要牺牲一定得性能，有了这个缓存可以一定程度上提高效率（但是提高的效率并不明显）。只有在调用了三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象时，才会将原始对象&#x2F;原始对象的代理对象放入二级缓存，而调用三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象这种情况只会发生在有循环依赖的时候，所以，<strong>二级缓存在没有循环依赖的情况下不会被使用到</strong>。二级缓存是为了提前暴露Bean来解决循环依赖问题，此时的Bean可能还没有进行属性注入，只有等完成了属性注入、初始化后的Bean才会上移到一级缓存（单例池）中。</li>
+<li>singletonFactories三级缓存，用于存放原始对象对应的ObjectFactory，它的作用主要是为了产生一个对象，每生成一个原始对象，都会将这个原始对象对应的ObjectFactory放到三级缓存中，通过调用ObjectFactory的getObject()方法，就能够在需要动态代理的情况下为原始对象生成代理对象并返回，否则返回原始对象，以此来处理循环依赖时还需要动态代理的情况。</li>
+</ol>
+<p>简单来说：</p>
+<ol>
+<li>singletonObjects，一级缓存，存储的是所有创建好了的单例Bean。</li>
+<li>earlySingletonObjects，完成实例化，但是还未进行属性注入及初始化的对象。</li>
+<li>singletonFactories，提前暴露的一个单例工厂，二级缓存中存储的就是从这个工厂中获取到的对象。</li>
+</ol>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (beanDefinition.isSingleton()) &#123;</span><br><span class="line">	<span class="type">Object</span> <span class="variable">finalBean</span> <span class="operator">=</span> bean;</span><br><span class="line">	addSingletonFactory(beanName, <span class="keyword">new</span> <span class="title class_">ObjectFactory</span>&lt;Object&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="keyword">public</span> Object <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> BeansException &#123;</span><br><span class="line">			<span class="keyword">return</span> getEarlyBeanReference(beanName, beanDefinition, finalBean);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>第三级缓存就是坚决循环依赖问题的关键，而这个方法也是解决循环依赖的关键所在，这段代码发生在doCreateBean()方法中createBeanInstance之后，也就是说单例对象此时已经被实例化出来了。这个对象已经被生产出来了，虽然还未设置属性等其他操作，但是已经能被认出来了（根据对象引用能定位到堆中的对象），所以Spring此时将这个对象提前曝光出来，可以进行使用（此时为依赖注入）。</p>
+<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>当A的某个field或者setter依赖了B的实例对象，同时B的某个field或者setter依赖了A的实例对象，这种情况就为循环依赖。A首先完成了创建的第一步（完成实例化），并且将自己提前曝光到singletonFactories中，此时进行创建的第二步（属性注入），发现自己依赖对象B，此时就尝试去getBean(B)，发现B还没有被create，所以走createBean(B)的流程，B在创建第一步的时候发现自己依赖了对象A，于是尝试getBean(A)，尝试查询一级缓存singletonObjects（肯定没有，因为A还没初始化完全），尝试查询二级缓存earlySingletonObjects（也没有），尝试三级缓存singletonFactories，由于A通过ObjectFactory将自己提前曝光了，所以B能够通过ObjectFactory.getObject拿到A对象（即使A还没有初始化完全，但是因此解决了循环依赖的问题），B拿到A对象后顺利完成了创建过程，B完成创建后之后将自己放入到一级缓存singletonObjects中。此时返回A的创建流程中，A此时能拿到B的对象顺利完成自己的创建过程，最终A也完成了创建，将创建好的A添加到一级缓存singletonObjects中，而且需要说明的是，由于B拿到了A的对象引用，所以B现在持有的A对象也完成了最终的创建。<strong>简单来说，就是spring创造了一个循环依赖的结束点标识。</strong></p>
 ]]></content>
       <categories>
-        <category>随笔</category>
+        <category>后端</category>
       </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于上云故障转移方案</title>
+    <url>/2024/11/01/%E5%85%B3%E4%BA%8E%E4%B8%8A%E4%BA%91%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h2 id="上云"><a href="#上云" class="headerlink" title="上云"></a>上云</h2><p>现代服务部署解决方案基本都为云部署，尤其是较大规模的应用，部署服务的方式一般有自建机房、IDC托管、云服务厂商，现如今以阿里云、腾讯云、华为云等为首的云服务厂商的份额日益增加，得益于上云后带来的最大好处——方便运维，变相提高了应用的可靠性，因为相较于部署在自建机房和IDC托管，云服务厂商会提供更加成熟的部署方案，不仅包括简单的部署，包括域名解析、数据备份、容灾等一系列完善的服务，使得服务部署不再困难，降低运维成本以及减少犯错的概率。</p>
+<p>不过，上云容易受到一些不可控的因素干扰，例如云服务厂商突然做出骚操作，之前就存在云服务厂商升级组件而未通知客户，而组件升级切换并不平滑，导致客户部署的服务出现短暂不可用，甚至出现更为糟糕的情况——光缆被挖断了，物理意义上的断你网线，如果没有做好多地容灾，那后果可想而知，服务完全down，无法恢复，当然，不仅云上有这个问题，云下同样如此，因为本质都是机房，只不过运维方式不同。</p>
+<p>而中间件出问题导致服务不可用的情况只能说挺少见的，至少我目前还未遇到过，但是做好应对方案也是必要的，因为谁也保不准什么时候会出问题，弄好预案就多一份保险，省的出问题时两眼一黑。</p>
+<h2 id="动态数据源"><a href="#动态数据源" class="headerlink" title="动态数据源"></a>动态数据源</h2><p>上云前需要弄清楚各个中间件如何动态设置数据源，从而实现热更新，即仅更改某处的配置即可对应用使用的数据源进行动态更新，而无需重启应用，可以使用Nacos进行配置的修改，而且Nacos支持动态刷新配置，天然支持配置监听，并且也可以不使用Nacos自带的配置监听类，可以使用定时器对配置的数据源进行比对，若发生变化则对数据源进行设置。</p>
+<p>当然，应用启动时是通过读取环境变量来设置初始可用的数据源，避免因为某个数据源不可用导致服务启动失败，由于是上云，因此为了稳妥起见，采用了云下——混合云——云上的渐进上云，混合云的中间件都还是连接的云下，而流量是按比例打到云上和云下，而为了做好上云的准备，各个中间件的数据需要从云下同步到云上，当上云时会将云下服务全量停止，云上服务中间件全量切入，并全量流量切入，为此需要准备两个配置文件，方便进行切换。</p>
+<h2 id="故障转移方案"><a href="#故障转移方案" class="headerlink" title="故障转移方案"></a>故障转移方案</h2><h3 id="废案"><a href="#废案" class="headerlink" title="废案"></a>废案</h3><p>在应用启动时同时初始化云上和云下的数据源bean，而在使用数据源时，通过当前配置的数据源标记进行匹配数据源，从而进行相关的数据源操作，这个存在致命的问题，就是当云上和云下其中一个数据源出现问题，服务会无法启动，所以才有后续的补充方案（仅是个想法，还未进行验证）。</p>
+<h4 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h4><p>通过继承AbstractRoutingDataSource这个jdbc动态数据源类，重写determineCurrentLookupKey方法，即可使用相应的数据源，正常场景是读写分离，写入使用主库，查询使用从库。</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;cloudDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource cloudDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;idcDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource idcDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 配置初始数据源信息</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;Object, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;CLOUD&quot;</span>, cloudDataSource);</span><br><span class="line">        map.put(<span class="string">&quot;IDC&quot;</span>, idcDataSource);</span><br><span class="line">        setTargetDataSources(map);</span><br><span class="line">        setDefaultTargetDataSource(idcDataSource);</span><br><span class="line">        <span class="built_in">super</span>.afterPropertiesSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 这个是主要的方法，根据key查找对应的数据源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;CLOUD&quot;</span>; <span class="comment">// 这里需要修改为返回动态的数据源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Redis-Kafka"><a href="#Redis-Kafka" class="headerlink" title="Redis&#x2F;Kafka"></a>Redis&#x2F;Kafka</h4><p>Redis和Kafka一般都有工具类，因此在工具类中注入bean，并且通过map维护云上和云下对应的bean，执行相关操作时，通过数据源标记在map中获得相应的bean即可，无需额外操作。</p>
+<p>而以上最终成为了废案，因为不确定因素太多了，容易出现问题，所以采用了最稳妥的方案即终极方案。</p>
+<h3 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h3><p>直接改配置文件，然后重启服务，是的，你没看错，采用了最原始的方式，同样是最为可靠的方式，虽然服务不可用的时间会比较长，但是更为稳妥，不容易出现问题，且代码侵入性低，一个字，白学（bushi</p>
+<h3 id="补充方案（未验证）"><a href="#补充方案（未验证）" class="headerlink" title="补充方案（未验证）"></a>补充方案（未验证）</h3><p>由于废案中是同时初始化云上和云下两套数据源，那么在启动的时候指定其中某一套可用的数据源初始化不就行了，通过查询资料得知，貌似是可行的，通过方法在应用启动后还可以手动初始化数据源，从而实现动态切换数据源，而触发初始化数据源的就可以是之前所提到的使用定时器对配置的数据源进行比对，只不过不是设置数据源了，而是重新初始化数据源。</p>
+<h4 id="MySql-1"><a href="#MySql-1" class="headerlink" title="MySql"></a>MySql</h4><p>以Druid为例，DruidDataSource提供restart方法，可以在应用启动后重新初始化连接池，因此可以修改数据源配置后，由定时器进行调用，设置为需要切换的对应配置，如下：</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意，cloudDataSource需要为DruidDataSource类型</span></span><br><span class="line">cloudDataSource.setUrl(<span class="string">&quot;jdbc:mysql://***.***.***.***:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&quot;</span>);</span><br><span class="line">cloudDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">cloudDataSource.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">cloudDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">cloudDataSource.restart();</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>暂未找到相关方法，待补充。。。</p>
+<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>暂未找到相关方法，待补充。。。</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>上云</tag>
+        <tag>故障转移</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内网穿透访问家里云</title>
+    <url>/2025/03/26/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E8%AE%BF%E9%97%AE%E5%AE%B6%E9%87%8C%E4%BA%91/</url>
+    <content><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h3><p>内网穿透是一种网络技术，主要用于解决私有网络（内部网络）与外部网络之间的访问问题。它通过在两个或多个网络之间创建一条“隧道”，允许外部网络的设备能够直接访问内部网络中的资源。</p>
+<p>内网穿透使用专用的协议将内网 IP 地址与外网 IP 地址进行转换，确保数据可以通过外网边界设备传输，数据通过指定的外网端口被转发到内网目标地址。这种方式能够实现对特定服务或应用程序的访问，同时保护其他内网资源不受影响。</p>
+<h3 id="frp"><a href="#frp" class="headerlink" title="frp"></a>frp</h3><p>frp 是一个专注于内网穿透的高性能的反向代理应用，支持 TCP、UDP、HTTP、HTTPS 等多种协议，且支持 P2P 通信。可以将内网服务以安全、便捷的方式通过具有公网 IP 节点的中转暴露到公网。作者就是使用该工具进行内网穿透的。</p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>在安装前，需要拥有一台具有公网IP的设备。</p>
+<p>前往<a class="link"   href="https://github.com/fatedier/frp/releases" >Releases · fatedier&#x2F;frp<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>下载对应的压缩包，一般而言，Linux下载linux_amd64版本即可，具体请查看自己服务器的CPU架构，Windows则一般都是x86架构，下载windows_amd64版本即可。</p>
+<h3 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h3><p>以Linux部署为例，使用tar -zxvf命令将下载的压缩包进行解压，解压后的目录结构如下：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── frpc -- 客户端程序</span><br><span class="line">├── frpc.toml -- 客户端配置文件</span><br><span class="line">├── frps -- 服务端程序</span><br><span class="line">├── frps.toml -- 服务端配置文件</span><br><span class="line">└── LICENSE</span><br></pre></td></tr></table></figure></div>
+
+<p>可以看到整体结构非常简单、小巧。</p>
+<p>修改配置文件frps.toml，由于作者主要是用来反向代理web，所以需要配置如下：</p>
+<div class="code-container" data-rel="Toml"><figure class="iseeu highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="attr">bindPort</span> = <span class="number">7000</span> <span class="comment"># frp绑定端口</span></span><br><span class="line"><span class="attr">vhostHTTPPort</span> = <span class="number">80</span> <span class="comment"># http绑定端口</span></span><br><span class="line"><span class="attr">auth.method</span> = <span class="string">&quot;token&quot;</span> <span class="comment"># 鉴权方式</span></span><br><span class="line"><span class="attr">auth.token</span> = <span class="string">&quot;12345678&quot;</span> <span class="comment"># 鉴权token</span></span><br></pre></td></tr></table></figure></div>
+
+<p>vhostHTTPPort即为需要访问的实际端口，假如配置为80，直接访问域名即可指向代理的资源。</p>
+<p>完整的配置文件见<a class="link"   href="https://github.com/fatedier/frp/blob/dev/conf/frps_full_example.toml" >frps_full_example.toml<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>配置完毕后执行命令：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">./frps -c ./frps.toml</span><br></pre></td></tr></table></figure></div>
+
+<p>出现下列输出：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./frps.png"
+                      width="800px" height="auto" alt="frps"
+                ><figcaption>frps</figcaption></figure>
+
+<p>服务端启动成功。</p>
+<h4 id="注册服务"><a href="#注册服务" class="headerlink" title="注册服务"></a>注册服务</h4><p>使用systemd将frp注册为服务。</p>
+<p>编写frps.service，在&#x2F;etc&#x2F;systemd&#x2F;system目录下新建frps.service文件：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">服务名称，可自定义</span></span><br><span class="line">Description = frp server</span><br><span class="line">After = network.target syslog.target</span><br><span class="line">Wants = network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type = simple</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动frps的命令，需修改为你的实际路径</span></span><br><span class="line">ExecStart = /path/frps -c /path/frps.toml</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy = multi-user.target</span><br></pre></td></tr></table></figure></div>
+
+<p>运行命令：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl start frps</span><br></pre></td></tr></table></figure></div>
+
+<p>运行完毕后执行：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl list-units | grep frps</span><br></pre></td></tr></table></figure></div>
+
+<p>可以看到：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./systemctl_frp.png"
+                      width="800px" height="auto" alt="systemctl_frp"
+                ><figcaption>systemctl_frp</figcaption></figure>
+
+<p>如果想要开机自启，执行下面的命令即可：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl enable frps</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><p>以Windows部署为例，同样只需要根据自己的需求更改配置文件，然后运行命令即可。</p>
+<div class="code-container" data-rel="Toml"><figure class="iseeu highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="attr">serverAddr</span> = <span class="string">&quot;1.2.3.4&quot;</span> <span class="comment"># 服务端的公网IP</span></span><br><span class="line"><span class="attr">serverPort</span> = <span class="number">7000</span> <span class="comment"># 需要与服务端的bindPort一致</span></span><br><span class="line"><span class="attr">auth.method</span> = <span class="string">&quot;token&quot;</span> <span class="comment"># 鉴权方式</span></span><br><span class="line"><span class="attr">auth.token</span> = <span class="string">&quot;12345678&quot;</span> <span class="comment"># 需要与服务端的token一致</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[proxies]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;test&quot;</span> <span class="comment"># 需要保持唯一</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;http&quot;</span> <span class="comment"># 代理类型</span></span><br><span class="line"><span class="attr">localPort</span> = <span class="number">8888</span> <span class="comment"># 本地web服务端口</span></span><br><span class="line"><span class="attr">customDomains</span> = [<span class="string">&quot;test.xxx.com&quot;</span>] <span class="comment"># 访问域名指向</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以配多个http代理，frp支持端口复用</span></span><br><span class="line"><span class="section">[[proxies]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;dify&quot;</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;http&quot;</span></span><br><span class="line"><span class="attr">localPort</span> = <span class="number">80</span></span><br><span class="line"><span class="attr">customDomains</span> = [<span class="string">&quot;dify.xxx.com&quot;</span>]</span><br></pre></td></tr></table></figure></div>
+
+<p>customDomains配置的域名需要DNS配置一条指向服务端IP的A记录。</p>
+<p>完整的配置文件见<a class="link"   href="https://github.com/fatedier/frp/blob/dev/conf/frpc_full_example.toml" >frpc_full_example.toml<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>配置完毕后执行命令：</p>
+<div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">frpc.exe -c ./frpc.toml</span><br></pre></td></tr></table></figure></div>
+
+<p>出现下列输出：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./frpc.png"
+                      width="800px" height="auto" alt="frpc"
+                ><figcaption>frpc</figcaption></figure>
+
+<p>恭喜你，内网穿透成功，此时可以访问配置的域名及端口即可访问指向的内网服务了。</p>
+<p>其他示例可以访问<a class="link"   href="https://gofrp.org/zh-cn/" >frp文档<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>自行查看。</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>内网穿透</tag>
+      </tags>
   </entry>
   <entry>
     <title>再识MyBatis-Plus</title>
@@ -658,36 +764,6 @@
       <tags>
         <tag>Java</tag>
         <tag>MyBatis-Plus</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于上云故障转移方案</title>
-    <url>/2024/11/01/%E5%85%B3%E4%BA%8E%E4%B8%8A%E4%BA%91%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h2 id="上云"><a href="#上云" class="headerlink" title="上云"></a>上云</h2><p>现代服务部署解决方案基本都为云部署，尤其是较大规模的应用，部署服务的方式一般有自建机房、IDC托管、云服务厂商，现如今以阿里云、腾讯云、华为云等为首的云服务厂商的份额日益增加，得益于上云后带来的最大好处——方便运维，变相提高了应用的可靠性，因为相较于部署在自建机房和IDC托管，云服务厂商会提供更加成熟的部署方案，不仅包括简单的部署，包括域名解析、数据备份、容灾等一系列完善的服务，使得服务部署不再困难，降低运维成本以及减少犯错的概率。</p>
-<p>不过，上云容易受到一些不可控的因素干扰，例如云服务厂商突然做出骚操作，之前就存在云服务厂商升级组件而未通知客户，而组件升级切换并不平滑，导致客户部署的服务出现短暂不可用，甚至出现更为糟糕的情况——光缆被挖断了，物理意义上的断你网线，如果没有做好多地容灾，那后果可想而知，服务完全down，无法恢复，当然，不仅云上有这个问题，云下同样如此，因为本质都是机房，只不过运维方式不同。</p>
-<p>而中间件出问题导致服务不可用的情况只能说挺少见的，至少我目前还未遇到过，但是做好应对方案也是必要的，因为谁也保不准什么时候会出问题，弄好预案就多一份保险，省的出问题时两眼一黑。</p>
-<h2 id="动态数据源"><a href="#动态数据源" class="headerlink" title="动态数据源"></a>动态数据源</h2><p>上云前需要弄清楚各个中间件如何动态设置数据源，从而实现热更新，即仅更改某处的配置即可对应用使用的数据源进行动态更新，而无需重启应用，可以使用Nacos进行配置的修改，而且Nacos支持动态刷新配置，天然支持配置监听，并且也可以不使用Nacos自带的配置监听类，可以使用定时器对配置的数据源进行比对，若发生变化则对数据源进行设置。</p>
-<p>当然，应用启动时是通过读取环境变量来设置初始可用的数据源，避免因为某个数据源不可用导致服务启动失败，由于是上云，因此为了稳妥起见，采用了云下——混合云——云上的渐进上云，混合云的中间件都还是连接的云下，而流量是按比例打到云上和云下，而为了做好上云的准备，各个中间件的数据需要从云下同步到云上，当上云时会将云下服务全量停止，云上服务中间件全量切入，并全量流量切入，为此需要准备两个配置文件，方便进行切换。</p>
-<h2 id="故障转移方案"><a href="#故障转移方案" class="headerlink" title="故障转移方案"></a>故障转移方案</h2><h3 id="废案"><a href="#废案" class="headerlink" title="废案"></a>废案</h3><p>在应用启动时同时初始化云上和云下的数据源bean，而在使用数据源时，通过当前配置的数据源标记进行匹配数据源，从而进行相关的数据源操作，这个存在致命的问题，就是当云上和云下其中一个数据源出现问题，服务会无法启动，所以才有后续的补充方案（仅是个想法，还未进行验证）。</p>
-<h4 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h4><p>通过继承AbstractRoutingDataSource这个jdbc动态数据源类，重写determineCurrentLookupKey方法，即可使用相应的数据源，正常场景是读写分离，写入使用主库，查询使用从库。</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;cloudDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource cloudDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;idcDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource idcDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 配置初始数据源信息</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;Object, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;CLOUD&quot;</span>, cloudDataSource);</span><br><span class="line">        map.put(<span class="string">&quot;IDC&quot;</span>, idcDataSource);</span><br><span class="line">        setTargetDataSources(map);</span><br><span class="line">        setDefaultTargetDataSource(idcDataSource);</span><br><span class="line">        <span class="built_in">super</span>.afterPropertiesSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 这个是主要的方法，根据key查找对应的数据源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;CLOUD&quot;</span>; <span class="comment">// 这里需要修改为返回动态的数据源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="Redis-Kafka"><a href="#Redis-Kafka" class="headerlink" title="Redis&#x2F;Kafka"></a>Redis&#x2F;Kafka</h4><p>Redis和Kafka一般都有工具类，因此在工具类中注入bean，并且通过map维护云上和云下对应的bean，执行相关操作时，通过数据源标记在map中获得相应的bean即可，无需额外操作。</p>
-<p>而以上最终成为了废案，因为不确定因素太多了，容易出现问题，所以采用了最稳妥的方案即终极方案。</p>
-<h3 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h3><p>直接改配置文件，然后重启服务，是的，你没看错，采用了最原始的方式，同样是最为可靠的方式，虽然服务不可用的时间会比较长，但是更为稳妥，不容易出现问题，且代码侵入性低，一个字，白学（bushi</p>
-<h3 id="补充方案（未验证）"><a href="#补充方案（未验证）" class="headerlink" title="补充方案（未验证）"></a>补充方案（未验证）</h3><p>由于废案中是同时初始化云上和云下两套数据源，那么在启动的时候指定其中某一套可用的数据源初始化不就行了，通过查询资料得知，貌似是可行的，通过方法在应用启动后还可以手动初始化数据源，从而实现动态切换数据源，而触发初始化数据源的就可以是之前所提到的使用定时器对配置的数据源进行比对，只不过不是设置数据源了，而是重新初始化数据源。</p>
-<h4 id="MySql-1"><a href="#MySql-1" class="headerlink" title="MySql"></a>MySql</h4><p>以Druid为例，DruidDataSource提供restart方法，可以在应用启动后重新初始化连接池，因此可以修改数据源配置后，由定时器进行调用，设置为需要切换的对应配置，如下：</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意，cloudDataSource需要为DruidDataSource类型</span></span><br><span class="line">cloudDataSource.setUrl(<span class="string">&quot;jdbc:mysql://***.***.***.***:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&quot;</span>);</span><br><span class="line">cloudDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">cloudDataSource.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">cloudDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">cloudDataSource.restart();</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>暂未找到相关方法，待补充。。。</p>
-<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>暂未找到相关方法，待补充。。。</p>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>上云</tag>
-        <tag>故障转移</tag>
       </tags>
   </entry>
   <entry>
@@ -887,16 +963,6 @@
       </tags>
   </entry>
   <entry>
-    <title>告别高中</title>
-    <url>/2019/06/28/%E5%91%8A%E5%88%AB%E9%AB%98%E4%B8%AD/</url>
-    <content><![CDATA[<p>回想高中三年，有许多说不清道不明的意味，就好像天边的云彩，随着风飘动变得灵动万分，随着太阳的映射变得多姿多彩，但云终究是由液滴组成的，在不断的变化过程中，化为泡影，虽大气是不断循环的，但我就好比是其中的一个不起眼的水滴，终究会脱离这个大群体，融入另一个集体之中，这是必然性的结果。</p>
-<p>来不及说声告别，就恍如昨天，梦幻一般，煽情的话语已是不及我内心情感的激荡，一切尽在不言中，虽说这三年，我说实话并未真正了解任何一个人，但尽管如此，我们还是共度了高中，经历了高考的洗礼，有的人收获了喜悦，有的人却不尽人意，不论如何，我们必定拥有了属于自己的那一份悸动，愿今后我们能朝着前方，秉持信仰，一路披荆斩棘，这就是我的所感所想，一个在路上的准大一学生。</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
     <title>呐喊</title>
     <url>/2016/10/30/%E5%91%90%E5%96%8A/</url>
     <content><![CDATA[<p>回想过去，多么怀念曾经的美好时光，但却早已只剩下那渐行渐远的一个个瞬间仍然徘徊，转瞬即逝。深入骨髓的孤独感慢慢侵蚀着我，迷失在人海中，与自己的影子为伍，不时躲闪来往的行人，我只想躲到阴暗的角落，回想过去的点点滴滴，仅此而已，但外在虚伪的皮囊早已机械麻木，与这繁华世界格格不入。此刻，我只想呐喊。<br>内心的苦楚遍布在每一个角落，想呐喊，却不行，就像一个异类，不被人所正视，即便有，那也是不长久的，顷刻间，可能往昔的情分早已烟消云散，不复存在，只剩下那充斥着虚伪笑容的脸仍留在脑中，久久挥之不去，仿佛在讥讽，嘲笑，我想这是不能呐喊的原因吧，因为它无时无刻不在压抑你，让你无法置身事外，世间种种皆是如此，想要逃离这一切，却发现自己早已被捆绑住了，无法挣脱，甚至无法发声，身边的人诧异地看着你，你的那些看似有些另类的行为不被人所接受，因为人们习惯于司空见惯，而当一些不正常的东西出现的时候，他们会质疑它，甚至去摧残它。</p>
@@ -909,6 +975,16 @@
 <p style="text-align:right;">写于2016-10-30</p>
 
 <p align="right" style="text-align:right;text-indent:32.0pt"><span style="font-size:16.0pt;font-family:楷体;color:#215868">蚝油<span></span></span></p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>告别高中</title>
+    <url>/2019/06/28/%E5%91%8A%E5%88%AB%E9%AB%98%E4%B8%AD/</url>
+    <content><![CDATA[<p>回想高中三年，有许多说不清道不明的意味，就好像天边的云彩，随着风飘动变得灵动万分，随着太阳的映射变得多姿多彩，但云终究是由液滴组成的，在不断的变化过程中，化为泡影，虽大气是不断循环的，但我就好比是其中的一个不起眼的水滴，终究会脱离这个大群体，融入另一个集体之中，这是必然性的结果。</p>
+<p>来不及说声告别，就恍如昨天，梦幻一般，煽情的话语已是不及我内心情感的激荡，一切尽在不言中，虽说这三年，我说实话并未真正了解任何一个人，但尽管如此，我们还是共度了高中，经历了高考的洗礼，有的人收获了喜悦，有的人却不尽人意，不论如何，我们必定拥有了属于自己的那一份悸动，愿今后我们能朝着前方，秉持信仰，一路披荆斩棘，这就是我的所感所想，一个在路上的准大一学生。</p>
+]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -941,23 +1017,6 @@ import {initHBE} from "/js/plugins/hbe.js";
       <tags>
         <tag>学习路线</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>我</title>
-    <url>/2018/05/06/%E6%88%91/</url>
-    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
-<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
-<p>也许<br>来来往往<br>你已老去</p>
-<p>但是<br>往复之间<br>越发真切</p>
-<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
-<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
-<p>我也知道<br>你<br>曾多少次暗自神伤</p>
-<p>我亦知道<br>你<br>曾多少次触景生情</p>
-<p>因为<br>我知道<br>我便是你</p>
-<p style="text-align:right;">写于2018-5-6</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
   </entry>
   <entry>
     <title>基于Docker和k8s的部署方案</title>
@@ -1164,6 +1223,23 @@ import {initHBE} from "/js/plugins/hbe.js";
       </categories>
   </entry>
   <entry>
+    <title>我</title>
+    <url>/2018/05/06/%E6%88%91/</url>
+    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
+<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
+<p>也许<br>来来往往<br>你已老去</p>
+<p>但是<br>往复之间<br>越发真切</p>
+<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
+<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
+<p>我也知道<br>你<br>曾多少次暗自神伤</p>
+<p>我亦知道<br>你<br>曾多少次触景生情</p>
+<p>因为<br>我知道<br>我便是你</p>
+<p style="text-align:right;">写于2018-5-6</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
     <title>把握</title>
     <url>/2016/05/14/%E6%8A%8A%E6%8F%A1/</url>
     <content><![CDATA[<p>曾经放眼望去，时间就在那里，现在却找不着它了，只怪我没有好好珍惜，等一切都变了，再来追悔莫及，一切都晚了，时间从手间划过，留下一道道触目惊心的伤痕，也许时间会慢慢抚平，但当那时，心早已崩塌，化作一朵凋零的花蕊，珍惜时间吧，时间也许就在那里，找到它，紧握，不要让它再消失了，让我们把握当下吧，也许酸甜苦辣，也许会受伤，也许有那么一份保留的纯真，也许还有那内心深处的感触，去感受它们其中蕴含的真理，那么你的一生将由此改变，也许变得沧桑，也许变得开朗，也许什么都不会变，变的只是你的外表，而不是自己的本心，不忘初心，方得始终，虽然人终有一死，但死得其所，才是最重要的，而当初那些觉得重要的，却早已不重要了，记住，有时候忘记是最好的选择，而忘不掉的，往往是那些你爱的，深爱的，或者是恨的，而这些都将影响你的内心，因此你要控制住它，不让它侵蚀你的内心，保持着最初的那一份念想。</p>
@@ -1178,115 +1254,6 @@ import {initHBE} from "/js/plugins/hbe.js";
       <categories>
         <category>随笔</category>
       </categories>
-  </entry>
-  <entry>
-    <title>本地部署dify</title>
-    <url>/2025/03/14/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2dify/</url>
-    <content><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>dify是一个开源的LLM应用开发平台，能将大模型进行编排，按照预期执行对应的任务。</p>
-<p>使用官方的部署方式——docker，简单高效，关于Windows如何安装docker作者在此不再赘述，可以自行查找教程进行安装。</p>
-<h3 id="下载并运行"><a href="#下载并运行" class="headerlink" title="下载并运行"></a>下载并运行</h3><p>前往<a class="link"   href="https://github.com/langgenius/dify" >GitHub<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>下载源码，下载完毕后，打开命令行，按照官方的执行步骤进行依次执行：</p>
-<div class="code-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> dify<span class="literal">-main</span></span><br><span class="line"><span class="built_in">cd</span> docker</span><br><span class="line"><span class="built_in">cp</span> .env.example .env</span><br><span class="line">docker compose up <span class="literal">-d</span></span><br></pre></td></tr></table></figure></div>
-
-<p>等待docker拉取镜像并启动。</p>
-<p>启动后，可以在docker desktop中看到启动的容器：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./docker_container.png"
-                      width="800px" height="auto" alt="docker container"
-                ><figcaption>docker container</figcaption></figure>
-
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>打开<a class="link"   href="http://localhost/install" >初始化网址<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，如下图：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./init.png"
-                      width="400px" height="auto" alt="初始化"
-                ><figcaption>初始化</figcaption></figure>
-
-<p>输入邮箱、用户名及密码后即可进行登录，登录后可以看到如下页面：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./home.png"
-                      width="800px" height="auto" alt="首页"
-                ><figcaption>首页</figcaption></figure>
-
-<p>恭喜你，成功本地部署dify，so easy有没有，伟大的docker！</p>
-<h3 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h3><p>对于dify来说，调用大模型是通过插件或者工具进行的，作者是通过LM Studio部署本地大模型的，具体可以参考<a href="./2025/02/04/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2LLM/">本地部署LLM</a>。</p>
-<p>由于LM Studio的API是符合OpenAI标准的，所以作者安装OpenAI-API-compatible这个插件，点击右上角的插件搜索openai后即可看到：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./plugin.png"
-                      width="700px" height="auto" alt="安装插件"
-                ><figcaption>安装插件</figcaption></figure>
-
-<p>安装完插件后，进入设置（右上角的悬浮列表），对插件进行配置，点击刚才下载的OpenAI-API-compatible插件右下角的添加模型：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./setting.png"
-                      width="700px" height="auto" alt="设置"
-                ><figcaption>设置</figcaption></figure>
-
-<p>然后选择类型为LLM并填写对应的访问地址即可。</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./plugin_config.png"
-                      width="500px" height="auto" alt="插件配置"
-                ><figcaption>插件配置</figcaption></figure>
-
-<h3 id="文本生成"><a href="#文本生成" class="headerlink" title="文本生成"></a>文本生成</h3><p>安装完插件后，即可在应用中进行使用，首先进入工作室，点击创建空白应用，选择文本生成应用试试水：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./create_app.png"
-                      width="800px" height="auto" alt="创建应用"
-                ><figcaption>创建应用</figcaption></figure>
-
-<p>在右上角选择刚刚配置好的模型：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./select_model.png"
-                      width="700px" height="auto" alt="选择模型"
-                ><figcaption>选择模型</figcaption></figure>
-
-<p>通过输入前缀提示词，添加相应的变量即可根据输入的内容进行文本生成，如图中的例子一样：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./sample.png"
-                      width="800px" height="auto" alt="示例"
-                ><figcaption>示例</figcaption></figure>
-
-<p>如果想要大模型输出更加符合预期，可以在知识库中添加数据集，添加之前需要在模型配置中新增分词的大模型，如果都是使用同个大模型部署软件，则需要配置API endpoint中的模型名称，如图中的名称：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./config_model_name.png"
-                      width="400px" height="auto" alt="配置模型名称"
-                ><figcaption>配置模型名称</figcaption></figure>
-
-<p>添加完成后即可在知识库导入中进行使用：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./import_data.png"
-                      width="700px" height="auto" alt="导入数据集"
-                ><figcaption>导入数据集</figcaption></figure>
-
-<p>导入后，就可以在应用中进行使用了，它会根据向量进行匹配，然后携带匹配到的向量与输入一同作为上下文喂给大模型。</p>
-<p>剩余高阶操作大家就自己去探索吧~</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>LLM</tag>
-      </tags>
   </entry>
   <entry>
     <title>本地部署LLM</title>
@@ -1424,22 +1391,131 @@ import {initHBE} from "/js/plugins/hbe.js";
       </tags>
   </entry>
   <entry>
-    <title>沉默的大多数</title>
-    <url>/2017/01/14/%E6%B2%89%E9%BB%98%E7%9A%84%E5%A4%A7%E5%A4%9A%E6%95%B0/</url>
-    <content><![CDATA[<p>沉默，一切无言，对于世间的种种，我只能冷眼相对，不是冷漠，而是心力交瘁，感觉内心充满了黑暗，却装出一副无所谓、不在乎的样子，仅仅是为了更好地融入这个虚伪的世界，那又能怎么样呢？迷失了方向，只有家的光芒仍引导着我向前走，尽管前路茫茫，但，路在前方，坚持走下去，哪怕是为了自己的信念，也要咬牙坚持走下去。</p>
-<p>可是，却早已无力，瘫倒在冰冷的地上，看着天空，白茫茫的一片覆盖了蓝天，仅露出些空隙，光从中渗透出来，洒满了大地，也照到我的脸上，麻木的脸颊甚至感受不到丝毫暖意，此刻太阳仿佛冷焰一般，燃烧着，却冷到无感，这早已不是火，而是晃动着的光球，散发着寒人的光芒，世间这一切仿佛失色，在这天地间，仅剩我一人，自由地飞翔在冰冷的大地上，内心燃烧起一团火，双眼只剩下无尽的深邃，毫无感情，无奈化作脸上那唯一的标志——沉默，无尽的沉默。</p>
-<p>曾几何时，可笑的认为这世间如此美好，却在一瞬之间，破灭了，一点点消散在内心深处，化为一道道无法修复的伤痕，触目惊心，却又蕴含着对从前的回忆，不禁交杂着一种复杂的情感，在笑的时候，眼角却冒出了眼泪，内心痛苦，牵动着神经，身体做出抗拒的表现，想要发泄，却又不能，只能任由它肆意破坏曾经美好的感受，剩下一片废墟，慢慢沙化，渴望雨水将其冲刷干净，却只有几滴眼泪。</p>
-<p>无言，岁月流逝，也许废墟会重建，但一切早已不是原来的模样，只有那面目全非的痕迹才能证明这曾经存在过，只能独自缅怀逝去的青春，却无人能懂，烦闷瞬间爆炸，将我炸得血肉横飞。一次又一次地隐忍，早已受不了那倦怠，我只想逃离，逃离这一切。</p>
-<p style="text-align:right;">写于高中某天</p>]]></content>
+    <title>本地部署dify</title>
+    <url>/2025/03/14/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2dify/</url>
+    <content><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>dify是一个开源的LLM应用开发平台，能将大模型进行编排，按照预期执行对应的任务。</p>
+<p>使用官方的部署方式——docker，简单高效，关于Windows如何安装docker作者在此不再赘述，可以自行查找教程进行安装。</p>
+<h3 id="下载并运行"><a href="#下载并运行" class="headerlink" title="下载并运行"></a>下载并运行</h3><p>前往<a class="link"   href="https://github.com/langgenius/dify" >GitHub<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>下载源码，下载完毕后，打开命令行，按照官方的执行步骤进行依次执行：</p>
+<div class="code-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> dify<span class="literal">-main</span></span><br><span class="line"><span class="built_in">cd</span> docker</span><br><span class="line"><span class="built_in">cp</span> .env.example .env</span><br><span class="line">docker compose up <span class="literal">-d</span></span><br></pre></td></tr></table></figure></div>
+
+<p>等待docker拉取镜像并启动。</p>
+<p>启动后，可以在docker desktop中看到启动的容器：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./docker_container.png"
+                      width="800px" height="auto" alt="docker container"
+                ><figcaption>docker container</figcaption></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>打开<a class="link"   href="http://localhost/install" >初始化网址<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，如下图：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./init.png"
+                      width="400px" height="auto" alt="初始化"
+                ><figcaption>初始化</figcaption></figure>
+
+<p>输入邮箱、用户名及密码后即可进行登录，登录后可以看到如下页面：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./home.png"
+                      width="800px" height="auto" alt="首页"
+                ><figcaption>首页</figcaption></figure>
+
+<p>恭喜你，成功本地部署dify，so easy有没有，伟大的docker！</p>
+<h3 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h3><p>对于dify来说，调用大模型是通过插件或者工具进行的，作者是通过LM Studio部署本地大模型的，具体可以参考<a href="./2025/02/04/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2LLM/">本地部署LLM</a>。</p>
+<p>由于LM Studio的API是符合OpenAI标准的，所以作者安装OpenAI-API-compatible这个插件，点击右上角的插件搜索openai后即可看到：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./plugin.png"
+                      width="700px" height="auto" alt="安装插件"
+                ><figcaption>安装插件</figcaption></figure>
+
+<p>安装完插件后，进入设置（右上角的悬浮列表），对插件进行配置，点击刚才下载的OpenAI-API-compatible插件右下角的添加模型：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./setting.png"
+                      width="700px" height="auto" alt="设置"
+                ><figcaption>设置</figcaption></figure>
+
+<p>然后选择类型为LLM并填写对应的访问地址即可。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./plugin_config.png"
+                      width="500px" height="auto" alt="插件配置"
+                ><figcaption>插件配置</figcaption></figure>
+
+<h3 id="文本生成"><a href="#文本生成" class="headerlink" title="文本生成"></a>文本生成</h3><p>安装完插件后，即可在应用中进行使用，首先进入工作室，点击创建空白应用，选择文本生成应用试试水：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./create_app.png"
+                      width="800px" height="auto" alt="创建应用"
+                ><figcaption>创建应用</figcaption></figure>
+
+<p>在右上角选择刚刚配置好的模型：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./select_model.png"
+                      width="700px" height="auto" alt="选择模型"
+                ><figcaption>选择模型</figcaption></figure>
+
+<p>通过输入前缀提示词，添加相应的变量即可根据输入的内容进行文本生成，如图中的例子一样：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./sample.png"
+                      width="800px" height="auto" alt="示例"
+                ><figcaption>示例</figcaption></figure>
+
+<p>如果想要大模型输出更加符合预期，可以在知识库中添加数据集，添加之前需要在模型配置中新增分词的大模型，如果都是使用同个大模型部署软件，则需要配置API endpoint中的模型名称，如图中的名称：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./config_model_name.png"
+                      width="400px" height="auto" alt="配置模型名称"
+                ><figcaption>配置模型名称</figcaption></figure>
+
+<p>添加完成后即可在知识库导入中进行使用：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./import_data.png"
+                      width="700px" height="auto" alt="导入数据集"
+                ><figcaption>导入数据集</figcaption></figure>
+
+<p>导入后，就可以在应用中进行使用了，它会根据向量进行匹配，然后携带匹配到的向量与输入一同作为上下文喂给大模型。</p>
+<p>剩余高阶操作大家就自己去探索吧~</p>
+]]></content>
       <categories>
-        <category>随笔</category>
+        <category>杂项</category>
       </categories>
+      <tags>
+        <tag>LLM</tag>
+      </tags>
   </entry>
   <entry>
     <title>溺水</title>
     <url>/2017/04/08/%E6%BA%BA%E6%B0%B4/</url>
     <content><![CDATA[<p>渐渐丧失知觉，阳光仿佛随我一起消失在这河里，逐渐黯淡，岸上的呼喊声在耳边若隐若现。有那么几刻，我甚至怀疑这并不真实，仿佛做梦一般飘渺，它就那样将我拉入万丈深渊，我不禁想要挣扎，去挣脱它的控制，但毫无成效，反而使我越陷越深，我感到一丝无力与绝望，不甘就这么死去，世间的种种在眼前浮现，我不禁笑了笑，是啊，又有什么可怀念的呢？放弃挣扎的我慢慢下沉，我仿佛看到世间最美的景色，一切是那么安静，祥和，我闭上眼睛，想去感受死亡所带来的一丝不安与恐惧，但我感受到的只有无尽的黑暗和一片虚无。</p>
 <p>岸上的那人仿佛冷漠无比，事不关己地看着我，渐渐死去，于是，我便长眠于此，世间再无我的容身之地，我已不复存在，接管这个皮囊的是另一种存在，一种未知的存在，它就在那，就那么默默注视着我，看着我渐渐堕落，迷失自我，取代我的便是它，是我助长它的存在，使它慢慢腐蚀我的灵魂，侵入我的内心，但对此我一无所知，直至此刻，我死了，我才领悟，但也没有什么值得我去留念了，当初的信念早已覆灭，随着我一同消散在这世间。</p>
+<p style="text-align:right;">写于高中某天</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>沉默的大多数</title>
+    <url>/2017/01/14/%E6%B2%89%E9%BB%98%E7%9A%84%E5%A4%A7%E5%A4%9A%E6%95%B0/</url>
+    <content><![CDATA[<p>沉默，一切无言，对于世间的种种，我只能冷眼相对，不是冷漠，而是心力交瘁，感觉内心充满了黑暗，却装出一副无所谓、不在乎的样子，仅仅是为了更好地融入这个虚伪的世界，那又能怎么样呢？迷失了方向，只有家的光芒仍引导着我向前走，尽管前路茫茫，但，路在前方，坚持走下去，哪怕是为了自己的信念，也要咬牙坚持走下去。</p>
+<p>可是，却早已无力，瘫倒在冰冷的地上，看着天空，白茫茫的一片覆盖了蓝天，仅露出些空隙，光从中渗透出来，洒满了大地，也照到我的脸上，麻木的脸颊甚至感受不到丝毫暖意，此刻太阳仿佛冷焰一般，燃烧着，却冷到无感，这早已不是火，而是晃动着的光球，散发着寒人的光芒，世间这一切仿佛失色，在这天地间，仅剩我一人，自由地飞翔在冰冷的大地上，内心燃烧起一团火，双眼只剩下无尽的深邃，毫无感情，无奈化作脸上那唯一的标志——沉默，无尽的沉默。</p>
+<p>曾几何时，可笑的认为这世间如此美好，却在一瞬之间，破灭了，一点点消散在内心深处，化为一道道无法修复的伤痕，触目惊心，却又蕴含着对从前的回忆，不禁交杂着一种复杂的情感，在笑的时候，眼角却冒出了眼泪，内心痛苦，牵动着神经，身体做出抗拒的表现，想要发泄，却又不能，只能任由它肆意破坏曾经美好的感受，剩下一片废墟，慢慢沙化，渴望雨水将其冲刷干净，却只有几滴眼泪。</p>
+<p>无言，岁月流逝，也许废墟会重建，但一切早已不是原来的模样，只有那面目全非的痕迹才能证明这曾经存在过，只能独自缅怀逝去的青春，却无人能懂，烦闷瞬间爆炸，将我炸得血肉横飞。一次又一次地隐忍，早已受不了那倦怠，我只想逃离，逃离这一切。</p>
 <p style="text-align:right;">写于高中某天</p>]]></content>
       <categories>
         <category>随笔</category>
@@ -1462,6 +1538,19 @@ import {initHBE} from "/js/plugins/hbe.js";
                      data-src="./whalefall.jpg"
                       width="500px" height="auto" alt="鲸落"
                 ><figcaption>鲸落</figcaption></figure>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>致百日誓师的我</title>
+    <url>/2018/09/16/%E8%87%B4%E7%99%BE%E6%97%A5%E8%AA%93%E5%B8%88%E7%9A%84%E6%88%91/</url>
+    <content><![CDATA[<p>当我审视自己，我看到了无数个视角下不同的我，为了他人目光活着，有点累，而我却看不清真实的自己到底是哪个，还是说，我早已不是当初的那个我，我曾以为我便是我，一个自由放纵的我，可现实却击中了我，把我击倒在地，我强忍着伤痛，匍匐前进，前方始终是黑暗，我心逐渐绝望，终于，我看清了，我就是我，一个独一无二的我，也许他人目光将我弄得遍体鳞伤，但我终究是我，随自己的心意而活，可是，真的吗？我不禁陷入了深思，我真的能吗？我想这是不可能的，生活本就是一个囚笼，你无法打破它，只能去学会接受它，去改造它，让它变得更加美好，哪怕再不堪，也要好好的，没有人能真正按照自己心意而活，生活本就是如此，面对他人的目光，不要去逃避，不然你终将会被其击倒在地，我挣扎着爬起来，哪怕前方没有光亮，我也要用我这心，去照亮前方，只为那当初的我，于是，我便不断前行，披荆斩棘。</p>
+<p>我知道你内心挣扎，并全力克制着疑惑，我理解你每次每次哭泣时的痛苦与无奈，但我早已没了眼泪，被生活磨去了棱角，你本能再坚强一点的，把握明天将给予的一切，但是等待我们的往往是狂风骤雨，不要害怕，去感受它，敞开心胸，让它来吧，学会接受恐惧给你带来的感受，是那么黑暗，那么纯粹，而带来恐惧的正是你的心，不要抵触，让它成为你的一部分，让它驱使你前进，哪怕跟当初的我一样，你也要前行，因为你一旦停止了脚步，你将迷失在这黑暗之中，陷入深潭，恐惧将会吞噬你，所以，接受它吧，没有人能真正按照自己的心意而活，我也不例外，如今我已完全醒悟，过去那些将我击倒的，逐渐使我升华，所以，请不要灰心，相信明天将会是美好的，哪怕狂风骤雨，但你也不怕了，不是吗？勇敢的去面对它，我知道，真正的敌人就在我内心深处，那里是恐惧本源，我须战胜自我，去降服他，可是，我的双手早已无力，我的内心早已千疮百孔，我已无心战斗，但我的灵魂不允许我松懈，于是，我便不断前行，披荆斩棘。</p>
+<p>那么，便努力吧，努力做自己，去冲。</p>
+<p style="text-align:right;">——致百日誓师的我</p>
+
+<p style="text-align:right;">写于2018-9-16</p>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -1552,17 +1641,21 @@ import {initHBE} from "/js/plugins/hbe.js";
       </tags>
   </entry>
   <entry>
-    <title>致百日誓师的我</title>
-    <url>/2018/09/16/%E8%87%B4%E7%99%BE%E6%97%A5%E8%AA%93%E5%B8%88%E7%9A%84%E6%88%91/</url>
-    <content><![CDATA[<p>当我审视自己，我看到了无数个视角下不同的我，为了他人目光活着，有点累，而我却看不清真实的自己到底是哪个，还是说，我早已不是当初的那个我，我曾以为我便是我，一个自由放纵的我，可现实却击中了我，把我击倒在地，我强忍着伤痛，匍匐前进，前方始终是黑暗，我心逐渐绝望，终于，我看清了，我就是我，一个独一无二的我，也许他人目光将我弄得遍体鳞伤，但我终究是我，随自己的心意而活，可是，真的吗？我不禁陷入了深思，我真的能吗？我想这是不可能的，生活本就是一个囚笼，你无法打破它，只能去学会接受它，去改造它，让它变得更加美好，哪怕再不堪，也要好好的，没有人能真正按照自己心意而活，生活本就是如此，面对他人的目光，不要去逃避，不然你终将会被其击倒在地，我挣扎着爬起来，哪怕前方没有光亮，我也要用我这心，去照亮前方，只为那当初的我，于是，我便不断前行，披荆斩棘。</p>
-<p>我知道你内心挣扎，并全力克制着疑惑，我理解你每次每次哭泣时的痛苦与无奈，但我早已没了眼泪，被生活磨去了棱角，你本能再坚强一点的，把握明天将给予的一切，但是等待我们的往往是狂风骤雨，不要害怕，去感受它，敞开心胸，让它来吧，学会接受恐惧给你带来的感受，是那么黑暗，那么纯粹，而带来恐惧的正是你的心，不要抵触，让它成为你的一部分，让它驱使你前进，哪怕跟当初的我一样，你也要前行，因为你一旦停止了脚步，你将迷失在这黑暗之中，陷入深潭，恐惧将会吞噬你，所以，接受它吧，没有人能真正按照自己的心意而活，我也不例外，如今我已完全醒悟，过去那些将我击倒的，逐渐使我升华，所以，请不要灰心，相信明天将会是美好的，哪怕狂风骤雨，但你也不怕了，不是吗？勇敢的去面对它，我知道，真正的敌人就在我内心深处，那里是恐惧本源，我须战胜自我，去降服他，可是，我的双手早已无力，我的内心早已千疮百孔，我已无心战斗，但我的灵魂不允许我松懈，于是，我便不断前行，披荆斩棘。</p>
-<p>那么，便努力吧，努力做自己，去冲。</p>
-<p style="text-align:right;">——致百日誓师的我</p>
-
-<p style="text-align:right;">写于2018-9-16</p>]]></content>
+    <title>重构</title>
+    <url>/2023/11/06/%E9%87%8D%E6%9E%84/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>重构，即对程序内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。重构以增加程序的可维护性、可靠性，这是门学问，这与古老的谚语“程序能跑就不要动它”背道而驰，这句谚语也是屎山如何形成的最根本原因，没有定期地重构不合理的代码，使得埋下的坑越来越深，解bug就像探宝一样，时不时能发现其他宝藏：更难解的bug，这就是为什么bug越解越多。当然，重构总是与bug如影随形，这就要求以最小的步伐来进行重构，每一次重构完成时要进行详尽的测试，最好是提供统一稳定的测试环境，按照相同的方法进行测试，以免重构引入bug。</p>
+<p>重复的代码块IDE会进行提醒，如果有两个及以上重复就可以考虑抽象出一个函数了，这样当这块代码出错，就无需修改每处地方，仅需修改那个函数，这就是重构，其实我们每天都在进行重构，提炼、分析，从而选出最适合的数据结构，或者逻辑顺序。重构有许多种方法，其中按照既有模版进行重构是最简单的，因此了解设计模式以及类似的思想是很有必要的，可以减少编写代码出错的概率。重构就像是在梳理代码，只有理解了具体的逻辑，重构才成为可能，这就是代码可理解性的重要性，难以理解的设计非常不利于重构，因此，代码可读性优先于其他要义（如果不考虑性能的情况下，如果要进行性能优化，可能就会摒弃可读性，这是没办法的，不过也可以增加适当的注解来提高可读性，不要让别人揣测你代码的意思，而是浅显易懂，这才是好的设计）。讲个笑话，当有天回过头来看之前写的代码，会看不懂，惊呼一句卧槽这啥*玩意，那么就需要进行重构了，如果当初代码的作者都看不明白了，那么指望别人能快速理解代码意图是不太可能了。</p>
+<h2 id="设计大于编码"><a href="#设计大于编码" class="headerlink" title="设计大于编码"></a>设计大于编码</h2><p>良好的设计才是快速开发的秘诀，恶劣的设计会使得开发大半的时间都花在不断重复地调试当中，因为程序状况百出，不得不每每打断开发的进度，甚至因为修复bug而打上的补丁会影响后续的开发，使代码愈来愈臃肿，这是我们不希望看见的，因此，我再次强调设计思想的重要性，这是重构的前提。</p>
+<p>事先做好设计可以有效减少返工次数，即进行重构的次数，甚至无需进行重构，就能完美符合需求且代码结构清晰，维护容易，当然，不要过度设计，过于揣测之后的变化是不利于开发的，应该能够在满足需求的情况下，然后一定限度地对风险进行预测，考虑增加容错，而不是一上来就“疑神疑鬼”。掌握设计和编码难度的平衡性也是挺困难的，设计为需求而服务，但满足需求并不一定能够实际落地，需要切实考虑编码难度、时间花费、风险控制等等因素，而不是盲目地追求所谓好的设计。在设计前请务必理清需求和度量系统，不要臆测，想当然地以为那样就是那样，需要不断沟通以完善设计。</p>
+<h2 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h2><h3 id="重复代码"><a href="#重复代码" class="headerlink" title="重复代码"></a>重复代码</h3><p>这是再正常不过的坏味道了，当一段代码在多处出现，那就要考虑是否需要进行重构了，提炼出重复代码，然后封装到一个函数中，这样出问题只需改一处即可，而不是牵一发而动全身。</p>
+<h3 id="过长函数"><a href="#过长函数" class="headerlink" title="过长函数"></a>过长函数</h3><p>当一个函数过长，就要注意了，函数越长，逻辑就越难理清，也就越难维护，所谓屎山就是堆砌起来的，当一段冗长的代码摆在面前，且没有相应注释，我想是个人都会抗拒去阅读它，将这类代码分割成一小块一小块，每一块都是单独的一段逻辑，然后再串联起来，这样不仅能减少临时变量，且还能让逻辑变得清晰明了，最重要的是，复用性大大增加。</p>
+]]></content>
       <categories>
-        <category>随笔</category>
+        <category>杂项</category>
       </categories>
+      <tags>
+        <tag>重构</tag>
+      </tags>
   </entry>
   <entry>
     <title>重学JUC</title>
@@ -1772,23 +1865,6 @@ import {initHBE} from "/js/plugins/hbe.js";
       <tags>
         <tag>JUC</tag>
         <tag>多线程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>重构</title>
-    <url>/2023/11/06/%E9%87%8D%E6%9E%84/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>重构，即对程序内部结构的一种调整，目的是在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本。重构以增加程序的可维护性、可靠性，这是门学问，这与古老的谚语“程序能跑就不要动它”背道而驰，这句谚语也是屎山如何形成的最根本原因，没有定期地重构不合理的代码，使得埋下的坑越来越深，解bug就像探宝一样，时不时能发现其他宝藏：更难解的bug，这就是为什么bug越解越多。当然，重构总是与bug如影随形，这就要求以最小的步伐来进行重构，每一次重构完成时要进行详尽的测试，最好是提供统一稳定的测试环境，按照相同的方法进行测试，以免重构引入bug。</p>
-<p>重复的代码块IDE会进行提醒，如果有两个及以上重复就可以考虑抽象出一个函数了，这样当这块代码出错，就无需修改每处地方，仅需修改那个函数，这就是重构，其实我们每天都在进行重构，提炼、分析，从而选出最适合的数据结构，或者逻辑顺序。重构有许多种方法，其中按照既有模版进行重构是最简单的，因此了解设计模式以及类似的思想是很有必要的，可以减少编写代码出错的概率。重构就像是在梳理代码，只有理解了具体的逻辑，重构才成为可能，这就是代码可理解性的重要性，难以理解的设计非常不利于重构，因此，代码可读性优先于其他要义（如果不考虑性能的情况下，如果要进行性能优化，可能就会摒弃可读性，这是没办法的，不过也可以增加适当的注解来提高可读性，不要让别人揣测你代码的意思，而是浅显易懂，这才是好的设计）。讲个笑话，当有天回过头来看之前写的代码，会看不懂，惊呼一句卧槽这啥*玩意，那么就需要进行重构了，如果当初代码的作者都看不明白了，那么指望别人能快速理解代码意图是不太可能了。</p>
-<h2 id="设计大于编码"><a href="#设计大于编码" class="headerlink" title="设计大于编码"></a>设计大于编码</h2><p>良好的设计才是快速开发的秘诀，恶劣的设计会使得开发大半的时间都花在不断重复地调试当中，因为程序状况百出，不得不每每打断开发的进度，甚至因为修复bug而打上的补丁会影响后续的开发，使代码愈来愈臃肿，这是我们不希望看见的，因此，我再次强调设计思想的重要性，这是重构的前提。</p>
-<p>事先做好设计可以有效减少返工次数，即进行重构的次数，甚至无需进行重构，就能完美符合需求且代码结构清晰，维护容易，当然，不要过度设计，过于揣测之后的变化是不利于开发的，应该能够在满足需求的情况下，然后一定限度地对风险进行预测，考虑增加容错，而不是一上来就“疑神疑鬼”。掌握设计和编码难度的平衡性也是挺困难的，设计为需求而服务，但满足需求并不一定能够实际落地，需要切实考虑编码难度、时间花费、风险控制等等因素，而不是盲目地追求所谓好的设计。在设计前请务必理清需求和度量系统，不要臆测，想当然地以为那样就是那样，需要不断沟通以完善设计。</p>
-<h2 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h2><h3 id="重复代码"><a href="#重复代码" class="headerlink" title="重复代码"></a>重复代码</h3><p>这是再正常不过的坏味道了，当一段代码在多处出现，那就要考虑是否需要进行重构了，提炼出重复代码，然后封装到一个函数中，这样出问题只需改一处即可，而不是牵一发而动全身。</p>
-<h3 id="过长函数"><a href="#过长函数" class="headerlink" title="过长函数"></a>过长函数</h3><p>当一个函数过长，就要注意了，函数越长，逻辑就越难理清，也就越难维护，所谓屎山就是堆砌起来的，当一段冗长的代码摆在面前，且没有相应注释，我想是个人都会抗拒去阅读它，将这类代码分割成一小块一小块，每一块都是单独的一段逻辑，然后再串联起来，这样不仅能减少临时变量，且还能让逻辑变得清晰明了，最重要的是，复用性大大增加。</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>重构</tag>
       </tags>
   </entry>
 </search>

@@ -6,7 +6,7 @@
   <link href="https://yhxjs.github.io/atom.xml" rel="self"/>
   
   <link href="https://yhxjs.github.io/"/>
-  <updated>2025-03-14T07:16:09.039Z</updated>
+  <updated>2025-03-26T09:06:16.555Z</updated>
   <id>https://yhxjs.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>内网穿透访问家里云</title>
+    <link href="https://yhxjs.github.io/2025/03/26/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E8%AE%BF%E9%97%AE%E5%AE%B6%E9%87%8C%E4%BA%91/"/>
+    <id>https://yhxjs.github.io/2025/03/26/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E8%AE%BF%E9%97%AE%E5%AE%B6%E9%87%8C%E4%BA%91/</id>
+    <published>2025-03-26T03:22:13.000Z</published>
+    <updated>2025-03-26T09:06:16.555Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h3><p>内网穿透是一种网络技术，主要用于解决私有网络（内部网络）与外部网络之间的访问问题。它通过在两个或多个网络之间创建一条“隧道”，允许外部网络的设备能够直接访问内部网络中的资源。</p><p>内网穿透使用专用的协议将内网 IP 地址与外网 IP 地址进行转换，确保数据可以通过外网边界设备传输，数据通过指定的外网端口被转发到内网目标地址。这种方式能够实现对特定服务或应用程序的访问，同时保护其他内网资源不受影响。</p><h3 id="frp"><a href="#frp" class="headerlink" title="frp"></a>frp</h3><p>frp 是一个专注于内网穿透的高性能的反向代理应用，支持 TCP、UDP、HTTP、HTTPS 等多种协议，且支持 P2P 通信。可以将内网服务以安全、便捷的方式通过具有公网 IP 节点的中转暴露到公网。作者就是使用该工具进行内网穿透的。</p><h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>在安装前，需要拥有一台具有公网IP的设备。</p><p>前往<a class="link"   href="https://github.com/fatedier/frp/releases" >Releases · fatedier&#x2F;frp<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>下载对应的压缩包，一般而言，Linux下载linux_amd64版本即可，具体请查看自己服务器的CPU架构，Windows则一般都是x86架构，下载windows_amd64版本即可。</p><h3 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h3><p>以Linux部署为例，使用tar -zxvf命令将下载的压缩包进行解压，解压后的目录结构如下：</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── frpc -- 客户端程序</span><br><span class="line">├── frpc.toml -- 客户端配置文件</span><br><span class="line">├── frps -- 服务端程序</span><br><span class="line">├── frps.toml -- 服务端配置文件</span><br><span class="line">└── LICENSE</span><br></pre></td></tr></table></figure></div><p>可以看到整体结构非常简单、小巧。</p><p>修改配置文件frps.toml，由于作者主要是用来反向代理web，所以需要配置如下：</p><div class="code-container" data-rel="Toml"><figure class="iseeu highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">bindPort</span> = <span class="number">7000</span> <span class="comment"># frp绑定端口</span></span><br><span class="line"><span class="attr">vhostHTTPPort</span> = <span class="number">80</span> <span class="comment"># http绑定端口</span></span><br><span class="line"><span class="attr">auth.method</span> = <span class="string">&quot;token&quot;</span> <span class="comment"># 鉴权方式</span></span><br><span class="line"><span class="attr">auth.token</span> = <span class="string">&quot;12345678&quot;</span> <span class="comment"># 鉴权token</span></span><br></pre></td></tr></table></figure></div><p>vhostHTTPPort即为需要访问的实际端口，假如配置为80，直接访问域名即可指向代理的资源。</p><p>完整的配置文件见<a class="link"   href="https://github.com/fatedier/frp/blob/dev/conf/frps_full_example.toml" >frps_full_example.toml<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p><p>配置完毕后执行命令：</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./frps -c ./frps.toml</span><br></pre></td></tr></table></figure></div><p>出现下列输出：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./frps.png"                      width="800px" height="auto" alt="frps"                ><figcaption>frps</figcaption></figure><p>服务端启动成功。</p><h4 id="注册服务"><a href="#注册服务" class="headerlink" title="注册服务"></a>注册服务</h4><p>使用systemd将frp注册为服务。</p><p>编写frps.service，在&#x2F;etc&#x2F;systemd&#x2F;system目录下新建frps.service文件：</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">服务名称，可自定义</span></span><br><span class="line">Description = frp server</span><br><span class="line">After = network.target syslog.target</span><br><span class="line">Wants = network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type = simple</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动frps的命令，需修改为你的实际路径</span></span><br><span class="line">ExecStart = /path/frps -c /path/frps.toml</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy = multi-user.target</span><br></pre></td></tr></table></figure></div><p>运行命令：</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start frps</span><br></pre></td></tr></table></figure></div><p>运行完毕后执行：</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl list-units | grep frps</span><br></pre></td></tr></table></figure></div><p>可以看到：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./systemctl_frp.png"                      width="800px" height="auto" alt="systemctl_frp"                ><figcaption>systemctl_frp</figcaption></figure><p>如果想要开机自启，执行下面的命令即可：</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable frps</span><br></pre></td></tr></table></figure></div><h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><p>以Windows部署为例，同样只需要根据自己的需求更改配置文件，然后运行命令即可。</p><div class="code-container" data-rel="Toml"><figure class="iseeu highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">serverAddr</span> = <span class="string">&quot;1.2.3.4&quot;</span> <span class="comment"># 服务端的公网IP</span></span><br><span class="line"><span class="attr">serverPort</span> = <span class="number">7000</span> <span class="comment"># 需要与服务端的bindPort一致</span></span><br><span class="line"><span class="attr">auth.method</span> = <span class="string">&quot;token&quot;</span> <span class="comment"># 鉴权方式</span></span><br><span class="line"><span class="attr">auth.token</span> = <span class="string">&quot;12345678&quot;</span> <span class="comment"># 需要与服务端的token一致</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[proxies]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;test&quot;</span> <span class="comment"># 需要保持唯一</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;http&quot;</span> <span class="comment"># 代理类型</span></span><br><span class="line"><span class="attr">localPort</span> = <span class="number">8888</span> <span class="comment"># 本地web服务端口</span></span><br><span class="line"><span class="attr">customDomains</span> = [<span class="string">&quot;test.xxx.com&quot;</span>] <span class="comment"># 访问域名指向</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以配多个http代理，frp支持端口复用</span></span><br><span class="line"><span class="section">[[proxies]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;dify&quot;</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;http&quot;</span></span><br><span class="line"><span class="attr">localPort</span> = <span class="number">80</span></span><br><span class="line"><span class="attr">customDomains</span> = [<span class="string">&quot;dify.xxx.com&quot;</span>]</span><br></pre></td></tr></table></figure></div><p>customDomains配置的域名需要DNS配置一条指向服务端IP的A记录。</p><p>完整的配置文件见<a class="link"   href="https://github.com/fatedier/frp/blob/dev/conf/frpc_full_example.toml" >frpc_full_example.toml<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p><p>配置完毕后执行命令：</p><div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frpc.exe -c ./frpc.toml</span><br></pre></td></tr></table></figure></div><p>出现下列输出：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./frpc.png"                      width="800px" height="auto" alt="frpc"                ><figcaption>frpc</figcaption></figure><p>恭喜你，内网穿透成功，此时可以访问配置的域名及端口即可访问指向的内网服务了。</p><p>其他示例可以访问<a class="link"   href="https://gofrp.org/zh-cn/" >frp文档<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>自行查看。</p>]]></content>
+    
+    
+    <summary type="html">使用frp实现内网穿透公网访问家里云。</summary>
+    
+    
+    
+    <category term="杂项" scheme="https://yhxjs.github.io/categories/%E6%9D%82%E9%A1%B9/"/>
+    
+    
+    <category term="内网穿透" scheme="https://yhxjs.github.io/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>本地部署dify</title>
@@ -419,25 +440,6 @@
     
     
     <summary type="html">是谁？</summary>
-    
-    
-    
-    <category term="随笔" scheme="https://yhxjs.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>溺水</title>
-    <link href="https://yhxjs.github.io/2017/04/08/%E6%BA%BA%E6%B0%B4/"/>
-    <id>https://yhxjs.github.io/2017/04/08/%E6%BA%BA%E6%B0%B4/</id>
-    <published>2017-04-08T10:35:18.000Z</published>
-    <updated>2024-04-14T13:55:21.203Z</updated>
-    
-    <content type="html"><![CDATA[<p>渐渐丧失知觉，阳光仿佛随我一起消失在这河里，逐渐黯淡，岸上的呼喊声在耳边若隐若现。有那么几刻，我甚至怀疑这并不真实，仿佛做梦一般飘渺，它就那样将我拉入万丈深渊，我不禁想要挣扎，去挣脱它的控制，但毫无成效，反而使我越陷越深，我感到一丝无力与绝望，不甘就这么死去，世间的种种在眼前浮现，我不禁笑了笑，是啊，又有什么可怀念的呢？放弃挣扎的我慢慢下沉，我仿佛看到世间最美的景色，一切是那么安静，祥和，我闭上眼睛，想去感受死亡所带来的一丝不安与恐惧，但我感受到的只有无尽的黑暗和一片虚无。</p><p>岸上的那人仿佛冷漠无比，事不关己地看着我，渐渐死去，于是，我便长眠于此，世间再无我的容身之地，我已不复存在，接管这个皮囊的是另一种存在，一种未知的存在，它就在那，就那么默默注视着我，看着我渐渐堕落，迷失自我，取代我的便是它，是我助长它的存在，使它慢慢腐蚀我的灵魂，侵入我的内心，但对此我一无所知，直至此刻，我死了，我才领悟，但也没有什么值得我去留念了，当初的信念早已覆灭，随着我一同消散在这世间。</p><p style="text-align:right;">写于高中某天</p>]]></content>
-    
-    
-    <summary type="html">看《溺水》有感。</summary>
     
     
     
