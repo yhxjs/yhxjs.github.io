@@ -6,7 +6,7 @@
   <link href="https://yhxjs.github.io/atom.xml" rel="self"/>
   
   <link href="https://yhxjs.github.io/"/>
-  <updated>2025-03-26T09:06:16.555Z</updated>
+  <updated>2025-04-12T13:18:06.376Z</updated>
   <id>https://yhxjs.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>自动化证书部署流水线</title>
+    <link href="https://yhxjs.github.io/2025/04/12/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%AF%81%E4%B9%A6%E9%83%A8%E7%BD%B2%E6%B5%81%E6%B0%B4%E7%BA%BF/"/>
+    <id>https://yhxjs.github.io/2025/04/12/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%AF%81%E4%B9%A6%E9%83%A8%E7%BD%B2%E6%B5%81%E6%B0%B4%E7%BA%BF/</id>
+    <published>2025-04-12T12:54:46.000Z</published>
+    <updated>2025-04-12T13:18:06.376Z</updated>
+    
+    <content type="html"><![CDATA[<p>由于免费的SSL证书仅支持申请3个月的了，每过3个月都得重新手动申请并部署，有些许麻烦，故找到了一个自动化部署工具——certd。</p><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>这里作者使用源码安装，需要安装node环境进行编译。</p><h3 id="node"><a href="#node" class="headerlink" title="node"></a>node</h3><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apt update &amp;&amp; sudo apt upgrade -y</span><br><span class="line">apt install -y ca-certificates curl gnupg</span><br><span class="line">curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -</span><br><span class="line">apt install -y nodejs</span><br></pre></td></tr></table></figure></div><p>安装完毕后<code>node -v</code>可以看到安装的版本。</p><h3 id="certd"><a href="#certd" class="headerlink" title="certd"></a>certd</h3><p>从<a class="link"   href="https://github.com/certd/certd" >github<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>下载最新的源码，下载完毕后，将源码解压，运行start.sh脚本（服务器内存低的请勿尝试）。</p><p>由于作者的服务器内存一共只有4g，部署服务后仅剩1.5g左右，运行start.sh会卡死在客户端npm run build的阶段（亲测），于是只能先在Windows中进行编译，再将编译后的文件上传到服务器，手动运行。</p><p>以下为start.sh的内容，可以按照其步骤依次执行，只是Windows下命令有点不同。</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="built_in">set</span> -e</span></span><br><span class="line">echo &quot;即将删除packages下除ui之外的其他目录，按y确认（如果您没有修改过源码，按y即可）&quot;</span><br><span class="line">read -p &quot;y/n: &quot; confirm</span><br><span class="line">if [ $confirm != &quot;y&quot; ]; then</span><br><span class="line">  echo &quot;取消操作&quot;</span><br><span class="line">  exit 1</span><br><span class="line">fi</span><br><span class="line">find ./packages -mindepth 1 -maxdepth 1 -type d ! -name &#x27;ui&#x27; -exec rm -rf &#123;&#125; +</span><br><span class="line"></span><br><span class="line">echo &quot;删除成功&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;安装pnpm 8.15.7, 前提是已经安装了nodejs&quot;</span><br><span class="line">npm install -g pnpm@8.15.7 --registry https://registry.npmmirror.com</span><br><span class="line">echo &quot;安装依赖&quot;</span><br><span class="line">pnpm install --registry https://registry.npmmirror.com</span><br><span class="line"></span><br><span class="line">echo &quot;开始构建&quot;</span><br><span class="line">echo &quot;构建certd-client&quot;</span><br><span class="line">cd packages/ui/certd-client</span><br><span class="line">npm run build</span><br><span class="line">cp -r dist/* ../certd-server/public</span><br><span class="line"></span><br><span class="line">echo &quot;构建certd-server&quot;</span><br><span class="line">cd ../certd-server</span><br><span class="line">npm run build</span><br><span class="line">echo &quot;构建完成&quot;</span><br><span class="line">echo &quot;启动服务&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">前台运行</span></span><br><span class="line">npm run start</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">后台运行</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">nohup</span> npm run start &amp;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div><div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 手动删除packages下除ui之外的其他目录</span><br><span class="line"># 安装pnpm <span class="number">8</span>.<span class="number">15</span>.<span class="number">7</span></span><br><span class="line">npm install -g pnpm@<span class="number">8</span>.<span class="number">15</span>.<span class="number">7</span> --registry https://registry.npmmirror.com</span><br><span class="line"># 安装依赖</span><br><span class="line">pnpm install --registry https://registry.npmmirror.com</span><br><span class="line"># 构建certd-client</span><br><span class="line"><span class="built_in">cd</span> packages/ui/certd-client</span><br><span class="line">npm run build</span><br><span class="line"># 手动复制dist目录下生成的文件到../certd-server/public</span><br><span class="line"># 构建certd-server</span><br><span class="line"><span class="built_in">cd</span> ../certd-server</span><br><span class="line">npm run build</span><br></pre></td></tr></table></figure></div><p>按照上述Windows的执行步骤后，将certd-server目录打包复制到服务器上，然后再解压，准备步骤就完成了。</p><h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>在上传的certd-server目录下运行npm run start，此时作者出现报错<code>Error: Cannot find module &#39;cross-spawn&#39;</code>，如果你也遇到这个错误，手动删除node_modules和package-lock.json然后再运行npm install重新安装依赖即可。</p><p>正常启动最后会出现以下输出：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./start_success.png"                      width="800px" height="auto" alt="成功启动"                ><figcaption>成功启动</figcaption></figure><p>直接后台运行：</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup npm run start &gt; certd.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure></div><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>打开网址，使用7002端口即可，默认账号密码为admin&#x2F;123456。</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./home.png"                      width="800px" height="auto" alt="主页"                ><figcaption>主页</figcaption></figure><p>首先先修改默认密码：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./update_pwd.png"                      width="800px" height="auto" alt="修改密码"                ><figcaption>修改密码</figcaption></figure><p>点击立即创建开始创建证书流水线，填写对应信息：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./create_line.png"                      width="800px" height="auto" alt="创建流水线"                ><figcaption>创建流水线</figcaption></figure><p>如果想要邮件通知，需要配置邮件服务器信息：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./email_config.png"                      width="700px" height="auto" alt="配置邮箱"                ><figcaption>配置邮箱</figcaption></figure><p>证书颁发机构作者使用ZeroSSL，需要提供EAB凭证，前往<a class="link"   href="https://app.zerossl.com/developer" >ZeroSSL<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>生成一个，注意的是，每次点击生成都会生成一个新的。</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./ZeroSSL.png"                      width="600px" height="auto" alt="ZeroSSL"                ><figcaption>ZeroSSL</figcaption></figure><p>作者的DNS厂商为阿里云，需要创建一个RAM用户拥有如下权限：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./raw_create.png"                      width="800px" height="auto" alt="创建RAW用户"                ><figcaption>创建RAW用户</figcaption></figure><p>定时按每天的凌晨执行即可，它会自动检测更新天数是否达到阈值，达到才会重新申请证书。</p><p>接着由于作者是直接部署在目标服务器上了，所以直接创建主机-复制到本机步骤，选择对应的证书格式，然后填写需要复制的路径即可。</p><p>最后重启服务器部署即可，创建主机-执行远程主机脚本命令步骤，由于部署的服务可能不一样，这里就自由发挥了。</p><p>完整的流程如下：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./full_line.png"                      width="800px" height="auto" alt="完整流水线"                ><figcaption>完整流水线</figcaption></figure><p>自此，你的网站不再需要关心证书部署的问题了，可喜可贺！</p><blockquote><p>深恶痛绝改成3个月有效期，不然原本1年有效期，也不需要部署自动流水线了。</p></blockquote><p>其他高阶操作可以去<a class="link"   href="https://certd.docmirror.cn/" >官方教程<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>中查看。</p>]]></content>
+    
+    
+    <summary type="html">使用certd实现自动化证书部署流水线。</summary>
+    
+    
+    
+    <category term="杂项" scheme="https://yhxjs.github.io/categories/%E6%9D%82%E9%A1%B9/"/>
+    
+    
+    <category term="内网穿透" scheme="https://yhxjs.github.io/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>内网穿透访问家里云</title>
@@ -421,25 +442,6 @@
     
     
     <summary type="html">“鸡汤”。</summary>
-    
-    
-    
-    <category term="随笔" scheme="https://yhxjs.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>我</title>
-    <link href="https://yhxjs.github.io/2018/05/06/%E6%88%91/"/>
-    <id>https://yhxjs.github.io/2018/05/06/%E6%88%91/</id>
-    <published>2018-05-06T13:23:22.000Z</published>
-    <updated>2024-04-14T13:54:34.221Z</updated>
-    
-    <content type="html"><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p><p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p><p>也许<br>来来往往<br>你已老去</p><p>但是<br>往复之间<br>越发真切</p><p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p><p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p><p>我也知道<br>你<br>曾多少次暗自神伤</p><p>我亦知道<br>你<br>曾多少次触景生情</p><p>因为<br>我知道<br>我便是你</p><p style="text-align:right;">写于2018-5-6</p>]]></content>
-    
-    
-    <summary type="html">是谁？</summary>
     
     
     

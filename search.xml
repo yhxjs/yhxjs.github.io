@@ -252,6 +252,95 @@
       </tags>
   </entry>
   <entry>
+    <title>IOC和AOP原理</title>
+    <url>/2024/08/06/IOC%E5%92%8CAOP%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p>通过对<a class="link"   href="https://github.com/DerekYRC/mini-spring" >mini-spring<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 代码的阅读，对IoC和AOP的原理有了进一步认识，二者都为构成Spring的基础概念，是框架底层的实现原理。</p>
+<blockquote>
+<p>mini-spring是对Spring IOC和AOP部分的简单实现，仅保留最基础的部分。</p>
+</blockquote>
+<h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Ioc即控制反转，指的是容器控制程序对象之间的关系，而不是传统实现中，由程序代码直接控制，控制权由应用代码中转到了外部容器，控制权的转移即所谓的反转。</p>
+<p>对于Spring而言，就是由Spring来控制对象的生命周期和对象之间的关系，因此，Ioc还有另一个名字——依赖注入，即组件之间的依赖关系由容器在运行期间决定，由容器动态地将某种依赖关系注入到组件之间。</p>
+<p>所有的类都会在Spring容器中登记，告诉Spring这是个什么东西，然后当某个类需要什么东西，Spring就会在系统运行到适当的时候，将这个类要的东西主动赋予，同时对于其他类也是如此。所有的类的创建、销毁都由Spring来控制，也就是说控制对象生存周期的不再是引用它的对象，而是Spring。对于某个具体的对象而言，以前是它控制其他对象，现在是所有对象都被Spring控制，所以这叫控制反转。</p>
+<p>依赖注入的思想是通过反射机制实现的，在实例化一个类时，它通过反射调用类中set方法将事先保存在HashMap中的类属性注入到类中。总而言之，在传统的对象创建方式中，通常由调用者来创建被调用者的实例，而在Spring中创建被调用者的工作由Spring来完成，然后注入调用者，即所谓的依赖注入or控制反转。</p>
+<p>IoC的优点：降低了组件之间的耦合，降低了业务对象之间替换的复杂性，使之能够灵活的管理对象。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>见 <a href="#bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">bean的生命周期</a></p>
+<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><p>AOP面向切面编程基于IoC，是对OOP的有益补充，AOP利用一种称为“横切”的技术，剖解开封装的对象内部，并将那些影响了多个类的公共行为封装到一个可重用模块，并将其名为“Aspect”，即切面。</p>
+<p>所谓“切面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，比如日志记录，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可操作性和可维护性。</p>
+<p>AOP代表的是一个横向的关系，将“对象”比作一个空心的立体，其中封装的是对象的属性和行为，则面向切面编程的方法，就是将这个立体以切面形式剖开，选择性地提供业务逻辑，而剖开的切面，也就是所谓的“切面”了。</p>
+<p>实现AOP的技术，主要分为两大类：一是采用动态代理技术，利用截取消息的方式，对该消息进行装饰，以取代原有对象行为的执行，二是采用静态织入的方式，引入特定的语法创建“切面”，从而使得编译器可以在编译期间织入有关“切面”的代码。</p>
+<p>Spring实现AOP：JDK动态代理和CGLIB代理。</p>
+<ul>
+<li>JDK动态代理：其代理对象必须是某个接口的实现，它是通过在运行期间创建一个接口的实现类来完成对目标对象的代理，其核心的两个类是InvocationHandler和Proxy。</li>
+<li>CGLIB代理：实现原理类似于JDK动态代理，只是它在运行期间生成的代理对象是针对目标类扩展的子类。CGLIB是高效的代码生成包，底层是依靠ASM（开源的java字节码编辑类库）操作字节码实现的，性能比JDK强，需要引入包asm.jar和cglib.jar。</li>
+</ul>
+<p>使用AspectJ注入式切面和@AspectJ注解驱动的切面实际上底层也是通过动态代理实现的。</p>
+<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>ProxyFactory是动态代理工厂，用来决定使用JDK动态代理还是CGLIB动态代理。</p>
+<p>获取BeanFactory所有的AspectJExpressionPointcutAdvisor继承类，常用的有BeforeAdvice、AfterAdvice、AfterReturningAdvice等，当bean的类型与Advice的Pointcut规定的类型匹配时，则创建代理对象。</p>
+<p>当方法执行时，获取拦截器链（首先获取全部切面，再判断当前代理对象是否匹配该Advisor，是否匹配当前调用method），依据拦截器链依次执行，执行过程相当于是一个递归的过程。</p>
+<h2 id="bean的生命周期"><a href="#bean的生命周期" class="headerlink" title="bean的生命周期"></a>bean的生命周期</h2><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./bean的生命周期.png"
+                      width="700px" height="auto" alt="bean的生命周期"
+                ><figcaption>bean的生命周期</figcaption></figure>
+
+<ol>
+<li>创建BeanFactory并读取XML文件，将定义的bean读取出来，将每个bean的属性参数解析到PropertyValues，当存在依赖其他的bean时，会新建一个BeanReference，然后封装为封装为一个BeanDefinition，通过beanFactory进行注册，而如果配置了包扫描，则会对配置的包下进行扫描，扫描出@Component的类同样封装为一个BeanDefinition进行注册，并注册internalAutowiredAnnotationProcessor以便实例化时对自动注入进行处理。</li>
+<li>添加ApplicationContextAwareProcessor，让继承自ApplicationContextAware的bean能感知bean。</li>
+<li>在bean实例化之前，执行注册的BeanFactoryPostProcessor，修改相关的BeanDefinition。</li>
+<li>注册BeanPostProcessor。</li>
+<li>初始化事件发布者和注册事件监听器。</li>
+<li>注册类型转换器和提前实例化单例bean，只有当bean是单例且不为懒加载才会被创建。<ul>
+<li>先从缓存中获取，如果获取到且为FactoryBean则从FactoryBean#getObject中创建bean。</li>
+<li>否则获取BeanDefinition，并根据此创建bean<ul>
+<li>如果bean需要代理，则直接返回代理对象，遍历BeanPostProcessor，对InstantiationAwareBeanPostProcessor的实现类进行处理，调用其postProcessBeforeInstantiation，若返回值不为null，即生成了被代理对象，再调用postProcessAfterInitialization即可生成最终的代理对象。</li>
+<li>接下来就是未被代理的bean，首先调用类的无参构造方法，生成实例，为解决<strong>循环依赖</strong>问题，将实例化后的bean放进缓存中提前暴露，执行InstantiationAwareBeanPostProcessor，此时@Autowired等就会自动注入属性，然后通过反射设置属性，如果继承了BeanFactoryAware，则执行setBeanFactory，执行BeanPostProcessor的前置处理，调用初始化方法init，执行BeanPostProcessor的后置处理，注册有销毁方法的bean，最后，如果有代理对象，则会进行覆盖。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>发布容器刷新完成事件</li>
+</ol>
+<h2 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h2><p>Spring为了解决单例的循环依赖问题，使用了三级缓存。</p>
+<h3 id="三级缓存"><a href="#三级缓存" class="headerlink" title="三级缓存"></a>三级缓存</h3><p>这三个缓存都是定义在DefaultSingletonBeanRegistry类中的：</p>
+<p>bean name –&gt; bean instance</p>
+<p>单例对象的cache：一级缓存</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;(<span class="number">64</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>bean name –&gt; bean instance</p>
+<p>提前暴光的单例对象的Cache：二级缓存</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>bean name –&gt; ObjectFactory</p>
+<p>单例对象工厂的cache：三级缓存</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, ObjectFactory&lt;?&gt;&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>循环依赖主要的三级缓存分别是：</p>
+<ol>
+<li>singletonObbjects：一级缓存单例池，主要存放最终形态的单例bean，一般获取一个bean都是从这个缓存中获取，需要说明的是并不是所有单例bean都存在这个缓存当中，有些特殊的单例bean不存在这个缓存当中。</li>
+<li>earlySingletonObjects：二级缓存，主要存放的是过渡bean（原始对象&#x2F;原始对象的代理对象），也就是从三级缓存当中产生出来的对象，它的作用是防止在多级循环依赖的情况下重复从三级缓存当中创建对象，其他对象都可以直接从二级缓存中获取到原始对象&#x2F;原始对象的代理对象，因为三级缓存当中创建对象是需要牺牲一定得性能，有了这个缓存可以一定程度上提高效率（但是提高的效率并不明显）。只有在调用了三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象时，才会将原始对象&#x2F;原始对象的代理对象放入二级缓存，而调用三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象这种情况只会发生在有循环依赖的时候，所以，<strong>二级缓存在没有循环依赖的情况下不会被使用到</strong>。二级缓存是为了提前暴露Bean来解决循环依赖问题，此时的Bean可能还没有进行属性注入，只有等完成了属性注入、初始化后的Bean才会上移到一级缓存（单例池）中。</li>
+<li>singletonFactories三级缓存，用于存放原始对象对应的ObjectFactory，它的作用主要是为了产生一个对象，每生成一个原始对象，都会将这个原始对象对应的ObjectFactory放到三级缓存中，通过调用ObjectFactory的getObject()方法，就能够在需要动态代理的情况下为原始对象生成代理对象并返回，否则返回原始对象，以此来处理循环依赖时还需要动态代理的情况。</li>
+</ol>
+<p>简单来说：</p>
+<ol>
+<li>singletonObjects，一级缓存，存储的是所有创建好了的单例Bean。</li>
+<li>earlySingletonObjects，完成实例化，但是还未进行属性注入及初始化的对象。</li>
+<li>singletonFactories，提前暴露的一个单例工厂，二级缓存中存储的就是从这个工厂中获取到的对象。</li>
+</ol>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (beanDefinition.isSingleton()) &#123;</span><br><span class="line">	<span class="type">Object</span> <span class="variable">finalBean</span> <span class="operator">=</span> bean;</span><br><span class="line">	addSingletonFactory(beanName, <span class="keyword">new</span> <span class="title class_">ObjectFactory</span>&lt;Object&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="keyword">public</span> Object <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> BeansException &#123;</span><br><span class="line">			<span class="keyword">return</span> getEarlyBeanReference(beanName, beanDefinition, finalBean);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>第三级缓存就是坚决循环依赖问题的关键，而这个方法也是解决循环依赖的关键所在，这段代码发生在doCreateBean()方法中createBeanInstance之后，也就是说单例对象此时已经被实例化出来了。这个对象已经被生产出来了，虽然还未设置属性等其他操作，但是已经能被认出来了（根据对象引用能定位到堆中的对象），所以Spring此时将这个对象提前曝光出来，可以进行使用（此时为依赖注入）。</p>
+<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>当A的某个field或者setter依赖了B的实例对象，同时B的某个field或者setter依赖了A的实例对象，这种情况就为循环依赖。A首先完成了创建的第一步（完成实例化），并且将自己提前曝光到singletonFactories中，此时进行创建的第二步（属性注入），发现自己依赖对象B，此时就尝试去getBean(B)，发现B还没有被create，所以走createBean(B)的流程，B在创建第一步的时候发现自己依赖了对象A，于是尝试getBean(A)，尝试查询一级缓存singletonObjects（肯定没有，因为A还没初始化完全），尝试查询二级缓存earlySingletonObjects（也没有），尝试三级缓存singletonFactories，由于A通过ObjectFactory将自己提前曝光了，所以B能够通过ObjectFactory.getObject拿到A对象（即使A还没有初始化完全，但是因此解决了循环依赖的问题），B拿到A对象后顺利完成了创建过程，B完成创建后之后将自己放入到一级缓存singletonObjects中。此时返回A的创建流程中，A此时能拿到B的对象顺利完成自己的创建过程，最终A也完成了创建，将创建好的A添加到一级缓存singletonObjects中，而且需要说明的是，由于B拿到了A的对象引用，所以B现在持有的A对象也完成了最终的创建。<strong>简单来说，就是spring创造了一个循环依赖的结束点标识。</strong></p>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>也许那么...</title>
     <url>/2016/09/25/%E4%B9%9F%E8%AE%B8%E9%82%A3%E4%B9%88/</url>
     <content><![CDATA[<figure class="image-caption"><img  
@@ -284,6 +373,112 @@
       <categories>
         <category>随笔</category>
       </categories>
+  </entry>
+  <entry>
+    <title>关于上云故障转移方案</title>
+    <url>/2024/11/01/%E5%85%B3%E4%BA%8E%E4%B8%8A%E4%BA%91%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h2 id="上云"><a href="#上云" class="headerlink" title="上云"></a>上云</h2><p>现代服务部署解决方案基本都为云部署，尤其是较大规模的应用，部署服务的方式一般有自建机房、IDC托管、云服务厂商，现如今以阿里云、腾讯云、华为云等为首的云服务厂商的份额日益增加，得益于上云后带来的最大好处——方便运维，变相提高了应用的可靠性，因为相较于部署在自建机房和IDC托管，云服务厂商会提供更加成熟的部署方案，不仅包括简单的部署，包括域名解析、数据备份、容灾等一系列完善的服务，使得服务部署不再困难，降低运维成本以及减少犯错的概率。</p>
+<p>不过，上云容易受到一些不可控的因素干扰，例如云服务厂商突然做出骚操作，之前就存在云服务厂商升级组件而未通知客户，而组件升级切换并不平滑，导致客户部署的服务出现短暂不可用，甚至出现更为糟糕的情况——光缆被挖断了，物理意义上的断你网线，如果没有做好多地容灾，那后果可想而知，服务完全down，无法恢复，当然，不仅云上有这个问题，云下同样如此，因为本质都是机房，只不过运维方式不同。</p>
+<p>而中间件出问题导致服务不可用的情况只能说挺少见的，至少我目前还未遇到过，但是做好应对方案也是必要的，因为谁也保不准什么时候会出问题，弄好预案就多一份保险，省的出问题时两眼一黑。</p>
+<h2 id="动态数据源"><a href="#动态数据源" class="headerlink" title="动态数据源"></a>动态数据源</h2><p>上云前需要弄清楚各个中间件如何动态设置数据源，从而实现热更新，即仅更改某处的配置即可对应用使用的数据源进行动态更新，而无需重启应用，可以使用Nacos进行配置的修改，而且Nacos支持动态刷新配置，天然支持配置监听，并且也可以不使用Nacos自带的配置监听类，可以使用定时器对配置的数据源进行比对，若发生变化则对数据源进行设置。</p>
+<p>当然，应用启动时是通过读取环境变量来设置初始可用的数据源，避免因为某个数据源不可用导致服务启动失败，由于是上云，因此为了稳妥起见，采用了云下——混合云——云上的渐进上云，混合云的中间件都还是连接的云下，而流量是按比例打到云上和云下，而为了做好上云的准备，各个中间件的数据需要从云下同步到云上，当上云时会将云下服务全量停止，云上服务中间件全量切入，并全量流量切入，为此需要准备两个配置文件，方便进行切换。</p>
+<h2 id="故障转移方案"><a href="#故障转移方案" class="headerlink" title="故障转移方案"></a>故障转移方案</h2><h3 id="废案"><a href="#废案" class="headerlink" title="废案"></a>废案</h3><p>在应用启动时同时初始化云上和云下的数据源bean，而在使用数据源时，通过当前配置的数据源标记进行匹配数据源，从而进行相关的数据源操作，这个存在致命的问题，就是当云上和云下其中一个数据源出现问题，服务会无法启动，所以才有后续的补充方案（仅是个想法，还未进行验证）。</p>
+<h4 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h4><p>通过继承AbstractRoutingDataSource这个jdbc动态数据源类，重写determineCurrentLookupKey方法，即可使用相应的数据源，正常场景是读写分离，写入使用主库，查询使用从库。</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;cloudDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource cloudDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;idcDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource idcDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 配置初始数据源信息</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;Object, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;CLOUD&quot;</span>, cloudDataSource);</span><br><span class="line">        map.put(<span class="string">&quot;IDC&quot;</span>, idcDataSource);</span><br><span class="line">        setTargetDataSources(map);</span><br><span class="line">        setDefaultTargetDataSource(idcDataSource);</span><br><span class="line">        <span class="built_in">super</span>.afterPropertiesSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 这个是主要的方法，根据key查找对应的数据源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;CLOUD&quot;</span>; <span class="comment">// 这里需要修改为返回动态的数据源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Redis-Kafka"><a href="#Redis-Kafka" class="headerlink" title="Redis&#x2F;Kafka"></a>Redis&#x2F;Kafka</h4><p>Redis和Kafka一般都有工具类，因此在工具类中注入bean，并且通过map维护云上和云下对应的bean，执行相关操作时，通过数据源标记在map中获得相应的bean即可，无需额外操作。</p>
+<p>而以上最终成为了废案，因为不确定因素太多了，容易出现问题，所以采用了最稳妥的方案即终极方案。</p>
+<h3 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h3><p>直接改配置文件，然后重启服务，是的，你没看错，采用了最原始的方式，同样是最为可靠的方式，虽然服务不可用的时间会比较长，但是更为稳妥，不容易出现问题，且代码侵入性低，一个字，白学（bushi</p>
+<h3 id="补充方案（未验证）"><a href="#补充方案（未验证）" class="headerlink" title="补充方案（未验证）"></a>补充方案（未验证）</h3><p>由于废案中是同时初始化云上和云下两套数据源，那么在启动的时候指定其中某一套可用的数据源初始化不就行了，通过查询资料得知，貌似是可行的，通过方法在应用启动后还可以手动初始化数据源，从而实现动态切换数据源，而触发初始化数据源的就可以是之前所提到的使用定时器对配置的数据源进行比对，只不过不是设置数据源了，而是重新初始化数据源。</p>
+<h4 id="MySql-1"><a href="#MySql-1" class="headerlink" title="MySql"></a>MySql</h4><p>以Druid为例，DruidDataSource提供restart方法，可以在应用启动后重新初始化连接池，因此可以修改数据源配置后，由定时器进行调用，设置为需要切换的对应配置，如下：</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意，cloudDataSource需要为DruidDataSource类型</span></span><br><span class="line">cloudDataSource.setUrl(<span class="string">&quot;jdbc:mysql://***.***.***.***:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&quot;</span>);</span><br><span class="line">cloudDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">cloudDataSource.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">cloudDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">cloudDataSource.restart();</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>暂未找到相关方法，待补充。。。</p>
+<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>暂未找到相关方法，待补充。。。</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>上云</tag>
+        <tag>故障转移</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内网穿透访问家里云</title>
+    <url>/2025/03/26/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E8%AE%BF%E9%97%AE%E5%AE%B6%E9%87%8C%E4%BA%91/</url>
+    <content><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h3><p>内网穿透是一种网络技术，主要用于解决私有网络（内部网络）与外部网络之间的访问问题。它通过在两个或多个网络之间创建一条“隧道”，允许外部网络的设备能够直接访问内部网络中的资源。</p>
+<p>内网穿透使用专用的协议将内网 IP 地址与外网 IP 地址进行转换，确保数据可以通过外网边界设备传输，数据通过指定的外网端口被转发到内网目标地址。这种方式能够实现对特定服务或应用程序的访问，同时保护其他内网资源不受影响。</p>
+<h3 id="frp"><a href="#frp" class="headerlink" title="frp"></a>frp</h3><p>frp 是一个专注于内网穿透的高性能的反向代理应用，支持 TCP、UDP、HTTP、HTTPS 等多种协议，且支持 P2P 通信。可以将内网服务以安全、便捷的方式通过具有公网 IP 节点的中转暴露到公网。作者就是使用该工具进行内网穿透的。</p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>在安装前，需要拥有一台具有公网IP的设备。</p>
+<p>前往<a class="link"   href="https://github.com/fatedier/frp/releases" >Releases · fatedier&#x2F;frp<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>下载对应的压缩包，一般而言，Linux下载linux_amd64版本即可，具体请查看自己服务器的CPU架构，Windows则一般都是x86架构，下载windows_amd64版本即可。</p>
+<h3 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h3><p>以Linux部署为例，使用tar -zxvf命令将下载的压缩包进行解压，解压后的目录结构如下：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── frpc -- 客户端程序</span><br><span class="line">├── frpc.toml -- 客户端配置文件</span><br><span class="line">├── frps -- 服务端程序</span><br><span class="line">├── frps.toml -- 服务端配置文件</span><br><span class="line">└── LICENSE</span><br></pre></td></tr></table></figure></div>
+
+<p>可以看到整体结构非常简单、小巧。</p>
+<p>修改配置文件frps.toml，由于作者主要是用来反向代理web，所以需要配置如下：</p>
+<div class="code-container" data-rel="Toml"><figure class="iseeu highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="attr">bindPort</span> = <span class="number">7000</span> <span class="comment"># frp绑定端口</span></span><br><span class="line"><span class="attr">vhostHTTPPort</span> = <span class="number">80</span> <span class="comment"># http绑定端口</span></span><br><span class="line"><span class="attr">auth.method</span> = <span class="string">&quot;token&quot;</span> <span class="comment"># 鉴权方式</span></span><br><span class="line"><span class="attr">auth.token</span> = <span class="string">&quot;12345678&quot;</span> <span class="comment"># 鉴权token</span></span><br></pre></td></tr></table></figure></div>
+
+<p>vhostHTTPPort即为需要访问的实际端口，假如配置为80，直接访问域名即可指向代理的资源。</p>
+<p>完整的配置文件见<a class="link"   href="https://github.com/fatedier/frp/blob/dev/conf/frps_full_example.toml" >frps_full_example.toml<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>配置完毕后执行命令：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">./frps -c ./frps.toml</span><br></pre></td></tr></table></figure></div>
+
+<p>出现下列输出：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./frps.png"
+                      width="800px" height="auto" alt="frps"
+                ><figcaption>frps</figcaption></figure>
+
+<p>服务端启动成功。</p>
+<h4 id="注册服务"><a href="#注册服务" class="headerlink" title="注册服务"></a>注册服务</h4><p>使用systemd将frp注册为服务。</p>
+<p>编写frps.service，在&#x2F;etc&#x2F;systemd&#x2F;system目录下新建frps.service文件：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">服务名称，可自定义</span></span><br><span class="line">Description = frp server</span><br><span class="line">After = network.target syslog.target</span><br><span class="line">Wants = network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type = simple</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动frps的命令，需修改为你的实际路径</span></span><br><span class="line">ExecStart = /path/frps -c /path/frps.toml</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy = multi-user.target</span><br></pre></td></tr></table></figure></div>
+
+<p>运行命令：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl start frps</span><br></pre></td></tr></table></figure></div>
+
+<p>运行完毕后执行：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl list-units | grep frps</span><br></pre></td></tr></table></figure></div>
+
+<p>可以看到：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./systemctl_frp.png"
+                      width="800px" height="auto" alt="systemctl_frp"
+                ><figcaption>systemctl_frp</figcaption></figure>
+
+<p>如果想要开机自启，执行下面的命令即可：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl enable frps</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><p>以Windows部署为例，同样只需要根据自己的需求更改配置文件，然后运行命令即可。</p>
+<div class="code-container" data-rel="Toml"><figure class="iseeu highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="attr">serverAddr</span> = <span class="string">&quot;1.2.3.4&quot;</span> <span class="comment"># 服务端的公网IP</span></span><br><span class="line"><span class="attr">serverPort</span> = <span class="number">7000</span> <span class="comment"># 需要与服务端的bindPort一致</span></span><br><span class="line"><span class="attr">auth.method</span> = <span class="string">&quot;token&quot;</span> <span class="comment"># 鉴权方式</span></span><br><span class="line"><span class="attr">auth.token</span> = <span class="string">&quot;12345678&quot;</span> <span class="comment"># 需要与服务端的token一致</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[proxies]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;test&quot;</span> <span class="comment"># 需要保持唯一</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;http&quot;</span> <span class="comment"># 代理类型</span></span><br><span class="line"><span class="attr">localPort</span> = <span class="number">8888</span> <span class="comment"># 本地web服务端口</span></span><br><span class="line"><span class="attr">customDomains</span> = [<span class="string">&quot;test.xxx.com&quot;</span>] <span class="comment"># 访问域名指向</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以配多个http代理，frp支持端口复用</span></span><br><span class="line"><span class="section">[[proxies]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;dify&quot;</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;http&quot;</span></span><br><span class="line"><span class="attr">localPort</span> = <span class="number">80</span></span><br><span class="line"><span class="attr">customDomains</span> = [<span class="string">&quot;dify.xxx.com&quot;</span>]</span><br></pre></td></tr></table></figure></div>
+
+<p>customDomains配置的域名需要DNS配置一条指向服务端IP的A记录。</p>
+<p>完整的配置文件见<a class="link"   href="https://github.com/fatedier/frp/blob/dev/conf/frpc_full_example.toml" >frpc_full_example.toml<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>配置完毕后执行命令：</p>
+<div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">frpc.exe -c ./frpc.toml</span><br></pre></td></tr></table></figure></div>
+
+<p>出现下列输出：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./frpc.png"
+                      width="800px" height="auto" alt="frpc"
+                ><figcaption>frpc</figcaption></figure>
+
+<p>恭喜你，内网穿透成功，此时可以访问配置的域名及端口即可访问指向的内网服务了。</p>
+<p>其他示例可以访问<a class="link"   href="https://gofrp.org/zh-cn/" >frp文档<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>自行查看。</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>内网穿透</tag>
+      </tags>
   </entry>
   <entry>
     <title>ND协议</title>
@@ -476,201 +671,6 @@
       <tags>
         <tag>通信</tag>
         <tag>ND</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>IOC和AOP原理</title>
-    <url>/2024/08/06/IOC%E5%92%8CAOP%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p>通过对<a class="link"   href="https://github.com/DerekYRC/mini-spring" >mini-spring<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 代码的阅读，对IoC和AOP的原理有了进一步认识，二者都为构成Spring的基础概念，是框架底层的实现原理。</p>
-<blockquote>
-<p>mini-spring是对Spring IOC和AOP部分的简单实现，仅保留最基础的部分。</p>
-</blockquote>
-<h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Ioc即控制反转，指的是容器控制程序对象之间的关系，而不是传统实现中，由程序代码直接控制，控制权由应用代码中转到了外部容器，控制权的转移即所谓的反转。</p>
-<p>对于Spring而言，就是由Spring来控制对象的生命周期和对象之间的关系，因此，Ioc还有另一个名字——依赖注入，即组件之间的依赖关系由容器在运行期间决定，由容器动态地将某种依赖关系注入到组件之间。</p>
-<p>所有的类都会在Spring容器中登记，告诉Spring这是个什么东西，然后当某个类需要什么东西，Spring就会在系统运行到适当的时候，将这个类要的东西主动赋予，同时对于其他类也是如此。所有的类的创建、销毁都由Spring来控制，也就是说控制对象生存周期的不再是引用它的对象，而是Spring。对于某个具体的对象而言，以前是它控制其他对象，现在是所有对象都被Spring控制，所以这叫控制反转。</p>
-<p>依赖注入的思想是通过反射机制实现的，在实例化一个类时，它通过反射调用类中set方法将事先保存在HashMap中的类属性注入到类中。总而言之，在传统的对象创建方式中，通常由调用者来创建被调用者的实例，而在Spring中创建被调用者的工作由Spring来完成，然后注入调用者，即所谓的依赖注入or控制反转。</p>
-<p>IoC的优点：降低了组件之间的耦合，降低了业务对象之间替换的复杂性，使之能够灵活的管理对象。</p>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>见 <a href="#bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">bean的生命周期</a></p>
-<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><p>AOP面向切面编程基于IoC，是对OOP的有益补充，AOP利用一种称为“横切”的技术，剖解开封装的对象内部，并将那些影响了多个类的公共行为封装到一个可重用模块，并将其名为“Aspect”，即切面。</p>
-<p>所谓“切面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，比如日志记录，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可操作性和可维护性。</p>
-<p>AOP代表的是一个横向的关系，将“对象”比作一个空心的立体，其中封装的是对象的属性和行为，则面向切面编程的方法，就是将这个立体以切面形式剖开，选择性地提供业务逻辑，而剖开的切面，也就是所谓的“切面”了。</p>
-<p>实现AOP的技术，主要分为两大类：一是采用动态代理技术，利用截取消息的方式，对该消息进行装饰，以取代原有对象行为的执行，二是采用静态织入的方式，引入特定的语法创建“切面”，从而使得编译器可以在编译期间织入有关“切面”的代码。</p>
-<p>Spring实现AOP：JDK动态代理和CGLIB代理。</p>
-<ul>
-<li>JDK动态代理：其代理对象必须是某个接口的实现，它是通过在运行期间创建一个接口的实现类来完成对目标对象的代理，其核心的两个类是InvocationHandler和Proxy。</li>
-<li>CGLIB代理：实现原理类似于JDK动态代理，只是它在运行期间生成的代理对象是针对目标类扩展的子类。CGLIB是高效的代码生成包，底层是依靠ASM（开源的java字节码编辑类库）操作字节码实现的，性能比JDK强，需要引入包asm.jar和cglib.jar。</li>
-</ul>
-<p>使用AspectJ注入式切面和@AspectJ注解驱动的切面实际上底层也是通过动态代理实现的。</p>
-<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>ProxyFactory是动态代理工厂，用来决定使用JDK动态代理还是CGLIB动态代理。</p>
-<p>获取BeanFactory所有的AspectJExpressionPointcutAdvisor继承类，常用的有BeforeAdvice、AfterAdvice、AfterReturningAdvice等，当bean的类型与Advice的Pointcut规定的类型匹配时，则创建代理对象。</p>
-<p>当方法执行时，获取拦截器链（首先获取全部切面，再判断当前代理对象是否匹配该Advisor，是否匹配当前调用method），依据拦截器链依次执行，执行过程相当于是一个递归的过程。</p>
-<h2 id="bean的生命周期"><a href="#bean的生命周期" class="headerlink" title="bean的生命周期"></a>bean的生命周期</h2><figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./bean的生命周期.png"
-                      width="700px" height="auto" alt="bean的生命周期"
-                ><figcaption>bean的生命周期</figcaption></figure>
-
-<ol>
-<li>创建BeanFactory并读取XML文件，将定义的bean读取出来，将每个bean的属性参数解析到PropertyValues，当存在依赖其他的bean时，会新建一个BeanReference，然后封装为封装为一个BeanDefinition，通过beanFactory进行注册，而如果配置了包扫描，则会对配置的包下进行扫描，扫描出@Component的类同样封装为一个BeanDefinition进行注册，并注册internalAutowiredAnnotationProcessor以便实例化时对自动注入进行处理。</li>
-<li>添加ApplicationContextAwareProcessor，让继承自ApplicationContextAware的bean能感知bean。</li>
-<li>在bean实例化之前，执行注册的BeanFactoryPostProcessor，修改相关的BeanDefinition。</li>
-<li>注册BeanPostProcessor。</li>
-<li>初始化事件发布者和注册事件监听器。</li>
-<li>注册类型转换器和提前实例化单例bean，只有当bean是单例且不为懒加载才会被创建。<ul>
-<li>先从缓存中获取，如果获取到且为FactoryBean则从FactoryBean#getObject中创建bean。</li>
-<li>否则获取BeanDefinition，并根据此创建bean<ul>
-<li>如果bean需要代理，则直接返回代理对象，遍历BeanPostProcessor，对InstantiationAwareBeanPostProcessor的实现类进行处理，调用其postProcessBeforeInstantiation，若返回值不为null，即生成了被代理对象，再调用postProcessAfterInitialization即可生成最终的代理对象。</li>
-<li>接下来就是未被代理的bean，首先调用类的无参构造方法，生成实例，为解决<strong>循环依赖</strong>问题，将实例化后的bean放进缓存中提前暴露，执行InstantiationAwareBeanPostProcessor，此时@Autowired等就会自动注入属性，然后通过反射设置属性，如果继承了BeanFactoryAware，则执行setBeanFactory，执行BeanPostProcessor的前置处理，调用初始化方法init，执行BeanPostProcessor的后置处理，注册有销毁方法的bean，最后，如果有代理对象，则会进行覆盖。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>发布容器刷新完成事件</li>
-</ol>
-<h2 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h2><p>Spring为了解决单例的循环依赖问题，使用了三级缓存。</p>
-<h3 id="三级缓存"><a href="#三级缓存" class="headerlink" title="三级缓存"></a>三级缓存</h3><p>这三个缓存都是定义在DefaultSingletonBeanRegistry类中的：</p>
-<p>bean name –&gt; bean instance</p>
-<p>单例对象的cache：一级缓存</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;(<span class="number">64</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>bean name –&gt; bean instance</p>
-<p>提前暴光的单例对象的Cache：二级缓存</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>bean name –&gt; ObjectFactory</p>
-<p>单例对象工厂的cache：三级缓存</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, ObjectFactory&lt;?&gt;&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>循环依赖主要的三级缓存分别是：</p>
-<ol>
-<li>singletonObbjects：一级缓存单例池，主要存放最终形态的单例bean，一般获取一个bean都是从这个缓存中获取，需要说明的是并不是所有单例bean都存在这个缓存当中，有些特殊的单例bean不存在这个缓存当中。</li>
-<li>earlySingletonObjects：二级缓存，主要存放的是过渡bean（原始对象&#x2F;原始对象的代理对象），也就是从三级缓存当中产生出来的对象，它的作用是防止在多级循环依赖的情况下重复从三级缓存当中创建对象，其他对象都可以直接从二级缓存中获取到原始对象&#x2F;原始对象的代理对象，因为三级缓存当中创建对象是需要牺牲一定得性能，有了这个缓存可以一定程度上提高效率（但是提高的效率并不明显）。只有在调用了三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象时，才会将原始对象&#x2F;原始对象的代理对象放入二级缓存，而调用三级缓存中的<strong>ObjectFactory</strong>的<strong>getObject</strong>()方法获取原始对象&#x2F;原始对象的代理对象这种情况只会发生在有循环依赖的时候，所以，<strong>二级缓存在没有循环依赖的情况下不会被使用到</strong>。二级缓存是为了提前暴露Bean来解决循环依赖问题，此时的Bean可能还没有进行属性注入，只有等完成了属性注入、初始化后的Bean才会上移到一级缓存（单例池）中。</li>
-<li>singletonFactories三级缓存，用于存放原始对象对应的ObjectFactory，它的作用主要是为了产生一个对象，每生成一个原始对象，都会将这个原始对象对应的ObjectFactory放到三级缓存中，通过调用ObjectFactory的getObject()方法，就能够在需要动态代理的情况下为原始对象生成代理对象并返回，否则返回原始对象，以此来处理循环依赖时还需要动态代理的情况。</li>
-</ol>
-<p>简单来说：</p>
-<ol>
-<li>singletonObjects，一级缓存，存储的是所有创建好了的单例Bean。</li>
-<li>earlySingletonObjects，完成实例化，但是还未进行属性注入及初始化的对象。</li>
-<li>singletonFactories，提前暴露的一个单例工厂，二级缓存中存储的就是从这个工厂中获取到的对象。</li>
-</ol>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (beanDefinition.isSingleton()) &#123;</span><br><span class="line">	<span class="type">Object</span> <span class="variable">finalBean</span> <span class="operator">=</span> bean;</span><br><span class="line">	addSingletonFactory(beanName, <span class="keyword">new</span> <span class="title class_">ObjectFactory</span>&lt;Object&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="keyword">public</span> Object <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> BeansException &#123;</span><br><span class="line">			<span class="keyword">return</span> getEarlyBeanReference(beanName, beanDefinition, finalBean);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<p>第三级缓存就是坚决循环依赖问题的关键，而这个方法也是解决循环依赖的关键所在，这段代码发生在doCreateBean()方法中createBeanInstance之后，也就是说单例对象此时已经被实例化出来了。这个对象已经被生产出来了，虽然还未设置属性等其他操作，但是已经能被认出来了（根据对象引用能定位到堆中的对象），所以Spring此时将这个对象提前曝光出来，可以进行使用（此时为依赖注入）。</p>
-<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>当A的某个field或者setter依赖了B的实例对象，同时B的某个field或者setter依赖了A的实例对象，这种情况就为循环依赖。A首先完成了创建的第一步（完成实例化），并且将自己提前曝光到singletonFactories中，此时进行创建的第二步（属性注入），发现自己依赖对象B，此时就尝试去getBean(B)，发现B还没有被create，所以走createBean(B)的流程，B在创建第一步的时候发现自己依赖了对象A，于是尝试getBean(A)，尝试查询一级缓存singletonObjects（肯定没有，因为A还没初始化完全），尝试查询二级缓存earlySingletonObjects（也没有），尝试三级缓存singletonFactories，由于A通过ObjectFactory将自己提前曝光了，所以B能够通过ObjectFactory.getObject拿到A对象（即使A还没有初始化完全，但是因此解决了循环依赖的问题），B拿到A对象后顺利完成了创建过程，B完成创建后之后将自己放入到一级缓存singletonObjects中。此时返回A的创建流程中，A此时能拿到B的对象顺利完成自己的创建过程，最终A也完成了创建，将创建好的A添加到一级缓存singletonObjects中，而且需要说明的是，由于B拿到了A的对象引用，所以B现在持有的A对象也完成了最终的创建。<strong>简单来说，就是spring创造了一个循环依赖的结束点标识。</strong></p>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于上云故障转移方案</title>
-    <url>/2024/11/01/%E5%85%B3%E4%BA%8E%E4%B8%8A%E4%BA%91%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h2 id="上云"><a href="#上云" class="headerlink" title="上云"></a>上云</h2><p>现代服务部署解决方案基本都为云部署，尤其是较大规模的应用，部署服务的方式一般有自建机房、IDC托管、云服务厂商，现如今以阿里云、腾讯云、华为云等为首的云服务厂商的份额日益增加，得益于上云后带来的最大好处——方便运维，变相提高了应用的可靠性，因为相较于部署在自建机房和IDC托管，云服务厂商会提供更加成熟的部署方案，不仅包括简单的部署，包括域名解析、数据备份、容灾等一系列完善的服务，使得服务部署不再困难，降低运维成本以及减少犯错的概率。</p>
-<p>不过，上云容易受到一些不可控的因素干扰，例如云服务厂商突然做出骚操作，之前就存在云服务厂商升级组件而未通知客户，而组件升级切换并不平滑，导致客户部署的服务出现短暂不可用，甚至出现更为糟糕的情况——光缆被挖断了，物理意义上的断你网线，如果没有做好多地容灾，那后果可想而知，服务完全down，无法恢复，当然，不仅云上有这个问题，云下同样如此，因为本质都是机房，只不过运维方式不同。</p>
-<p>而中间件出问题导致服务不可用的情况只能说挺少见的，至少我目前还未遇到过，但是做好应对方案也是必要的，因为谁也保不准什么时候会出问题，弄好预案就多一份保险，省的出问题时两眼一黑。</p>
-<h2 id="动态数据源"><a href="#动态数据源" class="headerlink" title="动态数据源"></a>动态数据源</h2><p>上云前需要弄清楚各个中间件如何动态设置数据源，从而实现热更新，即仅更改某处的配置即可对应用使用的数据源进行动态更新，而无需重启应用，可以使用Nacos进行配置的修改，而且Nacos支持动态刷新配置，天然支持配置监听，并且也可以不使用Nacos自带的配置监听类，可以使用定时器对配置的数据源进行比对，若发生变化则对数据源进行设置。</p>
-<p>当然，应用启动时是通过读取环境变量来设置初始可用的数据源，避免因为某个数据源不可用导致服务启动失败，由于是上云，因此为了稳妥起见，采用了云下——混合云——云上的渐进上云，混合云的中间件都还是连接的云下，而流量是按比例打到云上和云下，而为了做好上云的准备，各个中间件的数据需要从云下同步到云上，当上云时会将云下服务全量停止，云上服务中间件全量切入，并全量流量切入，为此需要准备两个配置文件，方便进行切换。</p>
-<h2 id="故障转移方案"><a href="#故障转移方案" class="headerlink" title="故障转移方案"></a>故障转移方案</h2><h3 id="废案"><a href="#废案" class="headerlink" title="废案"></a>废案</h3><p>在应用启动时同时初始化云上和云下的数据源bean，而在使用数据源时，通过当前配置的数据源标记进行匹配数据源，从而进行相关的数据源操作，这个存在致命的问题，就是当云上和云下其中一个数据源出现问题，服务会无法启动，所以才有后续的补充方案（仅是个想法，还未进行验证）。</p>
-<h4 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h4><p>通过继承AbstractRoutingDataSource这个jdbc动态数据源类，重写determineCurrentLookupKey方法，即可使用相应的数据源，正常场景是读写分离，写入使用主库，查询使用从库。</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;cloudDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource cloudDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;idcDataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource idcDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 配置初始数据源信息</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;Object, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;CLOUD&quot;</span>, cloudDataSource);</span><br><span class="line">        map.put(<span class="string">&quot;IDC&quot;</span>, idcDataSource);</span><br><span class="line">        setTargetDataSources(map);</span><br><span class="line">        setDefaultTargetDataSource(idcDataSource);</span><br><span class="line">        <span class="built_in">super</span>.afterPropertiesSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 这个是主要的方法，根据key查找对应的数据源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;CLOUD&quot;</span>; <span class="comment">// 这里需要修改为返回动态的数据源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="Redis-Kafka"><a href="#Redis-Kafka" class="headerlink" title="Redis&#x2F;Kafka"></a>Redis&#x2F;Kafka</h4><p>Redis和Kafka一般都有工具类，因此在工具类中注入bean，并且通过map维护云上和云下对应的bean，执行相关操作时，通过数据源标记在map中获得相应的bean即可，无需额外操作。</p>
-<p>而以上最终成为了废案，因为不确定因素太多了，容易出现问题，所以采用了最稳妥的方案即终极方案。</p>
-<h3 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h3><p>直接改配置文件，然后重启服务，是的，你没看错，采用了最原始的方式，同样是最为可靠的方式，虽然服务不可用的时间会比较长，但是更为稳妥，不容易出现问题，且代码侵入性低，一个字，白学（bushi</p>
-<h3 id="补充方案（未验证）"><a href="#补充方案（未验证）" class="headerlink" title="补充方案（未验证）"></a>补充方案（未验证）</h3><p>由于废案中是同时初始化云上和云下两套数据源，那么在启动的时候指定其中某一套可用的数据源初始化不就行了，通过查询资料得知，貌似是可行的，通过方法在应用启动后还可以手动初始化数据源，从而实现动态切换数据源，而触发初始化数据源的就可以是之前所提到的使用定时器对配置的数据源进行比对，只不过不是设置数据源了，而是重新初始化数据源。</p>
-<h4 id="MySql-1"><a href="#MySql-1" class="headerlink" title="MySql"></a>MySql</h4><p>以Druid为例，DruidDataSource提供restart方法，可以在应用启动后重新初始化连接池，因此可以修改数据源配置后，由定时器进行调用，设置为需要切换的对应配置，如下：</p>
-<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意，cloudDataSource需要为DruidDataSource类型</span></span><br><span class="line">cloudDataSource.setUrl(<span class="string">&quot;jdbc:mysql://***.***.***.***:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&quot;</span>);</span><br><span class="line">cloudDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">cloudDataSource.setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">cloudDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">cloudDataSource.restart();</span><br></pre></td></tr></table></figure></div>
-
-<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>暂未找到相关方法，待补充。。。</p>
-<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>暂未找到相关方法，待补充。。。</p>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>上云</tag>
-        <tag>故障转移</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>内网穿透访问家里云</title>
-    <url>/2025/03/26/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E8%AE%BF%E9%97%AE%E5%AE%B6%E9%87%8C%E4%BA%91/</url>
-    <content><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h3><p>内网穿透是一种网络技术，主要用于解决私有网络（内部网络）与外部网络之间的访问问题。它通过在两个或多个网络之间创建一条“隧道”，允许外部网络的设备能够直接访问内部网络中的资源。</p>
-<p>内网穿透使用专用的协议将内网 IP 地址与外网 IP 地址进行转换，确保数据可以通过外网边界设备传输，数据通过指定的外网端口被转发到内网目标地址。这种方式能够实现对特定服务或应用程序的访问，同时保护其他内网资源不受影响。</p>
-<h3 id="frp"><a href="#frp" class="headerlink" title="frp"></a>frp</h3><p>frp 是一个专注于内网穿透的高性能的反向代理应用，支持 TCP、UDP、HTTP、HTTPS 等多种协议，且支持 P2P 通信。可以将内网服务以安全、便捷的方式通过具有公网 IP 节点的中转暴露到公网。作者就是使用该工具进行内网穿透的。</p>
-<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>在安装前，需要拥有一台具有公网IP的设备。</p>
-<p>前往<a class="link"   href="https://github.com/fatedier/frp/releases" >Releases · fatedier&#x2F;frp<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>下载对应的压缩包，一般而言，Linux下载linux_amd64版本即可，具体请查看自己服务器的CPU架构，Windows则一般都是x86架构，下载windows_amd64版本即可。</p>
-<h3 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h3><p>以Linux部署为例，使用tar -zxvf命令将下载的压缩包进行解压，解压后的目录结构如下：</p>
-<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── frpc -- 客户端程序</span><br><span class="line">├── frpc.toml -- 客户端配置文件</span><br><span class="line">├── frps -- 服务端程序</span><br><span class="line">├── frps.toml -- 服务端配置文件</span><br><span class="line">└── LICENSE</span><br></pre></td></tr></table></figure></div>
-
-<p>可以看到整体结构非常简单、小巧。</p>
-<p>修改配置文件frps.toml，由于作者主要是用来反向代理web，所以需要配置如下：</p>
-<div class="code-container" data-rel="Toml"><figure class="iseeu highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="attr">bindPort</span> = <span class="number">7000</span> <span class="comment"># frp绑定端口</span></span><br><span class="line"><span class="attr">vhostHTTPPort</span> = <span class="number">80</span> <span class="comment"># http绑定端口</span></span><br><span class="line"><span class="attr">auth.method</span> = <span class="string">&quot;token&quot;</span> <span class="comment"># 鉴权方式</span></span><br><span class="line"><span class="attr">auth.token</span> = <span class="string">&quot;12345678&quot;</span> <span class="comment"># 鉴权token</span></span><br></pre></td></tr></table></figure></div>
-
-<p>vhostHTTPPort即为需要访问的实际端口，假如配置为80，直接访问域名即可指向代理的资源。</p>
-<p>完整的配置文件见<a class="link"   href="https://github.com/fatedier/frp/blob/dev/conf/frps_full_example.toml" >frps_full_example.toml<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
-<p>配置完毕后执行命令：</p>
-<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">./frps -c ./frps.toml</span><br></pre></td></tr></table></figure></div>
-
-<p>出现下列输出：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./frps.png"
-                      width="800px" height="auto" alt="frps"
-                ><figcaption>frps</figcaption></figure>
-
-<p>服务端启动成功。</p>
-<h4 id="注册服务"><a href="#注册服务" class="headerlink" title="注册服务"></a>注册服务</h4><p>使用systemd将frp注册为服务。</p>
-<p>编写frps.service，在&#x2F;etc&#x2F;systemd&#x2F;system目录下新建frps.service文件：</p>
-<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">服务名称，可自定义</span></span><br><span class="line">Description = frp server</span><br><span class="line">After = network.target syslog.target</span><br><span class="line">Wants = network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type = simple</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动frps的命令，需修改为你的实际路径</span></span><br><span class="line">ExecStart = /path/frps -c /path/frps.toml</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy = multi-user.target</span><br></pre></td></tr></table></figure></div>
-
-<p>运行命令：</p>
-<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl start frps</span><br></pre></td></tr></table></figure></div>
-
-<p>运行完毕后执行：</p>
-<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl list-units | grep frps</span><br></pre></td></tr></table></figure></div>
-
-<p>可以看到：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./systemctl_frp.png"
-                      width="800px" height="auto" alt="systemctl_frp"
-                ><figcaption>systemctl_frp</figcaption></figure>
-
-<p>如果想要开机自启，执行下面的命令即可：</p>
-<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl enable frps</span><br></pre></td></tr></table></figure></div>
-
-<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><p>以Windows部署为例，同样只需要根据自己的需求更改配置文件，然后运行命令即可。</p>
-<div class="code-container" data-rel="Toml"><figure class="iseeu highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="attr">serverAddr</span> = <span class="string">&quot;1.2.3.4&quot;</span> <span class="comment"># 服务端的公网IP</span></span><br><span class="line"><span class="attr">serverPort</span> = <span class="number">7000</span> <span class="comment"># 需要与服务端的bindPort一致</span></span><br><span class="line"><span class="attr">auth.method</span> = <span class="string">&quot;token&quot;</span> <span class="comment"># 鉴权方式</span></span><br><span class="line"><span class="attr">auth.token</span> = <span class="string">&quot;12345678&quot;</span> <span class="comment"># 需要与服务端的token一致</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[proxies]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;test&quot;</span> <span class="comment"># 需要保持唯一</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;http&quot;</span> <span class="comment"># 代理类型</span></span><br><span class="line"><span class="attr">localPort</span> = <span class="number">8888</span> <span class="comment"># 本地web服务端口</span></span><br><span class="line"><span class="attr">customDomains</span> = [<span class="string">&quot;test.xxx.com&quot;</span>] <span class="comment"># 访问域名指向</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以配多个http代理，frp支持端口复用</span></span><br><span class="line"><span class="section">[[proxies]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;dify&quot;</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;http&quot;</span></span><br><span class="line"><span class="attr">localPort</span> = <span class="number">80</span></span><br><span class="line"><span class="attr">customDomains</span> = [<span class="string">&quot;dify.xxx.com&quot;</span>]</span><br></pre></td></tr></table></figure></div>
-
-<p>customDomains配置的域名需要DNS配置一条指向服务端IP的A记录。</p>
-<p>完整的配置文件见<a class="link"   href="https://github.com/fatedier/frp/blob/dev/conf/frpc_full_example.toml" >frpc_full_example.toml<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
-<p>配置完毕后执行命令：</p>
-<div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line">frpc.exe -c ./frpc.toml</span><br></pre></td></tr></table></figure></div>
-
-<p>出现下列输出：</p>
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./frpc.png"
-                      width="800px" height="auto" alt="frpc"
-                ><figcaption>frpc</figcaption></figure>
-
-<p>恭喜你，内网穿透成功，此时可以访问配置的域名及端口即可访问指向的内网服务了。</p>
-<p>其他示例可以访问<a class="link"   href="https://gofrp.org/zh-cn/" >frp文档<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>自行查看。</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>内网穿透</tag>
       </tags>
   </entry>
   <entry>
@@ -1019,6 +1019,24 @@ import {initHBE} from "/js/plugins/hbe.js";
       </tags>
   </entry>
   <entry>
+    <title>小丑</title>
+    <url>/2021/08/16/%E5%B0%8F%E4%B8%91/</url>
+    <content><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p>
+<p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p>
+<p>哀嚎着，<br>究竟是人是鬼？</p>
+<p style="text-align:right;">写于2021-8-16</p>
+
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./joker.jpg"
+                      width="500px" height="auto" alt="小丑"
+                ><figcaption>小丑</figcaption></figure>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
     <title>基于Docker和k8s的部署方案</title>
     <url>/2024/06/03/%E5%9F%BA%E4%BA%8EDocker%E5%92%8CK8s%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88/</url>
     <content><![CDATA[<h2 id="基于Docker和k8s的部署方案"><a href="#基于Docker和k8s的部署方案" class="headerlink" title="基于Docker和k8s的部署方案"></a>基于Docker和k8s的部署方案</h2><h3 id="虚拟机与容器"><a href="#虚拟机与容器" class="headerlink" title="虚拟机与容器"></a>虚拟机与容器</h3><h4 id="传统虚拟机"><a href="#传统虚拟机" class="headerlink" title="传统虚拟机"></a>传统虚拟机</h4><p>传统虚拟机泛指包含完整系统镜像，即带环境安装的一种解决方案，它可以在一种操作系统里面运行另一种操作系统，比如在Windows系统里运行Ubuntu，就是一个普通文件，不需要了就删掉，对其他部分毫无影响。但带来的缺点显而易见，占用资源多，冗余步骤多，启动慢，为了解决上述缺点，容器应运而生。</p>
@@ -1203,41 +1221,6 @@ import {initHBE} from "/js/plugins/hbe.js";
         <tag>Docker</tag>
         <tag>k8s</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>小丑</title>
-    <url>/2021/08/16/%E5%B0%8F%E4%B8%91/</url>
-    <content><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p>
-<p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p>
-<p>哀嚎着，<br>究竟是人是鬼？</p>
-<p style="text-align:right;">写于2021-8-16</p>
-
-<figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="./joker.jpg"
-                      width="500px" height="auto" alt="小丑"
-                ><figcaption>小丑</figcaption></figure>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>我</title>
-    <url>/2018/05/06/%E6%88%91/</url>
-    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
-<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
-<p>也许<br>来来往往<br>你已老去</p>
-<p>但是<br>往复之间<br>越发真切</p>
-<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
-<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
-<p>我也知道<br>你<br>曾多少次暗自神伤</p>
-<p>我亦知道<br>你<br>曾多少次触景生情</p>
-<p>因为<br>我知道<br>我便是你</p>
-<p style="text-align:right;">写于2018-5-6</p>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
   </entry>
   <entry>
     <title>把握</title>
@@ -1500,11 +1483,18 @@ import {initHBE} from "/js/plugins/hbe.js";
       </tags>
   </entry>
   <entry>
-    <title>溺水</title>
-    <url>/2017/04/08/%E6%BA%BA%E6%B0%B4/</url>
-    <content><![CDATA[<p>渐渐丧失知觉，阳光仿佛随我一起消失在这河里，逐渐黯淡，岸上的呼喊声在耳边若隐若现。有那么几刻，我甚至怀疑这并不真实，仿佛做梦一般飘渺，它就那样将我拉入万丈深渊，我不禁想要挣扎，去挣脱它的控制，但毫无成效，反而使我越陷越深，我感到一丝无力与绝望，不甘就这么死去，世间的种种在眼前浮现，我不禁笑了笑，是啊，又有什么可怀念的呢？放弃挣扎的我慢慢下沉，我仿佛看到世间最美的景色，一切是那么安静，祥和，我闭上眼睛，想去感受死亡所带来的一丝不安与恐惧，但我感受到的只有无尽的黑暗和一片虚无。</p>
-<p>岸上的那人仿佛冷漠无比，事不关己地看着我，渐渐死去，于是，我便长眠于此，世间再无我的容身之地，我已不复存在，接管这个皮囊的是另一种存在，一种未知的存在，它就在那，就那么默默注视着我，看着我渐渐堕落，迷失自我，取代我的便是它，是我助长它的存在，使它慢慢腐蚀我的灵魂，侵入我的内心，但对此我一无所知，直至此刻，我死了，我才领悟，但也没有什么值得我去留念了，当初的信念早已覆灭，随着我一同消散在这世间。</p>
-<p style="text-align:right;">写于高中某天</p>]]></content>
+    <title>我</title>
+    <url>/2018/05/06/%E6%88%91/</url>
+    <content><![CDATA[<p>飘浮着<br>流荡着<br>望着远方的夕阳<br>我知道你已逝去</p>
+<p>踌躇着<br>漫步着<br>听着身旁的乐声<br>我知道你已归来</p>
+<p>也许<br>来来往往<br>你已老去</p>
+<p>但是<br>往复之间<br>越发真切</p>
+<p>我知道<br>你<br>一直在追逐<br>追逐那心中念想</p>
+<p>我知道<br>你<br>一直在幻想<br>幻想那世间美好</p>
+<p>我也知道<br>你<br>曾多少次暗自神伤</p>
+<p>我亦知道<br>你<br>曾多少次触景生情</p>
+<p>因为<br>我知道<br>我便是你</p>
+<p style="text-align:right;">写于2018-5-6</p>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -1516,6 +1506,16 @@ import {initHBE} from "/js/plugins/hbe.js";
 <p>可是，却早已无力，瘫倒在冰冷的地上，看着天空，白茫茫的一片覆盖了蓝天，仅露出些空隙，光从中渗透出来，洒满了大地，也照到我的脸上，麻木的脸颊甚至感受不到丝毫暖意，此刻太阳仿佛冷焰一般，燃烧着，却冷到无感，这早已不是火，而是晃动着的光球，散发着寒人的光芒，世间这一切仿佛失色，在这天地间，仅剩我一人，自由地飞翔在冰冷的大地上，内心燃烧起一团火，双眼只剩下无尽的深邃，毫无感情，无奈化作脸上那唯一的标志——沉默，无尽的沉默。</p>
 <p>曾几何时，可笑的认为这世间如此美好，却在一瞬之间，破灭了，一点点消散在内心深处，化为一道道无法修复的伤痕，触目惊心，却又蕴含着对从前的回忆，不禁交杂着一种复杂的情感，在笑的时候，眼角却冒出了眼泪，内心痛苦，牵动着神经，身体做出抗拒的表现，想要发泄，却又不能，只能任由它肆意破坏曾经美好的感受，剩下一片废墟，慢慢沙化，渴望雨水将其冲刷干净，却只有几滴眼泪。</p>
 <p>无言，岁月流逝，也许废墟会重建，但一切早已不是原来的模样，只有那面目全非的痕迹才能证明这曾经存在过，只能独自缅怀逝去的青春，却无人能懂，烦闷瞬间爆炸，将我炸得血肉横飞。一次又一次地隐忍，早已受不了那倦怠，我只想逃离，逃离这一切。</p>
+<p style="text-align:right;">写于高中某天</p>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>溺水</title>
+    <url>/2017/04/08/%E6%BA%BA%E6%B0%B4/</url>
+    <content><![CDATA[<p>渐渐丧失知觉，阳光仿佛随我一起消失在这河里，逐渐黯淡，岸上的呼喊声在耳边若隐若现。有那么几刻，我甚至怀疑这并不真实，仿佛做梦一般飘渺，它就那样将我拉入万丈深渊，我不禁想要挣扎，去挣脱它的控制，但毫无成效，反而使我越陷越深，我感到一丝无力与绝望，不甘就这么死去，世间的种种在眼前浮现，我不禁笑了笑，是啊，又有什么可怀念的呢？放弃挣扎的我慢慢下沉，我仿佛看到世间最美的景色，一切是那么安静，祥和，我闭上眼睛，想去感受死亡所带来的一丝不安与恐惧，但我感受到的只有无尽的黑暗和一片虚无。</p>
+<p>岸上的那人仿佛冷漠无比，事不关己地看着我，渐渐死去，于是，我便长眠于此，世间再无我的容身之地，我已不复存在，接管这个皮囊的是另一种存在，一种未知的存在，它就在那，就那么默默注视着我，看着我渐渐堕落，迷失自我，取代我的便是它，是我助长它的存在，使它慢慢腐蚀我的灵魂，侵入我的内心，但对此我一无所知，直至此刻，我死了，我才领悟，但也没有什么值得我去留念了，当初的信念早已覆灭，随着我一同消散在这世间。</p>
 <p style="text-align:right;">写于高中某天</p>]]></content>
       <categories>
         <category>随笔</category>
@@ -1541,6 +1541,106 @@ import {initHBE} from "/js/plugins/hbe.js";
       <categories>
         <category>随笔</category>
       </categories>
+  </entry>
+  <entry>
+    <title>自动化证书部署流水线</title>
+    <url>/2025/04/12/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%AF%81%E4%B9%A6%E9%83%A8%E7%BD%B2%E6%B5%81%E6%B0%B4%E7%BA%BF/</url>
+    <content><![CDATA[<p>由于免费的SSL证书仅支持申请3个月的了，每过3个月都得重新手动申请并部署，有些许麻烦，故找到了一个自动化部署工具——certd。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>这里作者使用源码安装，需要安装node环境进行编译。</p>
+<h3 id="node"><a href="#node" class="headerlink" title="node"></a>node</h3><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">apt update &amp;&amp; sudo apt upgrade -y</span><br><span class="line">apt install -y ca-certificates curl gnupg</span><br><span class="line">curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -</span><br><span class="line">apt install -y nodejs</span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕后<code>node -v</code>可以看到安装的版本。</p>
+<h3 id="certd"><a href="#certd" class="headerlink" title="certd"></a>certd</h3><p>从<a class="link"   href="https://github.com/certd/certd" >github<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>下载最新的源码，下载完毕后，将源码解压，运行start.sh脚本（服务器内存低的请勿尝试）。</p>
+<p>由于作者的服务器内存一共只有4g，部署服务后仅剩1.5g左右，运行start.sh会卡死在客户端npm run build的阶段（亲测），于是只能先在Windows中进行编译，再将编译后的文件上传到服务器，手动运行。</p>
+<p>以下为start.sh的内容，可以按照其步骤依次执行，只是Windows下命令有点不同。</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="built_in">set</span> -e</span></span><br><span class="line">echo &quot;即将删除packages下除ui之外的其他目录，按y确认（如果您没有修改过源码，按y即可）&quot;</span><br><span class="line">read -p &quot;y/n: &quot; confirm</span><br><span class="line">if [ $confirm != &quot;y&quot; ]; then</span><br><span class="line">  echo &quot;取消操作&quot;</span><br><span class="line">  exit 1</span><br><span class="line">fi</span><br><span class="line">find ./packages -mindepth 1 -maxdepth 1 -type d ! -name &#x27;ui&#x27; -exec rm -rf &#123;&#125; +</span><br><span class="line"></span><br><span class="line">echo &quot;删除成功&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;安装pnpm 8.15.7, 前提是已经安装了nodejs&quot;</span><br><span class="line">npm install -g pnpm@8.15.7 --registry https://registry.npmmirror.com</span><br><span class="line">echo &quot;安装依赖&quot;</span><br><span class="line">pnpm install --registry https://registry.npmmirror.com</span><br><span class="line"></span><br><span class="line">echo &quot;开始构建&quot;</span><br><span class="line">echo &quot;构建certd-client&quot;</span><br><span class="line">cd packages/ui/certd-client</span><br><span class="line">npm run build</span><br><span class="line">cp -r dist/* ../certd-server/public</span><br><span class="line"></span><br><span class="line">echo &quot;构建certd-server&quot;</span><br><span class="line">cd ../certd-server</span><br><span class="line">npm run build</span><br><span class="line">echo &quot;构建完成&quot;</span><br><span class="line">echo &quot;启动服务&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">前台运行</span></span><br><span class="line">npm run start</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">后台运行</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">nohup</span> npm run start &amp;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="code"><pre><span class="line"># 手动删除packages下除ui之外的其他目录</span><br><span class="line"># 安装pnpm <span class="number">8</span>.<span class="number">15</span>.<span class="number">7</span></span><br><span class="line">npm install -g pnpm@<span class="number">8</span>.<span class="number">15</span>.<span class="number">7</span> --registry https://registry.npmmirror.com</span><br><span class="line"># 安装依赖</span><br><span class="line">pnpm install --registry https://registry.npmmirror.com</span><br><span class="line"># 构建certd-client</span><br><span class="line"><span class="built_in">cd</span> packages/ui/certd-client</span><br><span class="line">npm run build</span><br><span class="line"># 手动复制dist目录下生成的文件到../certd-server/public</span><br><span class="line"># 构建certd-server</span><br><span class="line"><span class="built_in">cd</span> ../certd-server</span><br><span class="line">npm run build</span><br></pre></td></tr></table></figure></div>
+
+<p>按照上述Windows的执行步骤后，将certd-server目录打包复制到服务器上，然后再解压，准备步骤就完成了。</p>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>在上传的certd-server目录下运行npm run start，此时作者出现报错<code>Error: Cannot find module &#39;cross-spawn&#39;</code>，如果你也遇到这个错误，手动删除node_modules和package-lock.json然后再运行npm install重新安装依赖即可。</p>
+<p>正常启动最后会出现以下输出：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./start_success.png"
+                      width="800px" height="auto" alt="成功启动"
+                ><figcaption>成功启动</figcaption></figure>
+
+<p>直接后台运行：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">nohup npm run start &gt; certd.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>打开网址，使用7002端口即可，默认账号密码为admin&#x2F;123456。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./home.png"
+                      width="800px" height="auto" alt="主页"
+                ><figcaption>主页</figcaption></figure>
+
+<p>首先先修改默认密码：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./update_pwd.png"
+                      width="800px" height="auto" alt="修改密码"
+                ><figcaption>修改密码</figcaption></figure>
+
+<p>点击立即创建开始创建证书流水线，填写对应信息：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./create_line.png"
+                      width="800px" height="auto" alt="创建流水线"
+                ><figcaption>创建流水线</figcaption></figure>
+
+<p>如果想要邮件通知，需要配置邮件服务器信息：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./email_config.png"
+                      width="700px" height="auto" alt="配置邮箱"
+                ><figcaption>配置邮箱</figcaption></figure>
+
+<p>证书颁发机构作者使用ZeroSSL，需要提供EAB凭证，前往<a class="link"   href="https://app.zerossl.com/developer" >ZeroSSL<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>生成一个，注意的是，每次点击生成都会生成一个新的。</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./ZeroSSL.png"
+                      width="600px" height="auto" alt="ZeroSSL"
+                ><figcaption>ZeroSSL</figcaption></figure>
+
+<p>作者的DNS厂商为阿里云，需要创建一个RAM用户拥有如下权限：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./raw_create.png"
+                      width="800px" height="auto" alt="创建RAW用户"
+                ><figcaption>创建RAW用户</figcaption></figure>
+
+<p>定时按每天的凌晨执行即可，它会自动检测更新天数是否达到阈值，达到才会重新申请证书。</p>
+<p>接着由于作者是直接部署在目标服务器上了，所以直接创建主机-复制到本机步骤，选择对应的证书格式，然后填写需要复制的路径即可。</p>
+<p>最后重启服务器部署即可，创建主机-执行远程主机脚本命令步骤，由于部署的服务可能不一样，这里就自由发挥了。</p>
+<p>完整的流程如下：</p>
+<figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="./full_line.png"
+                      width="800px" height="auto" alt="完整流水线"
+                ><figcaption>完整流水线</figcaption></figure>
+
+<p>自此，你的网站不再需要关心证书部署的问题了，可喜可贺！</p>
+<blockquote>
+<p>深恶痛绝改成3个月有效期，不然原本1年有效期，也不需要部署自动流水线了。</p>
+</blockquote>
+<p>其他高阶操作可以去<a class="link"   href="https://certd.docmirror.cn/" >官方教程<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>中查看。</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>内网穿透</tag>
+      </tags>
   </entry>
   <entry>
     <title>致百日誓师的我</title>
