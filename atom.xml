@@ -6,7 +6,7 @@
   <link href="https://yhxjs.github.io/atom.xml" rel="self"/>
   
   <link href="https://yhxjs.github.io/"/>
-  <updated>2025-07-07T07:29:32.534Z</updated>
+  <updated>2025-07-07T09:33:15.748Z</updated>
   <id>https://yhxjs.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>迁移到PostgreSQL</title>
+    <link href="https://yhxjs.github.io/2025/07/07/%E8%BF%81%E7%A7%BB%E5%88%B0PostgreSQL/"/>
+    <id>https://yhxjs.github.io/2025/07/07/%E8%BF%81%E7%A7%BB%E5%88%B0PostgreSQL/</id>
+    <published>2025-07-07T07:34:37.000Z</published>
+    <updated>2025-07-07T09:33:15.748Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前置工作"><a href="#前置工作" class="headerlink" title="前置工作"></a>前置工作</h2><p>安装<a class="link"   href="https://www.postgresql.org/download/" >PostgreSQL<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，选择自己当前系统的版本下载并安装，作者部署的系统为Ubuntu，使用apt进行安装：</p><p>首先需要安装存储库：</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt install -y postgresql-common</span><br><span class="line">/usr/share/postgresql-common/pgdg/apt.postgresql.org.sh</span><br><span class="line">apt list --all-versions postgresql</span><br></pre></td></tr></table></figure></div><p>此时可以发现最新版本已经出现在可安装列表中：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./show_version.png"                      width="600px" height="auto" alt="show_version"                ><figcaption>show_version</figcaption></figure><p>运行<code>apt install postgresql</code>进行安装。</p><p>安装完毕后，切换到postgres用户下：</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">进入命令行</span></span><br><span class="line">psql</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">设置密码</span></span><br><span class="line">\password</span><br></pre></td></tr></table></figure></div><p>设置远程连接：</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/postgresql/17/main/</span><br><span class="line">vim postgresql.conf</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将监听地址改为*</span></span><br><span class="line">listen_addresses = &#x27;*&#x27;</span><br><span class="line">vim pg_hba.conf</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">加入如下一行</span></span><br><span class="line">host    all             all             0.0.0.0/0            scram-sha-256</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">重启PostgreSQL</span></span><br><span class="line">systemctl restart postgresql</span><br></pre></td></tr></table></figure></div><h2 id="迁移"><a href="#迁移" class="headerlink" title="迁移"></a>迁移</h2><p>使用迁移工具：<a class="link"   href="https://github.com/dimitri/pgloader" >pgloader<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p><p>作者使用docker的方式进行使用，首先拉取镜像：</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull ghcr.io/dimitri/pgloader:latest</span><br></pre></td></tr></table></figure></div><p>运行迁移命令：</p><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --rm -it ghcr.io/dimitri/pgloader:latest pgloader -d mysql://root:root@192.168.31.x/mysql postgresql://postgres:root@192.168.31.x/postgres</span><br></pre></td></tr></table></figure></div><p>将链接中的账号密码及数据库替换为自己的，运行完毕后，正常输出：</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./pgloader.png"                      width="800px" height="auto" alt="pgloader"                ><figcaption>pgloader</figcaption></figure><p>初步迁移完成，还有一些与MySQL语法不一致及字段类型迁移的错误需要注意：</p><ol><li>着重符&#96;修改为”</li><li>字符拼接由concat函数修改为||</li><li>正则匹配由regexp函数修改为~</li><li>year此类函数修改为EXTRACT(YEAR FROM 字段)的形式</li><li>date_sub(curdate(), interval 7 day) &lt;&#x3D; date(created_time)修改为created_time &gt;&#x3D; CURRENT_DATE - INTERVAL ‘7 days’</li><li>limit #{page},10修改为limit 10 offset #{page}</li><li>新增部分关键词，如first</li><li>boolean类型字段必须跟true或false比较</li><li>pgloader会将tinyint类型迁移为boolean</li><li>在 PostgreSQL 中，当使用 <code>SELECT DISTINCT</code> 时，<code>ORDER BY</code> 子句中的所有表达式都必须出现在选择列表中，需要使用子查询规避</li><li>if函数不存在，需要修改为case when形式</li></ol><h2 id="代码修改"><a href="#代码修改" class="headerlink" title="代码修改"></a>代码修改</h2><p>将以上语法进行修改，并且添加依赖：</p><div class="code-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.postgresql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>postgresql<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>42.7.7<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></div><p>修改配置文件（仅体现修改部分）：</p><div class="code-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">datasource:</span></span><br><span class="line">  <span class="attr">driver-class-name:</span> <span class="string">org.postgresql.Driver</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">jdbc:postgresql://localhost:5432/postgres?sslmode=disable&amp;TimeZone=Asia/Shanghai&amp;characterEncoding=utf8</span></span><br><span class="line">  <span class="attr">druid:</span></span><br><span class="line">    <span class="attr">validation-query:</span> <span class="string">SELECT</span> <span class="number">1</span></span><br><span class="line">    <span class="attr">filter:</span></span><br><span class="line">      <span class="attr">stat:</span></span><br><span class="line">        <span class="attr">db-type:</span> <span class="string">postgresql</span></span><br></pre></td></tr></table></figure></div><p>修改完毕，编译部署，未出现异常，圆满成功！</p>]]></content>
+    
+    
+    <summary type="html">将MySQL无缝迁移到PostgreSQL。</summary>
+    
+    
+    
+    <category term="后端" scheme="https://yhxjs.github.io/categories/%E5%90%8E%E7%AB%AF/"/>
+    
+    
+    <category term="Java" scheme="https://yhxjs.github.io/tags/Java/"/>
+    
+    <category term="PostgreSQL" scheme="https://yhxjs.github.io/tags/PostgreSQL/"/>
+    
+  </entry>
   
   <entry>
     <title>升级SpringBoot</title>
@@ -429,25 +452,6 @@
     
     
     <summary type="html">世间万物皆是如此，遍布着伤痕。</summary>
-    
-    
-    
-    <category term="随笔" scheme="https://yhxjs.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>小丑</title>
-    <link href="https://yhxjs.github.io/2021/08/16/%E5%B0%8F%E4%B8%91/"/>
-    <id>https://yhxjs.github.io/2021/08/16/%E5%B0%8F%E4%B8%91/</id>
-    <published>2021-08-16T08:59:10.000Z</published>
-    <updated>2024-04-14T13:53:21.879Z</updated>
-    
-    <content type="html"><![CDATA[<p>破碎的天空沉入海底，泛起阵阵涟漪，<br>孤独的太阳浮出海面，映着波光粼粼。</p><p>黑白的人间恶鬼游荡，<br>没有镜子，<br>看不清笑容背后，<br>阳光黯淡，<br>照不亮眼泪，<br>火炬已灭，<br>想不起。</p><p>哀嚎着，<br>究竟是人是鬼？</p><p style="text-align:right;">写于2021-8-16</p><figure class="image-caption"><img                       lazyload                     src="/images/loading.svg"                     data-src="./joker.jpg"                      width="500px" height="auto" alt="小丑"                ><figcaption>小丑</figcaption></figure>]]></content>
-    
-    
-    <summary type="html">观小丑电影有感。</summary>
     
     
     
